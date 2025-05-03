@@ -7,9 +7,12 @@ import java.awt.event.ActionListener;
 
 public class ThePanel extends JPanel implements ActionListener {
 
-    private final int TILE_SIZE = 20;
-    private final int WIDTH = 35*TILE_SIZE;
-    private final int HEIGHT = 23*TILE_SIZE;
+    private final int TILE_SIZE = 35;
+
+    private final int numOfTilesWidth = 20;
+    private final int numOfTilesHeight = 14;
+    private final int WIDTH = numOfTilesWidth*TILE_SIZE;
+    private final int HEIGHT = numOfTilesHeight*TILE_SIZE;
 
 
     //game loop
@@ -65,12 +68,33 @@ public class ThePanel extends JPanel implements ActionListener {
     }
 
 
+    private void grid(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < this.numOfTilesHeight; i++) {
+            for(int j = 0; j < this.numOfTilesWidth; j++) {
+                g2.drawRect(x,y,TILE_SIZE,TILE_SIZE);
+                x += TILE_SIZE;
+            }
+            x = 0;
+            y += TILE_SIZE;
+        }
+    }
+
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        FPS();
-        g2.dispose();
 
+        //paint
+        grid(g2);
+
+
+
+
+
+        g2.dispose();
 
     }
 
