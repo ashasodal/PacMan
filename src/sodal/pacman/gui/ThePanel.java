@@ -1,5 +1,7 @@
 package sodal.pacman.gui;
 
+import sodal.pacman.entity.player.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,12 +9,16 @@ import java.awt.event.ActionListener;
 
 public class ThePanel extends JPanel implements ActionListener {
 
-    private final int TILE_SIZE = 35;
+    private static final int TILE_SIZE = 35;
 
-    private final int numOfTilesWidth = 20;
-    private final int numOfTilesHeight = 14;
+    private static final int numOfTilesWidth = 20;
+    private static final int numOfTilesHeight = 14;
     private final int WIDTH = numOfTilesWidth*TILE_SIZE;
     private final int HEIGHT = numOfTilesHeight*TILE_SIZE;
+
+
+    //entities
+    private Player player;
 
 
     //game loop
@@ -27,6 +33,11 @@ public class ThePanel extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
         this.setOpaque(true);
         this.setDoubleBuffered(true);
+
+        //entities
+        player = new Player(TILE_SIZE*3,TILE_SIZE*5,3);
+
+
 
         //game loop
         timer = new Timer(delay, this);
@@ -83,16 +94,18 @@ public class ThePanel extends JPanel implements ActionListener {
     }
 
 
+    public static int getTileSize() {
+        return TILE_SIZE;
+    }
+
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
         //paint
         grid(g2);
-
-
-
-
+        player.render(g2);
 
         g2.dispose();
 
