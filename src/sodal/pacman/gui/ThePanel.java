@@ -6,8 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class ThePanel extends JPanel implements ActionListener {
+public class ThePanel extends JPanel implements ActionListener, KeyListener {
 
     private static final int TILE_SIZE = 35;
 
@@ -32,13 +34,12 @@ public class ThePanel extends JPanel implements ActionListener {
     public ThePanel() {
         this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
         this.setOpaque(true);
-        this.setDoubleBuffered(true);
-
+        this.setDoubleBuffered(true);x
         //entities
         player = new Player(TILE_SIZE*3,TILE_SIZE*5,3);
-
-
-
+        //lister
+        this.addKeyListener(this);
+        this.setFocusable(true);
         //game loop
         timer = new Timer(delay, this);
 
@@ -112,5 +113,18 @@ public class ThePanel extends JPanel implements ActionListener {
     }
 
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("lolz");
+    }
 
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
