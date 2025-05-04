@@ -16,7 +16,7 @@ public abstract class Entity {
 
     protected BufferedImage image;
 
-    public Entity(int x, int y, int width, int height, int speed) {
+    public Entity(int x, int y, int width, int height, int speed, String path) {
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -24,8 +24,9 @@ public abstract class Entity {
         this.height = height;
 
 
+
         try {
-            image = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/1.png"));
+            image = ImageIO.read(new File(path));
 
         } catch (IOException e) {
             e.printStackTrace();

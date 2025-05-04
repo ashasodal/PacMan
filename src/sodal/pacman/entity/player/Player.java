@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 public class Player extends Entity {
 
     public Player(int x, int y, int width, int height, int speed) {
-        super(x, y,width,height, speed);
+        super(x, y,width,height, speed,"./src/sodal/pacman/entity/player/image/up/1.png");
     }
 
     @Override

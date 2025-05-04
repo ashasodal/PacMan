@@ -14,7 +14,6 @@ public class TheFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        //start game loop
-        panel.getGameLoop().start();
+
     }
 }

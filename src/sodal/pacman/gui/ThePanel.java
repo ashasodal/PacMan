@@ -1,5 +1,7 @@
 package sodal.pacman.gui;
 
+import sodal.pacman.entity.Entity;
+import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.player.Player;
 
 import javax.swing.*;
@@ -13,15 +15,18 @@ import java.util.Map;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
-    private static final int TILE_SIZE = 35;
+    private static final int TILE_SIZE = 30;
 
-    private static final int numOfTilesWidth = 20;
-    private static final int numOfTilesHeight = 14;
+    private static final int numOfTilesWidth = 30;
+    private static final int numOfTilesHeight = 15;
     private final int WIDTH = numOfTilesWidth * TILE_SIZE;
     private final int HEIGHT = numOfTilesHeight * TILE_SIZE;
 
 
     //entities
+
+    //red ghost
+    private Enemy redGhost;
 
     //player
     private Player player;
@@ -40,6 +45,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         //entities
         player = new Player(TILE_SIZE * 3, TILE_SIZE * 5, TILE_SIZE,TILE_SIZE, 3);
+       redGhost = new Enemy(TILE_SIZE *10, TILE_SIZE*10, TILE_SIZE,TILE_SIZE,0);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -52,6 +58,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         //game loop
         gameLoop = new Thread(this);
+        gameLoop.start();
 
 
     }
@@ -94,6 +101,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //paint
         grid(g2);
         player.render(g2);
+        redGhost.render(g2);
 
         g2.dispose();
 
