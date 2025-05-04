@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -20,11 +22,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     //entities
+
+    //player
     private Player player;
-
-
-    //keyListener
-    private static boolean up, down, left, right;
+    private static byte[] direction;
 
 
     //gameLoop
@@ -43,6 +44,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.addKeyListener(this);
         this.setFocusable(true);
         this.requestFocusInWindow();
+
+
+        //player direction
+        direction = new byte[4];
+
 
         //game loop
         gameLoop = new Thread(this);
@@ -99,30 +105,33 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     }
 
+    private void switchDirection(int index) {
+        for (int i = 0; i < direction.length; i++) {
+            if (i == index) {
+                direction[index] = 1;
+                continue;
+            }
+            direction[i] = 0;
+        }
+    }
+
+
+    /**
+     * 0 -> up, 1 -> down, 2 -> left, 3 -> right
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
-
         if (k == KeyEvent.VK_UP) {
-            up = true;
-           down = false;
-            left = false;
-            right = false;
+            switchDirection(0);
         } else if (k == KeyEvent.VK_DOWN) {
-            down = true;
-            up = false;
-            left = false;
-            right = false;
+            switchDirection(1);
         } else if (k == KeyEvent.VK_LEFT) {
-            left = true;
-            right = false;
-            up = false;
-            down = false;
+            switchDirection(2);
         } else if (k == KeyEvent.VK_RIGHT) {
-            right = true;
-            left = false;
-            up = false;
-            down = false;
+            switchDirection(3);
         }
 
     }
@@ -132,37 +141,24 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         int k = e.getKeyCode();
 
         if (k == KeyEvent.VK_UP) {
-            up = false;
+            direction[0] = 0;
 
         } else if (k == KeyEvent.VK_DOWN) {
-            down = false;
+            direction[1] = 0;
 
         } else if (k == KeyEvent.VK_LEFT) {
-            left = false;
+            direction[2] = 0;
 
         } else if (k == KeyEvent.VK_RIGHT) {
-            right = false;
+            direction[3] = 0;
 
         }
 
-
     }
 
 
-    public static boolean getUp() {
-        return up;
-    }
-
-    public static boolean getDown() {
-        return down;
-    }
-
-    public static boolean getLeft() {
-        return left;
-    }
-
-    public static boolean getRight() {
-        return right;
+    public static byte[] getDirection() {
+        return direction;
     }
 
     //game loop.

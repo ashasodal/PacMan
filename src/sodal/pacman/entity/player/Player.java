@@ -18,17 +18,14 @@ public class Player extends Entity {
     }
 
     private void move() {
-        boolean up = ThePanel.getUp();
-        boolean down = ThePanel.getDown();
-        boolean left = ThePanel.getLeft();
-        boolean right = ThePanel.getRight();
-        if (up) {
+        byte[] dir = ThePanel.getDirection();
+        if (dir[0] == 1) {
             this.y -= this.speed;
-        } else if (down) {
+        } else if (dir[1] == 1) {
             this.y += this.speed;
-        } else if (left) {
+        } else if (dir[2] == 1) {
             this.x -= this.speed;
-        } else if (right) {
+        } else if (dir[3] == 1) {
             this.x += this.speed;
         }
     }
