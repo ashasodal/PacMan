@@ -15,6 +15,6 @@ public class TheFrame {
         frame.setVisible(true);
 
         //start game loop
-        panel.getTimer().start();
+        panel.getGameLoop().start();
     }
 }
