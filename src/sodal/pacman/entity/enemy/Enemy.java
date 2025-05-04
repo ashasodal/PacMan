@@ -9,6 +9,9 @@ public class Enemy extends Entity {
         super(x, y, width, height, speed,"./src/sodal/pacman/entity/enemy/image/blinky.png");
     }
 
+
+
+
     @Override
     public void update() {
 

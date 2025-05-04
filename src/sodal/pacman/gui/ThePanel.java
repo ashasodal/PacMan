@@ -26,10 +26,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     //entities
 
     //red ghost
-    private Enemy redGhost;
+    private static Enemy redGhost;
 
     //player
-    private Player player;
+    private static Player player;
     private static byte[] direction;
 
 
@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 3, TILE_SIZE * 5, TILE_SIZE,TILE_SIZE, 3);
+        player = new Player(TILE_SIZE * 10, TILE_SIZE * 9, TILE_SIZE,TILE_SIZE, 1);
        redGhost = new Enemy(TILE_SIZE *10, TILE_SIZE*10, TILE_SIZE,TILE_SIZE,0);
         //lister
         this.addKeyListener(this);
@@ -100,8 +100,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         //paint
         grid(g2);
-        player.render(g2);
         redGhost.render(g2);
+        player.render(g2);
+
 
         g2.dispose();
 
@@ -167,6 +168,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     public static byte[] getDirection() {
         return direction;
+    }
+
+
+    public static Enemy getRedGhost() {
+        return redGhost;
     }
 
     //game loop.
