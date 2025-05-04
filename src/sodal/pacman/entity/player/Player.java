@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
 
-    public Player(int x, int y, int speed) {
-        super(x, y, speed);
+    public Player(int x, int y, int width, int height, int speed) {
+        super(x, y,width,height, speed);
     }
 
     @Override
@@ -34,7 +34,9 @@ public class Player extends Entity {
     public void render(Graphics2D g2) {
 
         g2.setColor(Color.blue);
-        g2.fillRect(this.x, this.y, this.size, this.size);
+        g2.fillRect(this.x, this.y, this.width, this.height);
+
+        g2.drawImage(this.image, this.x, this.y,this.width, this.height,null );
 
     }
 }
