@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 10, TILE_SIZE * 9, TILE_SIZE, TILE_SIZE, 3);
+        player = new Player(TILE_SIZE * 10, TILE_SIZE * 9, TILE_SIZE, TILE_SIZE, 4);
         redGhost = new Enemy(TILE_SIZE * 11, TILE_SIZE * 12, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
@@ -106,6 +106,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         player.render(g2);
 
 
+
         g2.dispose();
 
     }
@@ -135,7 +136,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (!player.isEnemyCollision()) {
-
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
                 switchDirection(0);

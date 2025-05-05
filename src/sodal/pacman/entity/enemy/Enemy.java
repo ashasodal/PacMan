@@ -20,8 +20,8 @@ public class Enemy extends Entity {
     @Override
     public void render(Graphics2D g2) {
         g2.setColor(Color.blue);
-        g2.fillOval(this.x, this.y, this.width, this.height);
+        g2.fillRect(this.x, this.y, this.width, this.height);
 
-       // g2.drawImage(this.image, this.x, this.y,this.width, this.height,null );
+        // g2.drawImage(this.image, this.x, this.y,this.width, this.height,null );
     }
 }
