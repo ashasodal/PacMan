@@ -3,6 +3,7 @@ package sodal.pacman.entity;
 import sodal.pacman.gui.ThePanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -48,6 +49,24 @@ public abstract class Entity {
 
     public Rectangle getRect() {
         return rect;
+    }
+
+
+    public int getX() {
+        return x;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+
+    public int getHeight() {
+        return height;
     }
 
     public void test() {
