@@ -1,0 +1,20 @@
+---
+Souround the player and enemies with small rectangles ❌
+---
+
+
+--------
+Rectangle circle collision between player and enemy 
+
+1. divide enemy in rectangles
+
+2. check if player is colliding with any of the rectangles
+
+just regular rectangle rectangle collision between the tiles and player
+--------
+
+
+
+---
+Pixel perfect collision ❌
+----

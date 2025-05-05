@@ -9,10 +9,10 @@ import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
 
-    private Color color = Color.RED;
+    private Color color = Color.PINK;
 
     public Player(int x, int y, int width, int height, int speed) {
-        super(x, y,width,height, speed,"./src/sodal/pacman/entity/player/image/up/1.png");
+        super(x, y,width,height, speed,"./src/sodal/pacman/entity/player/image/up/up1.png");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Player extends Entity {
             color = Color.GREEN;
         }
         else {
-            color = Color.RED;
+            color = Color.PINK;
         }
     }
 

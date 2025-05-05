@@ -16,6 +16,7 @@ public abstract class Entity {
 
     protected BufferedImage image;
 
+
     protected Rectangle rect;
 
     public Entity(int x, int y, int width, int height, int speed, String path) {
@@ -27,6 +28,7 @@ public abstract class Entity {
         createBuffer(path);
 
         rect = new Rectangle(this.x, this.y, this.width,this.height);
+       // test();
 
 
     }
@@ -35,6 +37,7 @@ public abstract class Entity {
     private void createBuffer(String path) {
         try {
             image = ImageIO.read(new File(path));
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,6 +49,23 @@ public abstract class Entity {
     public Rectangle getRect() {
         return rect;
     }
+
+    public void test() {
+        Color c = new Color(100, 55, 6);
+        int newColor = c.getRGB();
+
+        for (int i = 0; i < image.getHeight(); i++) {
+            for (int j = 0; j < image.getWidth(); j++) {
+                int rgb = image.getRGB(j, i);
+                int alpha = (rgb >> 24) & 0xFF;
+
+                if (alpha == 0) {
+                    image.setRGB(j, i, newColor);
+                }
+            }
+        }
+    }
+
 
 
     public abstract void update();
