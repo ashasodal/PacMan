@@ -49,30 +49,44 @@ public class Player extends Entity {
 
 
         //top
+
         //top left corner
         if (playerCenterY < enemy.getY() && playerCenterX < enemy.getX()) {
-            double distance = diagonalDistance(enemy);
+            double distance = diagonalDistance(enemy, enemy.getX(),enemy.getY());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy, 'd');
+                backtrack(distance, enemy, enemy.getX(), enemy.getY(), 'd');
             }
         }
 
         //top middle
-       else  if(playerCenterY < enemy.getY() && playerCenterX >= enemy.getX() && playerCenterX <= enemy.getX() + enemy.getWidth()) {
+      else if(playerCenterY < enemy.getY() && playerCenterX >= enemy.getX() && playerCenterX <= enemy.getX() + enemy.getWidth()) {
             double distance = verticalDistance(enemy);
             if(distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy, 'v');
+                backtrack(distance, enemy, enemy.getX(), enemy.getY(), 'v');
             }
-
         }
+
+       //top right corner
+       else  if(playerCenterY < enemy.getY() && playerCenterX > enemy.getX() + enemy.getWidth()) {
+           double distance = diagonalDistance(enemy, enemy.getX() + enemy.getWidth(), enemy.getY());
+            if (distance < playerRadius) {
+                enemyCollision = true;
+                backtrack(distance, enemy, enemy.getX() + enemy.getWidth(), enemy.getY(), 'd');
+            }
+        }
+
+
+       //middle
+
+        //middle left
 
 
     }
 
 
-    public void backtrack(double distance, Enemy enemy, char region) {
+    public void backtrack(double distance, Enemy enemy, double enemyXcorner, double enemyYcorner, char region) {
         System.out.println("-----");
         int counter = 1;
         byte dir[] = ThePanel.getDirection();
@@ -90,7 +104,7 @@ public class Player extends Entity {
             }
 
             if(region == 'd') {
-                distance = diagonalDistance(enemy);
+                distance = diagonalDistance(enemy, enemyXcorner, enemyYcorner);
                // System.out.println("counter: " + counter );
              //   counter++;
             }
@@ -127,9 +141,9 @@ public class Player extends Entity {
     }
 
 
-    public double diagonalDistance( Enemy enemy) {
-        double deltaX = Math.abs(getPlayerCenterX() - enemy.getX());
-        double deltaY = Math.abs(getPlayerCenterY() - enemy.getY());
+    public double diagonalDistance( Enemy enemy, double enemyXcorner, double enemyYcorner) {
+        double deltaX = Math.abs(getPlayerCenterX() - enemyXcorner);
+        double deltaY = Math.abs(getPlayerCenterY() -  enemyYcorner);
         return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
     }
 

@@ -40,7 +40,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         //entities
         player = new Player(TILE_SIZE * 11, TILE_SIZE * 9, TILE_SIZE, TILE_SIZE, 3);
-        redGhost = new Enemy(TILE_SIZE * 11, TILE_SIZE * 10, TILE_SIZE, TILE_SIZE, 0);
+        redGhost = new Enemy(TILE_SIZE * 8, TILE_SIZE * 12, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
