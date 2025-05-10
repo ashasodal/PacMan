@@ -1,17 +1,12 @@
 package sodal.pacman.gui;
 
-import sodal.pacman.entity.Entity;
 import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -44,7 +39,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 10, TILE_SIZE * 9, TILE_SIZE, TILE_SIZE, 4);
+        player = new Player(TILE_SIZE * 11, TILE_SIZE * 9, TILE_SIZE, TILE_SIZE, 3);
         redGhost = new Enemy(TILE_SIZE * 11, TILE_SIZE * 12, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
@@ -135,6 +130,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
+
         if (!player.isEnemyCollision()) {
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
@@ -146,29 +142,22 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             } else if (k == KeyEvent.VK_RIGHT) {
                 switchDirection(3);
             }
-
         }
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
         if (!player.isEnemyCollision()) {
-
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
                 direction[0] = 0;
-
             } else if (k == KeyEvent.VK_DOWN) {
                 direction[1] = 0;
-
             } else if (k == KeyEvent.VK_LEFT) {
                 direction[2] = 0;
-
             } else if (k == KeyEvent.VK_RIGHT) {
                 direction[3] = 0;
-
             }
         }
     }

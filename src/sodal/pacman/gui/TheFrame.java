@@ -15,5 +15,7 @@ public class TheFrame {
         frame.setVisible(true);
 
 
+        System.out.println(Math.pow(10.5,2));
+
     }
 }

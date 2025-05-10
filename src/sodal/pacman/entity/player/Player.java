@@ -6,6 +6,7 @@ import sodal.pacman.gui.ThePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class Player extends Entity {
 
@@ -42,43 +43,70 @@ public class Player extends Entity {
 
     public void checkCollision() {
         Enemy enemy = ThePanel.getRedGhost();
-        double playerCenterX = this.x + (this.width / 2.0);
-        double playerCenterY = this.y + (this.height / 2.0);
-        double playerRadius = this.width / 2.0;
+        double playerCenterX = getPlayerCenterX();
+        double playerCenterY = getPlayerCenterY();
+        double playerRadius = getPlayerRadius();
 
 
-        //player is above
-
-        //top left
-      /*  if (playerCenterX < enemy.getX() && playerCenterY < enemy.getY()) {
-            double distance = diagonalDistance(enemy.getX(), enemy.getY());
-            //collision
+        //top
+        //top left corner
+        if (playerCenterY < enemy.getY() && playerCenterX < enemy.getX()) {
+            double distance = diagonalDistance(enemy);
             if (distance <= playerRadius) {
                 enemyCollision = true;
+                backtrack(distance, playerRadius,enemy);
             }
-        }*/
+        }
 
-        //top middle
-        if (playerCenterX >= enemy.getX() && (playerCenterX <= enemy.getX() + enemy.getWidth()) && playerCenterY < enemy.getY()) {
-            double distance = Math.abs(playerCenterY - enemy.getY());
-            //collision
-            if (distance <= playerRadius) {
-                enemyCollision = true;
-                //backtrack
 
+    }
+
+
+    public void backtrack(double distance, double playerRadius, Enemy enemy) {
+        byte dir[] = ThePanel.getDirection();
+        while (distance <= playerRadius) {
+
+            if (dir[0] == 1) {
+                this.y += 1;
+            } else if (dir[1] == 1) {
+                this.y -= 1;
+            } else if (dir[2] == 1) {
+                this.x += 1;
+            } else if (dir[3] == 1) {
+                this.x -= 1;
             }
+
+            distance = diagonalDistance(enemy);
+
 
         }
-        //top right
-       /* else if (playerCenterX > enemy.getX() + enemy.getWidth() && playerCenterY < enemy.getY()) {
-            double distance = diagonalDistance(enemy.getX() + enemy.getWidth(), enemy.getY());
-            //collision
-            if (distance <= playerRadius) {
-                enemyCollision = true;
+        enemyCollision = false;
+    }
+
+    private double getPlayerCenterX() {
+        return  this.x + this.width / 2.0;
+    }
+
+    private double getPlayerCenterY() {
+        return this.y + this.height / 2.0;
+    }
+
+    private double getPlayerRadius() {
+        return this.width / 2.0;
+    }
+
+
+    /**
+     * @return player direction
+     */
+    public byte getDirection() {
+        byte direction[] = ThePanel.getDirection();
+        for (byte i = 0; i < 4; i++) {
+            if (direction[i] == 1) {
+                return i;
             }
-        }*/
-
-
+        }
+        throw new RuntimeException("Direction array has bug!");
     }
 
     public boolean isEnemyCollision() {
@@ -86,23 +114,16 @@ public class Player extends Entity {
     }
 
 
+    public double diagonalDistance( Enemy enemy) {
 
 
-
-    public double diagonalDistance(double enemyXCorner, double enemyYCorner) {
-
-        double playerCenterX = this.x + (this.width) / 2.0;
-        double playerCenterY = this.y + (this.height) / 2.0;
-
-        double xDistance = Math.abs(playerCenterX - enemyXCorner);
-        double yDistance = Math.abs(playerCenterY - enemyYCorner);
+        double deltaX = Math.abs(getPlayerCenterX() - enemy.getX());
+        double deltaY = Math.abs(getPlayerCenterY() - enemy.getY());
 
 
-        double a = xDistance * xDistance;
-        double b = yDistance * yDistance;
-
-        return Math.sqrt(a + b);
+        return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
     }
+
 
     @Override
     public void render(Graphics2D g2) {
@@ -111,6 +132,8 @@ public class Player extends Entity {
         //  g2.drawString("COLLIDE", 50, 50);
         // g2.fillRect(this.x, this.y, this.width, this.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
+        g2.setColor(Color.magenta);
+        g2.drawOval(this.x + (this.width / 2), this.y + (this.height / 2), 1, 1);
 
 
     }
