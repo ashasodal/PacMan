@@ -52,19 +52,32 @@ public class Player extends Entity {
         //top left corner
         if (playerCenterY < enemy.getY() && playerCenterX < enemy.getX()) {
             double distance = diagonalDistance(enemy);
-            if (distance <= playerRadius) {
+            if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, playerRadius,enemy);
+                backtrack(distance, enemy, 'd');
             }
+        }
+
+        //top middle
+       else  if(playerCenterY < enemy.getY() && playerCenterX >= enemy.getX() && playerCenterX <= enemy.getX() + enemy.getWidth()) {
+            double distance = verticalDistance(enemy);
+            if(distance < playerRadius) {
+                enemyCollision = true;
+                backtrack(distance, enemy, 'v');
+            }
+
         }
 
 
     }
 
 
-    public void backtrack(double distance, double playerRadius, Enemy enemy) {
+    public void backtrack(double distance, Enemy enemy, char region) {
+        System.out.println("-----");
+        int counter = 1;
         byte dir[] = ThePanel.getDirection();
-        while (distance <= playerRadius) {
+        double playerRadius = getPlayerRadius();
+        while (distance < playerRadius) {
 
             if (dir[0] == 1) {
                 this.y += 1;
@@ -76,11 +89,22 @@ public class Player extends Entity {
                 this.x -= 1;
             }
 
-            distance = diagonalDistance(enemy);
+            if(region == 'd') {
+                distance = diagonalDistance(enemy);
+               // System.out.println("counter: " + counter );
+             //   counter++;
+            }
+            else if(region == 'v') {
+                distance = verticalDistance(enemy);
+                System.out.println("counter: " + counter );
+                counter++;
+            }
+
 
 
         }
         enemyCollision = false;
+        System.out.println("-----");
     }
 
     private double getPlayerCenterX() {
@@ -96,18 +120,7 @@ public class Player extends Entity {
     }
 
 
-    /**
-     * @return player direction
-     */
-    public byte getDirection() {
-        byte direction[] = ThePanel.getDirection();
-        for (byte i = 0; i < 4; i++) {
-            if (direction[i] == 1) {
-                return i;
-            }
-        }
-        throw new RuntimeException("Direction array has bug!");
-    }
+
 
     public boolean isEnemyCollision() {
         return enemyCollision;
@@ -115,13 +128,13 @@ public class Player extends Entity {
 
 
     public double diagonalDistance( Enemy enemy) {
-
-
         double deltaX = Math.abs(getPlayerCenterX() - enemy.getX());
         double deltaY = Math.abs(getPlayerCenterY() - enemy.getY());
-
-
         return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+    }
+
+    private double verticalDistance(Enemy enemy) {
+        return Math.abs(getPlayerCenterY() -  enemy.getY());
     }
 
 
