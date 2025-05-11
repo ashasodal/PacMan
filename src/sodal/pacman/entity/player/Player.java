@@ -14,8 +14,11 @@ public class Player extends Entity {
 
     private volatile boolean enemyCollision = false;
 
+    private Rectangle rect;
+
     public Player(int x, int y, int width, int height, int speed) {
         super(x, y, width, height, speed, "./src/sodal/pacman/entity/player/image/up/up1.png");
+        rect = new Rectangle(this.x, this.y, this.width, this.height);
     }
 
     @Override
@@ -42,7 +45,9 @@ public class Player extends Entity {
     }
 
     public void checkCollision() {
-        Enemy enemy = ThePanel.getRedGhost();
+
+        Rectangle[] enemyRect = ThePanel.getRedGhost().getRect();
+
         double playerCenterX = getPlayerCenterX();
         double playerCenterY = getPlayerCenterY();
         double playerRadius = getPlayerRadius();
@@ -51,32 +56,32 @@ public class Player extends Entity {
         //top
 
         //top left corner
-        if (playerCenterY < enemy.getY() && playerCenterX < enemy.getX()) {
+        if (playerCenterY < enemyRect[0].getY() && playerCenterX < enemyRect[0].getX()) {
             //diagonal distance
-            double distance = distance(enemy.getX(), enemy.getY());
+            double distance = distance(enemyRect[0].getX(), enemyRect[0].getY());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy.getX(), enemy.getY());
+                backtrack(distance, enemyRect[0].getX(), enemyRect[0].getY());
             }
         }
 
         //top middle
-        else if (playerCenterY < enemy.getY() && playerCenterX >= enemy.getX() && playerCenterX <= enemy.getX() + enemy.getWidth()) {
+        else if (playerCenterY < enemyRect[0].getY() && playerCenterX >= enemyRect[0].getX() && playerCenterX <= enemyRect[0].getX() + enemyRect[0].getWidth()) {
             //vertical distance
-            double distance = distance(getPlayerCenterX(), enemy.getY());
+            double distance = distance(getPlayerCenterX(), enemyRect[0].getY());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, getPlayerCenterX(), enemy.getY());
+                backtrack(distance, getPlayerCenterX(), enemyRect[0].getY());
             }
         }
 
         //top right corner
-        else if (playerCenterY < enemy.getY() && playerCenterX > enemy.getX() + enemy.getWidth()) {
+        else if (playerCenterY < enemyRect[0].getY() && playerCenterX > enemyRect[0].getX() + enemyRect[0].getWidth()) {
             //diagonal distance
-            double distance = distance(enemy.getX() + enemy.getWidth(), enemy.getY());
+            double distance = distance(enemyRect[0].getX() + enemyRect[0].getWidth(), enemyRect[0].getY());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy.getX() + enemy.getWidth(), enemy.getY());
+                backtrack(distance, enemyRect[0].getX() + enemyRect[0].getWidth(), enemyRect[0].getY());
             }
         }
 
@@ -84,22 +89,22 @@ public class Player extends Entity {
         //middle
 
         //middle left
-        else if (playerCenterX < enemy.getX() && playerCenterY >= enemy.getY() && playerCenterY <= enemy.getY() + enemy.getHeight()) {
+        else if (playerCenterX < enemyRect[0].getX() && playerCenterY >= enemyRect[0].getY() && playerCenterY <= enemyRect[0].getY() + enemyRect[0].getHeight()) {
             //horizontal distance
-            double distance = distance(enemy.getX(), getPlayerCenterY());
+            double distance = distance(enemyRect[0].getX(), getPlayerCenterY());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy.getX(), getPlayerCenterY());
+                backtrack(distance, enemyRect[0].getX(), getPlayerCenterY());
             }
         }
 
         //middle right
-        else if (playerCenterX > enemy.getX() + enemy.getWidth() && playerCenterY >= enemy.getY() && playerCenterY <= enemy.getY() + enemy.getHeight()) {
+        else if (playerCenterX > enemyRect[0].getX() + enemyRect[0].getWidth() && playerCenterY >= enemyRect[0].getY() && playerCenterY <= enemyRect[0].getY() + enemyRect[0].getHeight()) {
             //horizontal distance
-            double distance = distance(enemy.getX() + enemy.getWidth(), getPlayerCenterY());
+            double distance = distance(enemyRect[0].getX() + enemyRect[0].getWidth(), getPlayerCenterY());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy.getX() + enemy.getWidth(), getPlayerCenterY());
+                backtrack(distance, enemyRect[0].getX() + enemyRect[0].getWidth(), getPlayerCenterY());
             }
         }
 
@@ -107,33 +112,33 @@ public class Player extends Entity {
         //bottom
 
         //bottom left corner
-        else if (playerCenterY > enemy.getY() + enemy.getHeight() && playerCenterX < enemy.getX()) {
+        else if (playerCenterY > enemyRect[0].getY() + enemyRect[0].getHeight() && playerCenterX < enemyRect[0].getX()) {
             //diagonal distance
-            double distance = distance(enemy.getX(), enemy.getY() + enemy.getHeight());
+            double distance = distance(enemyRect[0].getX(), enemyRect[0].getY() + enemyRect[0].getHeight());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy.getX(), enemy.getY() + enemy.getHeight());
+                backtrack(distance, enemyRect[0].getX(), enemyRect[0].getY() + enemyRect[0].getHeight());
             }
         }
 
         //bottom middle
-        else if (playerCenterY > enemy.getY() + enemy.getHeight() && playerCenterX >= enemy.getX() && playerCenterX <= enemy.getX() + enemy.getWidth()) {
+        else if (playerCenterY > enemyRect[0].getY() + enemyRect[0].getHeight() && playerCenterX >= enemyRect[0].getX() && playerCenterX <= enemyRect[0].getX() + enemyRect[0].getWidth()) {
             //vertical distance
-            double distance = distance(playerCenterX, enemy.getY() + enemy.getHeight());
+            double distance = distance(playerCenterX, enemyRect[0].getY() + enemyRect[0].getHeight());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, playerCenterX, enemy.getY() + enemy.getHeight());
+                backtrack(distance, playerCenterX, enemyRect[0].getY() + enemyRect[0].getHeight());
             }
         }
 
         //bottom right
 
-        else if (playerCenterY > enemy.getY() + enemy.getHeight() && playerCenterX > enemy.getX() + enemy.getWidth()) {
+        else if (playerCenterY > enemyRect[0].getY() + enemyRect[0].getHeight() && playerCenterX > enemyRect[0].getX() + enemyRect[0].getWidth()) {
             //diagonal distance
-            double distance = distance(enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight());
+            double distance = distance(enemyRect[0].getX() + enemyRect[0].getWidth(), enemyRect[0].getY() + enemyRect[0].getHeight());
             if (distance < playerRadius) {
                 enemyCollision = true;
-                backtrack(distance, enemy.getX() + enemy.getWidth(), enemy.getY() + enemy.getHeight());
+                backtrack(distance, enemyRect[0].getX() + enemyRect[0].getWidth(), enemyRect[0].getY() + enemyRect[0].getHeight());
             }
         }
 

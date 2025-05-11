@@ -18,7 +18,7 @@ public abstract class Entity {
     protected BufferedImage image;
 
 
-    protected Rectangle rect;
+
 
     public Entity(int x, int y, int width, int height, int speed, String path) {
         this.x = x;
@@ -28,7 +28,7 @@ public abstract class Entity {
         this.height = height;
         createBuffer(path);
 
-        rect = new Rectangle(this.x, this.y, this.width,this.height);
+
        // test();
 
 
@@ -47,9 +47,7 @@ public abstract class Entity {
 
 
 
-    public Rectangle getRect() {
-        return rect;
-    }
+
 
 
     public int getX() {
