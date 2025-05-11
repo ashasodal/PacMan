@@ -55,7 +55,7 @@ public class Player extends Entity {
 
         //check if player is colliding with any of the enemy rectangles
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             //top
 
             //top left corner
