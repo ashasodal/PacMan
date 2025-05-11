@@ -107,11 +107,20 @@ public class Player extends Entity {
         //bottom
 
         //bottom left corner
-         if(playerCenterY > enemy.getY() + enemy.getHeight() && playerCenterX < enemy.getX()) {
+        /* if(playerCenterY > enemy.getY() + enemy.getHeight() && playerCenterX < enemy.getX()) {
             double distance = distance(enemy.getX(), enemy.getY() + enemy.getHeight());
             if(distance < playerRadius) {
                 enemyCollision = true;
                 backtrack(distance,enemy.getX(), enemy.getY()+ enemy.getHeight());
+            }
+        }*/
+
+         //bottom middle
+        if(playerCenterY >  enemy.getY() + enemy.getHeight() && playerCenterX >= enemy.getX() && playerCenterX <= enemy.getX() + enemy.getWidth()) {
+            double distance = distance(playerCenterX, enemy.getY() + enemy.getHeight());
+            if(distance < playerRadius) {
+                enemyCollision = true;
+                backtrack(distance,playerCenterX, enemy.getY()+ enemy.getHeight());
             }
         }
 
