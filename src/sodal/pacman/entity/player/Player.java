@@ -50,39 +50,13 @@ public class Player extends Entity {
         }
     }
 
-    public void checkCollision() {
-
-        //  Rectangle[] enemyRect = ThePanel.getRedGhost().getRect();
-
-        double playerCenterX = getPlayerCenterX();
-        double playerCenterY = getPlayerCenterY();
-        double playerRadius = getPlayerRadius();
 
 
-        //check if player is colliding with any of the enemy rectangles
-
-        for (int i = 0; i < 1; i++) {
-
-        }
-    }
 
 
-    /**
-     * check if collision has accorded, if it has handle the collision.
-     */
-    private void checkAndHandleCollision() {
-
-    }
 
 
-    public void backtrack(double distance, double enemyX, double enemyY) {
-        double playerRadius = getPlayerRadius();
-        while (distance < playerRadius) {
-            moveInOppositeDirection();
-            distance = distance(enemyX, enemyY);
-        }
-        enemyCollision = false;
-    }
+
 
     public void moveInOppositeDirection() {
         byte dir[] = ThePanel.getDirection();
@@ -98,18 +72,9 @@ public class Player extends Entity {
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
 
-    private double getPlayerCenterX() {
-        return this.xCenter;
-    }
 
-    private double getPlayerCenterY() {
-        return this.yCenter;
 
-    }
 
-    private double getPlayerRadius() {
-        return this.radius;
-    }
 
 
     public boolean getEnemyCollision() {
@@ -117,11 +82,7 @@ public class Player extends Entity {
     }
 
 
-    public double distance(double enemyX, double enemyY) {
-        double deltaX = Math.abs(getPlayerCenterX() - enemyX);
-        double deltaY = Math.abs(getPlayerCenterY() - enemyY);
-        return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-    }
+
 
 
     @Override
