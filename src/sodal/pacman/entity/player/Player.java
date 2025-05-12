@@ -51,13 +51,6 @@ public class Player extends Entity {
     }
 
 
-
-
-
-
-
-
-
     public void moveInOppositeDirection() {
         byte dir[] = ThePanel.getDirection();
         if (dir[0] == 1) {

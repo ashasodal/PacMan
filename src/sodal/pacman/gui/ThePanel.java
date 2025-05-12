@@ -40,7 +40,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 11 - (TILE_SIZE / 2), TILE_SIZE * 10 - (TILE_SIZE / 2), TILE_SIZE / 2, 8);
+        player = new Player(TILE_SIZE * 11 - (TILE_SIZE / 2), TILE_SIZE * 10 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
         redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
@@ -75,7 +75,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         int xCenter = player.getxCenter();
         int yCenter = player.getyCenter();
         //check if player is colliding with any of the enemy rectangles
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < redGhost.getRect().length; i++) {
             //circle-rectangle collision
             Rectangle rect = redGhost.getRect()[i];
             double closestRectX = clamp(rect.x, rect.x + rect.width, xCenter);
@@ -101,7 +101,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             double closestRectX = clamp(rect.x, rect.x + rect.width, player.getxCenter());
             double closestRectY = clamp(rect.y, rect.y + rect.height, player.getyCenter());
             distance = distance(closestRectX, closestRectY);
-            
+
         }
        // player.setEnemyCollision(false);
     }
