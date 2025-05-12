@@ -12,7 +12,7 @@ import java.io.IOException;
 public abstract class Entity {
 
     protected int speed;
-    protected int x, y;
+
     protected int width, height;
 
     protected BufferedImage image;
@@ -20,9 +20,8 @@ public abstract class Entity {
 
 
 
-    public Entity(int x, int y, int width, int height, int speed, String path) {
-        this.x = x;
-        this.y = y;
+    public Entity(int width, int height, int speed, String path) {
+
         this.speed = speed;
         this.width = width;
         this.height = height;
@@ -50,17 +49,13 @@ public abstract class Entity {
 
 
 
-    public int getX() {
-        return x;
-    }
+
 
     public int getWidth() {
         return width;
     }
 
-    public int getY() {
-        return y;
-    }
+
 
 
     public int getHeight() {

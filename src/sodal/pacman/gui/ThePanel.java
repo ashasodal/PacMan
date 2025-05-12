@@ -1,6 +1,7 @@
 package sodal.pacman.gui;
 
 import sodal.pacman.entity.enemy.Enemy;
+import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.player.Player;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static byte[] direction;
 
 
+
     //gameLoop
     private static boolean isRunning;
     private int FPS = 60;
@@ -39,8 +41,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 8, TILE_SIZE * 13, TILE_SIZE, TILE_SIZE, 3);
-        redGhost = new Enemy(TILE_SIZE * 6, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 0);
+        player = new Player(TILE_SIZE * 11 - (TILE_SIZE/2), TILE_SIZE * 10 - (TILE_SIZE/2), TILE_SIZE/2,  3);
+        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -62,7 +64,69 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         //due to backtracking, PLAYER SHOULD UPDATE FIRST
         player.update();
-        redGhost.update();
+        checkCollision();
+
+    }
+
+
+    /**
+     * collision between player and enemy
+     */
+    public void checkCollision() {
+        int xCenter = player.getxCenter();
+        int yCenter = player.getyCenter();
+        //check if player is colliding with any of the enemy rectangles
+        for (int i = 0; i < 1; i++) {
+            //circle-rectangle collision
+            Rectangle rect = redGhost.getRect()[i];
+            double  closestRectX = clamp(rect.x, rect.x + rect.width,xCenter);
+            double  closestRectY = clamp(rect.y, rect.y + rect.height,yCenter);
+            double distance = distance(closestRectX,closestRectY);
+            //collision!!!
+            if(distance <= player.getRadius()) {
+                player.setColor(Color.GREEN);
+                player.setEnemyCollision(true);
+                backtrack(distance,rect);
+            }
+            else {
+                player.setColor(Color.RED);
+            }
+
+
+        }
+
+
+    }
+
+
+    public void backtrack(double distance,  Rectangle rect) {
+        double playerRadius = player.getRadius();
+        while (distance < playerRadius) {
+            player.moveInOppositeDirection();
+            double  closestRectX = clamp(rect.x, rect.x + rect.width,player.getxCenter());
+            double  closestRectY = clamp(rect.y, rect.y + rect.height,player.getyCenter());
+            distance = distance(closestRectX, closestRectY);
+        }
+        player.setEnemyCollision(false);
+    }
+
+
+
+    private double distance(double closestRectX, double closestRectY) {
+        double deltaX = Math.abs(player.getxCenter() - closestRectX);
+        double deltaY = Math.abs(player.getyCenter() - closestRectY);
+        return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+    }
+
+
+    private double clamp(double min, double max, double value) {
+        if(value < min) {
+            return min;
+        }
+       else if( value > max) {
+            return max;
+        }
+        return value;
     }
 
 
@@ -130,8 +194,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-
-        if (!player.isEnemyCollision()) {
+        if (!player.getEnemyCollision()) {
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
                 switchDirection(0);
@@ -148,7 +211,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (!player.isEnemyCollision()) {
+        if (!player.getEnemyCollision()) {
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
                 direction[0] = 0;
@@ -168,9 +231,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public static Enemy getRedGhost() {
+  /*  public static Enemy getRedGhost() {
         return redGhost;
-    }
+    }*/
 
     //game loop.
     @Override
