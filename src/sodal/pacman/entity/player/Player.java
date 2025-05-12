@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class Player extends Entity {
 
-    private  Color color = Color.RED;
+    private Color color = Color.RED;
 
     private volatile boolean enemyCollision = false;
 
@@ -66,29 +66,20 @@ public class Player extends Entity {
     }
 
 
-
-
-
-
     public boolean getEnemyCollision() {
         return enemyCollision;
     }
 
 
-
-
-
     @Override
     public void render(Graphics2D g2) {
 
-        // g2.setColor(this.color);
-        //  g2.drawString("COLLIDE", 50, 50);
-        // g2.fillRect(this.x, this.y, this.width, this.height);
-        // g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
+
+        g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         g2.setColor(color);
         // g2.drawOval(this.x + (this.width / 2), this.y + (this.height / 2), 1, 1);
         g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
-        //g2.drawRect(rect.x, rect.y, rect.width, rect.height);
+       // g2.drawRect(rect.x, rect.y, rect.width, rect.height);
 
 
     }
@@ -105,8 +96,6 @@ public class Player extends Entity {
     public int getRadius() {
         return this.radius;
     }
-
-
 
 
     public void setColor(Color color) {
