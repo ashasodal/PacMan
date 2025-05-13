@@ -3,6 +3,7 @@ package sodal.pacman.entity.enemy;
 import sodal.pacman.entity.Entity;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Enemy extends Entity {
 
@@ -12,12 +13,22 @@ public class Enemy extends Entity {
 
     private byte[] direction;
 
+    private static int timeClyde = 0;
+    private static Random rand;
+
     public Enemy(int x, int y, int width, int height, int speed) {
         super(width, height, speed, "./src/sodal/pacman/entity/enemy/image/clyde.png");
         this.x = x;
         this.y = y;
         createRectangles();
         direction = new byte[4];
+
+        //random starting Clyde direction
+        //random num between 0-3
+
+        rand = new Random();
+        direction[rand.nextInt(4)] = 1;
+
 
     }
 
@@ -76,7 +87,6 @@ public class Enemy extends Entity {
     }
 
     public void move() {
-        direction[0] = 1;
         if (direction[0] == 1) {
             moveUp();
         } else if (direction[1] == 1) {
@@ -97,7 +107,27 @@ public class Enemy extends Entity {
     @Override
     public void update() {
         move();
+        moveRandom();
+    }
 
+
+    private void resetDir() {
+        for (int i = 0; i < direction.length; i++) {
+            if (direction[i] == 1) {
+                direction[i] = 0;
+                return;
+            }
+        }
+    }
+
+    private void moveRandom() {
+        timeClyde++;
+        if (timeClyde == 180) {
+            //all slots gonna store 0.
+            resetDir();
+            direction[rand.nextInt(4)] = 1;
+            timeClyde = 0;
+        }
 
     }
 

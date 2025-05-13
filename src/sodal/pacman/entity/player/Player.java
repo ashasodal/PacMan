@@ -14,8 +14,10 @@ public class Player extends Entity {
 
     protected int xCenter, yCenter;
     protected int radius;
-
     private Rectangle rect;
+
+
+
 
     public Player(int xCenter, int yCenter, int radius, int speed) {
         super(radius * 2, radius * 2, speed, "./src/sodal/pacman/entity/player/image/up/up1.png");
@@ -28,8 +30,6 @@ public class Player extends Entity {
     @Override
     public void update() {
         move();
-
-
     }
 
     private void move() {
@@ -76,14 +76,17 @@ public class Player extends Entity {
     public void render(Graphics2D g2) {
 
 
-       // g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
+        g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         g2.setColor(color);
-        // g2.drawOval(this.x + (this.width / 2), this.y + (this.height / 2), 1, 1);
         g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
        // g2.drawRect(rect.x, rect.y, rect.width, rect.height);
 
 
     }
+
+
+
+
 
 
     public int getxCenter() {
