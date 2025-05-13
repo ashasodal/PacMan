@@ -17,8 +17,6 @@ public class Player extends Entity {
     private Rectangle rect;
 
 
-
-
     public Player(int xCenter, int yCenter, int radius, int speed) {
         super(radius * 2, radius * 2, speed, "./src/sodal/pacman/entity/player/image/up/up1.png");
         this.xCenter = xCenter;
@@ -32,17 +30,43 @@ public class Player extends Entity {
         move();
     }
 
+
+    private void moveUp() {
+        if (this.rect.y > 0) {
+            this.yCenter -= this.speed;
+        }
+    }
+
+    private void moveDown() {
+        if (this.rect.y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
+            this.yCenter += this.speed;
+        }
+
+    }
+
+    private void moveLeft() {
+        if (this.rect.x > 0) {
+            this.xCenter -= this.speed;
+        }
+    }
+
+    private void moveRight() {
+        if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
+            this.xCenter += this.speed;
+        }
+    }
+
     private void move() {
         if (!ThePanel.getCheckCollision()) {
             byte[] dir = ThePanel.getDirection();
             if (dir[0] == 1) {
-                this.yCenter -= this.speed;
+                moveUp();
             } else if (dir[1] == 1) {
-                this.yCenter += this.speed;
+                moveDown();
             } else if (dir[2] == 1) {
-                this.xCenter -= this.speed;
+                moveLeft();
             } else if (dir[3] == 1) {
-                this.xCenter += this.speed;
+                moveRight();
             }
             this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
         }
@@ -51,25 +75,22 @@ public class Player extends Entity {
 
     public void moveInOppositeDirection() {
         byte dir[] = ThePanel.getDirection();
-        System.out.println("dir: " +  Arrays.toString(dir));
+        System.out.println("dir: " + Arrays.toString(dir));
         if (dir[0] == 1) {
-            this.yCenter += 1;
+            moveDown();
             System.out.println("backtrack DOWN");
         } else if (dir[1] == 1) {
-            this.yCenter -= 1;
+            moveUp();
             System.out.println("backtrack UP");
         } else if (dir[2] == 1) {
-            this.xCenter += 1;
+            moveRight();
             System.out.println("backtrack RIGHT");
         } else if (dir[3] == 1) {
-            this.xCenter -= 1;
+            moveLeft();
             System.out.println("backtrack LEFT");
         }
-
-
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
-
 
 
     @Override
@@ -79,14 +100,10 @@ public class Player extends Entity {
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         g2.setColor(color);
         g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
-       // g2.drawRect(rect.x, rect.y, rect.width, rect.height);
+        // g2.drawRect(rect.x, rect.y, rect.width, rect.height);
 
 
     }
-
-
-
-
 
 
     public int getxCenter() {
@@ -105,7 +122,6 @@ public class Player extends Entity {
     public void setColor(Color color) {
         this.color = color;
     }
-
 
 
 }
