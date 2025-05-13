@@ -10,9 +10,7 @@ import java.util.Arrays;
 
 public class Player extends Entity {
 
-    private Color color = Color.RED;
-
-    private volatile boolean enemyCollision = false;
+    private volatile Color color = Color.RED;
 
     protected int xCenter, yCenter;
     protected int radius;
@@ -35,7 +33,7 @@ public class Player extends Entity {
     }
 
     private void move() {
-        if (!enemyCollision) {
+        if (!ThePanel.getCheckCollision()) {
             byte[] dir = ThePanel.getDirection();
             if (dir[0] == 1) {
                 this.yCenter -= this.speed;
@@ -53,29 +51,32 @@ public class Player extends Entity {
 
     public void moveInOppositeDirection() {
         byte dir[] = ThePanel.getDirection();
+        System.out.println("dir: " +  Arrays.toString(dir));
         if (dir[0] == 1) {
             this.yCenter += 1;
+            System.out.println("backtrack DOWN");
         } else if (dir[1] == 1) {
             this.yCenter -= 1;
+            System.out.println("backtrack UP");
         } else if (dir[2] == 1) {
             this.xCenter += 1;
+            System.out.println("backtrack RIGHT");
         } else if (dir[3] == 1) {
             this.xCenter -= 1;
+            System.out.println("backtrack LEFT");
         }
+
+
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
 
-
-    public boolean getEnemyCollision() {
-        return enemyCollision;
-    }
 
 
     @Override
     public void render(Graphics2D g2) {
 
 
-        g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
+       // g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         g2.setColor(color);
         // g2.drawOval(this.x + (this.width / 2), this.y + (this.height / 2), 1, 1);
         g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
@@ -102,9 +103,7 @@ public class Player extends Entity {
         this.color = color;
     }
 
-    public void setEnemyCollision(boolean state) {
-        this.enemyCollision = state;
-    }
+
 
 }
 

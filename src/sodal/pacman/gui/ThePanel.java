@@ -1,13 +1,13 @@
 package sodal.pacman.gui;
 
 import sodal.pacman.entity.enemy.Enemy;
-import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -27,6 +27,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     //player
     private static Player player;
     private static byte[] direction;
+    private static volatile boolean checkCollision = false;
 
 
     //gameLoop
@@ -40,8 +41,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 11 - (TILE_SIZE / 2), TILE_SIZE * 10 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
-        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 0);
+        player = new Player(TILE_SIZE * 11 - (TILE_SIZE / 2), TILE_SIZE * 4 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
+        redGhost = new Enemy(TILE_SIZE * 3, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 1);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -62,9 +63,19 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void update() {
         //due to backtracking, PLAYER SHOULD UPDATE FIRST
+        redGhost.update();
         player.update();
         checkCollision();
 
+    }
+
+
+    public byte[] copyArray(byte[] arr) {
+        byte[] copy = new byte[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            copy[i] = arr[i];
+        }
+        return copy;
     }
 
 
@@ -72,6 +83,29 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      * collision between player and enemy
      */
     public void checkCollision() {
+
+        checkCollision = true;
+
+        if(playerMoving()) {
+            revertPlayerIfCollides();
+        }
+        else {
+            revertEnemyIfCollides();
+        }
+
+        checkCollision = false;
+    }
+
+
+
+
+    private void  revertEnemyIfCollides() {
+
+
+    }
+
+
+    private void revertPlayerIfCollides() {
         int xCenter = player.getxCenter();
         int yCenter = player.getyCenter();
         //check if player is colliding with any of the enemy rectangles
@@ -83,14 +117,30 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             double distance = distance(closestRectX, closestRectY);
             //collision!!!
             if (distance < player.getRadius()) {
-                player.setColor(Color.GREEN);
-                player.setEnemyCollision(true);
+                System.out.println("Collision");
+                // player.setColor(Color.GREEN);
                 backtrack(distance, rect);
             } else {
-                player.setColor(Color.RED);
+                // player.setColor(Color.RED);
+                System.out.println("Not colllision!!!");
             }
         }
-        player.setEnemyCollision(false);
+
+
+    }
+
+
+    /**
+     * checks if the player was moving when colliding with enemy.
+     * @return
+     */
+    private boolean playerMoving() {
+        for(int i = 0; i < direction.length; i++) {
+            if(direction[i] == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -103,7 +153,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             distance = distance(closestRectX, closestRectY);
 
         }
-       // player.setEnemyCollision(false);
     }
 
 
@@ -187,7 +236,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!player.getEnemyCollision()) {
+        if (!checkCollision) {
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
                 switchDirection(0);
@@ -199,12 +248,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 switchDirection(3);
             }
         }
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (!player.getEnemyCollision()) {
+        if (!checkCollision) {
             int k = e.getKeyCode();
             if (k == KeyEvent.VK_UP) {
                 direction[0] = 0;
@@ -260,6 +308,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 timer = 0;
             }
         }
+    }
+
+
+    public static boolean getCheckCollision() {
+        return checkCollision;
     }
 
 }
