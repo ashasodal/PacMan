@@ -18,6 +18,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static final int WIDTH = numOfTilesWidth * TILE_SIZE;
     private static final int HEIGHT = numOfTilesHeight * TILE_SIZE;
 
+    private static boolean gameOver = false;
+
 
     //entities
 
@@ -42,8 +44,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE  - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
-        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE*7, TILE_SIZE, TILE_SIZE, 1);
+        player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
+        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 1);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -61,10 +63,13 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     private void update() {
-        //due to backtracking, PLAYER SHOULD UPDATE FIRST
-        redGhost.update();
-        player.update();
-        checkCollision();
+        if (!gameOver) {
+            //due to backtracking, PLAYER SHOULD UPDATE FIRST
+            redGhost.update();
+            player.update();
+            checkCollision();
+        }
+
 
     }
 
@@ -124,13 +129,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     public void gameOver() {
-       /* try {
-            Thread.sleep(10000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        System.out.println("game over!!!");
+        gameOver = true;
         this.setFocusable(false);
         player.setSpeed(0);
         redGhost.setSpeed(0);
@@ -338,6 +337,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    public static boolean getGameOver() {
+        return gameOver;
     }
 
 }

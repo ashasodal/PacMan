@@ -31,28 +31,28 @@ public class Player extends Entity {
     }
 
 
-    private void moveUp() {
+    private void moveUp(int speed) {
         if (this.rect.y > 0) {
-            this.yCenter -= this.speed;
+            this.yCenter -= speed;
         }
     }
 
-    private void moveDown() {
+    private void moveDown(int speed) {
         if (this.rect.y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
-            this.yCenter += this.speed;
+            this.yCenter += speed;
         }
 
     }
 
-    private void moveLeft() {
+    private void moveLeft(int speed) {
         if (this.rect.x > 0) {
-            this.xCenter -= this.speed;
+            this.xCenter -= speed;
         }
     }
 
-    private void moveRight() {
+    private void moveRight(int speed) {
         if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
-            this.xCenter += this.speed;
+            this.xCenter += speed;
         }
     }
 
@@ -60,13 +60,13 @@ public class Player extends Entity {
         if (!ThePanel.getCheckCollision()) {
             byte[] dir = ThePanel.getDirection();
             if (dir[0] == 1) {
-                moveUp();
+                moveUp(speed);
             } else if (dir[1] == 1) {
-                moveDown();
+                moveDown(speed);
             } else if (dir[2] == 1) {
-                moveLeft();
+                moveLeft(speed);
             } else if (dir[3] == 1) {
-                moveRight();
+                moveRight(speed);
             }
             this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
         }
@@ -77,16 +77,16 @@ public class Player extends Entity {
         byte dir[] = ThePanel.getDirection();
         System.out.println("dir: " + Arrays.toString(dir));
         if (dir[0] == 1) {
-            moveDown();
+            moveDown(1);
             System.out.println("backtrack DOWN");
         } else if (dir[1] == 1) {
-            moveUp();
+            moveUp(1);
             System.out.println("backtrack UP");
         } else if (dir[2] == 1) {
-            moveRight();
+            moveRight(1);
             System.out.println("backtrack RIGHT");
         } else if (dir[3] == 1) {
-            moveLeft();
+            moveLeft(1);
             System.out.println("backtrack LEFT");
         }
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);

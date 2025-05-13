@@ -48,18 +48,18 @@ public class Enemy extends Entity {
 
     public void moveInOppositeDirection() {
         if (direction[0] == 1) {
-            moveDown();
+            moveDown(1);
         } else if (direction[1] == 1) {
-            moveUp();
+            moveUp(1);
         } else if (direction[2] == 1) {
-            moveRight();
+            moveRight(1);
         } else if (direction[3] == 1) {
-            moveLeft();
+            moveLeft(1);
         }
     }
 
 
-    private void moveUp() {
+    private void moveUp(int speed) {
         if (y > 0) {
             y -= speed;
             for (int i = 0; i < rect.length; i++) {
@@ -68,7 +68,7 @@ public class Enemy extends Entity {
         }
     }
 
-    private void moveDown() {
+    private void moveDown(int speed) {
         if (y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
             y += speed;
             for (int i = 0; i < rect.length; i++) {
@@ -77,7 +77,7 @@ public class Enemy extends Entity {
         }
     }
 
-    private void moveLeft() {
+    private void moveLeft(int speed) {
         if (x > 0) {
             x -= speed;
             for (int i = 0; i < rect.length; i++) {
@@ -87,7 +87,7 @@ public class Enemy extends Entity {
 
     }
 
-    private void moveRight() {
+    private void moveRight(int speed) {
         if (x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
             x += speed;
             for (int i = 0; i < rect.length; i++) {
@@ -98,13 +98,13 @@ public class Enemy extends Entity {
 
     public void move() {
         if (direction[0] == 1) {
-            moveUp();
+            moveUp(speed);
         } else if (direction[1] == 1) {
-            moveDown();
+            moveDown(speed);
         } else if (direction[2] == 1) {
-            moveLeft();
+            moveLeft(speed);
         } else if (direction[3] == 1) {
-            moveRight();
+            moveRight(speed);
         }
     }
 
