@@ -36,32 +36,56 @@ public class Enemy extends Entity {
 
 
     public void moveInOppositeDirection() {
-        System.out.println("WRONG!!!!!!");
         if (direction[0] == 1) {
-
+            moveDown();
         } else if (direction[1] == 1) {
-
+            moveUp();
         } else if (direction[2] == 1) {
-
-            x += 1;
-            for (int i = 0; i < 1; i++) {
-                this.rect[i].x += 1;
-            }
-
+            moveRight();
         } else if (direction[3] == 1) {
-
+            moveLeft();
         }
-
     }
 
 
-    public void move() {
+    private void moveUp() {
+        y -= speed;
+        for (int i = 0; i < 1; i++) {
+            this.rect[i].y -= speed;
+        }
+    }
 
-        direction[2] = 1;
+    private void moveDown() {
+        y += speed;
+        for (int i = 0; i < 1; i++) {
+            this.rect[i].y += speed;
+        }
+    }
+
+    private void moveLeft() {
         x -= speed;
-
         for (int i = 0; i < 1; i++) {
             this.rect[i].x -= speed;
+        }
+    }
+
+    private void moveRight() {
+        x += speed;
+        for (int i = 0; i < 1; i++) {
+            this.rect[i].x += speed;
+        }
+    }
+
+    public void move() {
+        direction[3] = 1;
+        if (direction[0] == 1) {
+            moveUp();
+        } else if (direction[1] == 1) {
+            moveDown();
+        } else if (direction[2] == 1) {
+            moveLeft();
+        } else if (direction[3] == 1) {
+            moveRight();
         }
     }
 

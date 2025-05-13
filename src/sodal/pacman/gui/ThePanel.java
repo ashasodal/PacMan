@@ -42,8 +42,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE * 8 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
-        redGhost = new Enemy(TILE_SIZE * 11 -4, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 1);
+        player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE* 10 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
+        redGhost = new Enemy(TILE_SIZE * 11 -4, TILE_SIZE  , TILE_SIZE, TILE_SIZE, 1);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -133,7 +133,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     public void gameOver() {
-      /*  try {
+       /* try {
             Thread.sleep(10000);
         }
         catch (InterruptedException e) {
