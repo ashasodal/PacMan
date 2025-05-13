@@ -15,8 +15,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private static final int numOfTilesWidth = 30;
     private static final int numOfTilesHeight = 15;
-    private final int WIDTH = numOfTilesWidth * TILE_SIZE;
-    private final int HEIGHT = numOfTilesHeight * TILE_SIZE;
+    private static final int WIDTH = numOfTilesWidth * TILE_SIZE;
+    private static final int HEIGHT = numOfTilesHeight * TILE_SIZE;
 
 
     //entities
@@ -330,6 +330,14 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     public static boolean getCheckCollision() {
         return checkCollision;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
     }
 
 }

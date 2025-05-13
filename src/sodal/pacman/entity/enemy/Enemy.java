@@ -1,6 +1,7 @@
 package sodal.pacman.entity.enemy;
 
 import sodal.pacman.entity.Entity;
+import sodal.pacman.gui.ThePanel;
 
 import java.awt.*;
 import java.util.Random;
@@ -59,30 +60,39 @@ public class Enemy extends Entity {
 
 
     private void moveUp() {
-        y -= speed;
-        for (int i = 0; i < rect.length; i++) {
-            this.rect[i].y -= speed;
+        if (y > 0) {
+            y -= speed;
+            for (int i = 0; i < rect.length; i++) {
+                this.rect[i].y -= speed;
+            }
         }
     }
 
     private void moveDown() {
-        y += speed;
-        for (int i = 0; i < rect.length; i++) {
-            this.rect[i].y += speed;
+        if(y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
+            y += speed;
+            for (int i = 0; i < rect.length; i++) {
+                this.rect[i].y += speed;
+            }
         }
     }
 
     private void moveLeft() {
-        x -= speed;
-        for (int i = 0; i < rect.length; i++) {
-            this.rect[i].x -= speed;
+        if (x > 0) {
+            x -= speed;
+            for (int i = 0; i < rect.length; i++) {
+                this.rect[i].x -= speed;
+            }
         }
+
     }
 
     private void moveRight() {
-        x += speed;
-        for (int i = 0; i < rect.length; i++) {
-            this.rect[i].x += speed;
+        if (x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
+            x += speed;
+            for (int i = 0; i < rect.length; i++) {
+                this.rect[i].x += speed;
+            }
         }
     }
 
@@ -125,7 +135,8 @@ public class Enemy extends Entity {
         if (timeClyde == 180) {
             //all slots gonna store 0.
             resetDir();
-            direction[rand.nextInt(4)] = 1;
+            // direction[rand.nextInt(4)] = 1;
+            direction[1] = 1;
             timeClyde = 0;
         }
 
