@@ -29,6 +29,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static byte[] direction;
     private static volatile boolean checkCollision = false;
 
+    private volatile boolean playerEnemyCollision = false;
 
     //gameLoop
     private static boolean isRunning;
@@ -41,8 +42,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
-        player = new Player(TILE_SIZE * 11 - (TILE_SIZE / 2), TILE_SIZE * 4 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
-        redGhost = new Enemy(TILE_SIZE * 3, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 1);
+        player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE * 8 - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
+        redGhost = new Enemy(TILE_SIZE * 11 -4, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 1);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -82,11 +83,18 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      */
     public void checkCollision() {
 
-        checkCollision = true;
 
-        playerEnemyCollision();
+            checkCollision = true;
+            playerEnemyCollision();
+            checkCollision = false;
 
-        checkCollision = false;
+
+
+
+        if(playerEnemyCollision) {
+            //stop the game.
+            gameOver();
+        }
     }
 
 
@@ -102,23 +110,39 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         int xCenter = player.getxCenter();
         int yCenter = player.getyCenter();
         //check if player is colliding with any of the enemy rectangles
-        for (int i = 0; i < redGhost.getRect().length; i++) {
             //circle-rectangle collision
-            Rectangle rect = redGhost.getRect()[i];
+            Rectangle rect = redGhost.getRect()[0];
             double closestRectX = clamp(rect.x, rect.x + rect.width, xCenter);
             double closestRectY = clamp(rect.y, rect.y + rect.height, yCenter);
             double distance = distance(closestRectX, closestRectY);
             //collision!!!
             if (distance < player.getRadius()) {
+                playerEnemyCollision = true;
                 System.out.println("Collision");
                 // player.setColor(Color.GREEN);
                 backtrack(distance, rect);
             } else {
                 // player.setColor(Color.RED);
-                System.out.println("Not colllision!!!");
-            }
+
         }
 
+
+
+
+    }
+
+
+    public void gameOver() {
+      /*  try {
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        System.out.println("game over!!!");
+        this.setFocusable(false);
+        player.setSpeed(0);
+        redGhost.setSpeed(0);
 
     }
 
@@ -151,7 +175,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             double closestRectY = clamp(rect.y, rect.y + rect.height, player.getyCenter());
             distance = distance(closestRectX, closestRectY);
 
+
+
         }
+        System.out.println("distance: " + distance);
+        System.out.println("radius: " + playerRadius);
     }
 
 
