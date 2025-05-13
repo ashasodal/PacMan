@@ -10,20 +10,57 @@ public class Enemy extends Entity {
     private Rectangle[] rect;
     protected int x, y;
 
+    private byte[] direction;
+
     public Enemy(int x, int y, int width, int height, int speed) {
         super(width, height, speed, "./src/sodal/pacman/entity/enemy/image/clyde.png");
         this.x = x;
         this.y = y;
-        rect = new Rectangle[5];
+        createRectangles();
+        direction = new byte[4];
 
+    }
+
+
+    private void createRectangles() {
+        rect = new Rectangle[5];
        /* rect[0] = new Rectangle(this.x, this.y, this.width *3, this.height*2);
         rect[1] = new Rectangle(this.x + this.width/2, this.y -this.height , this.width *2, this.height);*/
-
-       rect[0] = new Rectangle(this.x, this.y + 11, this.width, this.height - 11);
+        rect[0] = new Rectangle(this.x, this.y + 11, this.width, this.height - 11);
         rect[1] = new Rectangle(this.x + 2, this.y + 6, this.width - 4, 5);
         rect[2] = new Rectangle(this.x + 4, this.y + 4, this.width - 8, 2);
         rect[3] = new Rectangle(this.x + 6, this.y + 2, this.width - 12, 2);
         rect[4] = new Rectangle(this.x + 10, this.y, this.width - 20, 2);
+    }
+
+
+    public void moveInOppositeDirection() {
+        if (direction[0] == 1) {
+
+        }
+       else  if (direction[1] == 1) {
+
+        }
+        else if (direction[2] == 1) {
+
+        }
+        else if (direction[3] == 1) {
+            x -= 1;
+            for(Rectangle r : rect) {
+                r.x -=1;
+            }
+        }
+
+    }
+
+
+    public void move() {
+
+        direction[3] = 1;
+        x += speed;
+        for(Rectangle r : rect) {
+            r.x +=speed;
+        }
     }
 
 
@@ -34,12 +71,8 @@ public class Enemy extends Entity {
 
     @Override
     public void update() {
+        move();
 
-        //move to the right
-        x += speed;
-        for(Rectangle r : this.rect) {
-            r.x += speed;
-        }
 
     }
 
@@ -48,14 +81,6 @@ public class Enemy extends Entity {
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
         this.paintRect(g2);
     }
-
-
-
-
-
-
-
-
 
 
     public void paintRect(Graphics2D g2) {

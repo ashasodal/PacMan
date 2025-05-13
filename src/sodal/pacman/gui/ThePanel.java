@@ -56,8 +56,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //game loop
         gameLoop = new Thread(this);
         gameLoop.start();
-
-
     }
 
 
@@ -86,12 +84,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         checkCollision = true;
 
-        if(playerMoving()) {
-            revertPlayerIfCollides();
-        }
-        else {
-            revertEnemyIfCollides();
-        }
+        playerEnemyCollision();
 
         checkCollision = false;
     }
@@ -105,7 +98,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    private void revertPlayerIfCollides() {
+    private void playerEnemyCollision() {
         int xCenter = player.getxCenter();
         int yCenter = player.getyCenter();
         //check if player is colliding with any of the enemy rectangles
@@ -146,8 +139,14 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     public void backtrack(double distance, Rectangle rect) {
         double playerRadius = player.getRadius();
+        boolean playerMoving = playerMoving();
         while (distance < playerRadius) {
-            player.moveInOppositeDirection();
+            if(playerMoving) {
+                player.moveInOppositeDirection();
+            }
+            else {
+                redGhost.moveInOppositeDirection();
+            }
             double closestRectX = clamp(rect.x, rect.x + rect.width, player.getxCenter());
             double closestRectY = clamp(rect.y, rect.y + rect.height, player.getyCenter());
             distance = distance(closestRectX, closestRectY);
