@@ -69,7 +69,7 @@ public class Enemy extends Entity {
     }
 
     private void moveDown() {
-        if(y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
+        if (y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
             y += speed;
             for (int i = 0; i < rect.length; i++) {
                 this.rect[i].y += speed;
@@ -135,8 +135,7 @@ public class Enemy extends Entity {
         if (timeClyde == 180) {
             //all slots gonna store 0.
             resetDir();
-            // direction[rand.nextInt(4)] = 1;
-            direction[1] = 1;
+            direction[rand.nextInt(4)] = 1;
             timeClyde = 0;
         }
 
