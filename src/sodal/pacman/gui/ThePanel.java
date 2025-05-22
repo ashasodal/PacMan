@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameLoop;
 
 
-    private static Rectangle[] world = new Rectangle[2];
+    private static Rectangle[] world = new Rectangle[5];
 
 
     public ThePanel() {
@@ -66,10 +66,20 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         // readWorld();
 
         //worldRectangles
+
+        //cross
         Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
         Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE,  TILE_SIZE, 7 * TILE_SIZE);
+
+        //pacman house
+        Rectangle rect3 = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE,  3* TILE_SIZE,  TILE_SIZE);
+        Rectangle rect4 = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE,   TILE_SIZE,  TILE_SIZE);
+        Rectangle rect5 = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE,   TILE_SIZE,  TILE_SIZE);
         world[0] = rect1;
         world[1] = rect2;
+        world[2] = rect3;
+        world[3] = rect4;
+        world[4] = rect5;
 
 
         //game loop
