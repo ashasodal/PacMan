@@ -29,7 +29,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     //player
     private static Player player;
     private static byte[] direction;
-    private static volatile boolean checkCollision = false;
+
 
     private volatile boolean playerEnemyCollision = false;
 
@@ -127,9 +127,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      */
     public void checkCollision() {
 
-        checkCollision = true;
+
         playerEnemyCollision();
-        checkCollision = false;
+
 
         if (playerEnemyCollision) {
             //stop the game.
@@ -168,6 +168,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                     if (circleRectCollision(rect)) {
                         playerEnemyCollision = true;
                         System.out.println(" Enemy Collision");
+                        return;
                     }
                 }
 
@@ -304,33 +305,31 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!checkCollision) {
-            int k = e.getKeyCode();
-            if (k == KeyEvent.VK_UP) {
-                switchDirection(0);
-            } else if (k == KeyEvent.VK_DOWN) {
-                switchDirection(1);
-            } else if (k == KeyEvent.VK_LEFT) {
-                switchDirection(2);
-            } else if (k == KeyEvent.VK_RIGHT) {
-                switchDirection(3);
-            }
+
+        int k = e.getKeyCode();
+        if (k == KeyEvent.VK_UP) {
+            switchDirection(0);
+        } else if (k == KeyEvent.VK_DOWN) {
+            switchDirection(1);
+        } else if (k == KeyEvent.VK_LEFT) {
+            switchDirection(2);
+        } else if (k == KeyEvent.VK_RIGHT) {
+            switchDirection(3);
         }
     }
 
+
     @Override
     public void keyReleased(KeyEvent e) {
-        if (!checkCollision) {
-            int k = e.getKeyCode();
-            if (k == KeyEvent.VK_UP) {
-                direction[0] = 0;
-            } else if (k == KeyEvent.VK_DOWN) {
-                direction[1] = 0;
-            } else if (k == KeyEvent.VK_LEFT) {
-                direction[2] = 0;
-            } else if (k == KeyEvent.VK_RIGHT) {
-                direction[3] = 0;
-            }
+        int k = e.getKeyCode();
+        if (k == KeyEvent.VK_UP) {
+            direction[0] = 0;
+        } else if (k == KeyEvent.VK_DOWN) {
+            direction[1] = 0;
+        } else if (k == KeyEvent.VK_LEFT) {
+            direction[2] = 0;
+        } else if (k == KeyEvent.VK_RIGHT) {
+            direction[3] = 0;
         }
     }
 
@@ -379,9 +378,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public static boolean getCheckCollision() {
-        return checkCollision;
-    }
 
     public static int getWIDTH() {
         return WIDTH;
