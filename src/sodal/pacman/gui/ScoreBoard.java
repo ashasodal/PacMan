@@ -19,7 +19,7 @@ public class ScoreBoard {
     }
 
     public void render(Graphics2D g2) {
-        g2.setColor(Color.magenta);
+        g2.setColor(Color.gray);
         g2.fillRect(this.x,this.y,this.width,this.height);
     }
 

@@ -65,10 +65,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE,  TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png");
-        enemies[1] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png");
-        enemies[2] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png");
-        enemies[3] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png");
+        enemies[0] = new Enemy(TILE_SIZE * 22, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", 60);
+        enemies[1] = new Enemy(TILE_SIZE * 22, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, "./src/sodal/pacman/entity/enemy/image/clyde.png", 90);
+        enemies[2] = new Enemy(TILE_SIZE * 22, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 3, "./src/sodal/pacman/entity/enemy/image/inky.png", 120);
+        enemies[3] = new Enemy(TILE_SIZE * 22, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 4, "./src/sodal/pacman/entity/enemy/image/pinky.png", 180);
 
 
         //worldRectangles
@@ -114,7 +114,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             for (Enemy enemy : enemies) {
                 enemy.update();
             }
-            // redGhost.update();
             player.update();
             checkCollision();
         }
@@ -169,8 +168,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                     if (circleRectCollision(rect)) {
                         playerEnemyCollision = true;
                         System.out.println(" Enemy Collision");
-                        // player.setColor(Color.GREEN);
-                        backtrack(rect, enemy);
                     }
                 }
 
@@ -206,16 +203,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public void backtrack(Rectangle rect, Enemy enemy)  {
+    public void backtrack(Rectangle rect) {
         double playerRadius = player.getRadius();
-        boolean playerMoving = playerMoving();
+        // boolean playerMoving = playerMoving();
         double distance = getDistance(rect);
         while (distance < playerRadius) {
-            if (playerMoving) {
-                player.moveInOppositeDirection();
-            } else {
-                enemy.moveInOppositeDirection(1,1);
-            }
+            player.moveInOppositeDirection();
             distance = getDistance(rect);
         }
         System.out.println("distance: " + distance);
@@ -270,10 +263,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
         grid(g2);
-        for(Enemy enemy : enemies) {
+        player.render(g2);
+        for (Enemy enemy : enemies) {
             enemy.render(g2);
         }
-        player.render(g2);
         renderWorld(g2);
         scoreBoard.render(g2);
         g2.dispose();

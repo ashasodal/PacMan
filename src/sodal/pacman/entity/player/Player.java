@@ -42,7 +42,7 @@ public class Player extends Entity {
             if (this.rect.intersects(rect)) {
                 if (panel.circleRectCollision(rect)) {
                     //backtrack player until it doesn't collide with worldRect.
-                    panel.backtrack(rect, null);
+                    panel.backtrack(rect);
                 }
             }
         }
@@ -56,7 +56,7 @@ public class Player extends Entity {
     }
 
     private void moveDown(int speed) {
-        if (this.rect.y < ThePanel.getHEIGHT() -  2* ThePanel.getTileSize()) {
+        if (this.rect.y < ThePanel.getHEIGHT() -   2 * ThePanel.getTileSize()) {
             this.yCenter += speed;
         }
 

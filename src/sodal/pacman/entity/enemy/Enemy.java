@@ -13,15 +13,18 @@ public class Enemy extends Entity {
 
     private byte[] direction;
 
-    private int timeCounter = 0;
+    //time
+    private int time;
+    private int counter = 0;
     private static Random rand;
 
     private Rectangle enemyRect;
 
-    public Enemy(int x, int y, int width, int height, int speed, String path) {
+    public Enemy(int x, int y, int width, int height, int speed, String path, int time) {
         super(width, height, speed, path);
         this.x = x;
         this.y = y;
+        this.time = time;
         createRectangles();
         direction = new byte[4];
 
@@ -148,12 +151,12 @@ public class Enemy extends Entity {
     }
 
     private void moveRandom() {
-        timeCounter++;
-        if (timeCounter == 180) {
+        counter++;
+        if (counter == time) {
             //all slots gonna store 0.
             resetDir();
             direction[rand.nextInt(4)] = 1;
-            timeCounter = 0;
+            counter = 0;
         }
 
     }
