@@ -74,7 +74,7 @@ public class Enemy extends Entity {
     }
 
     private void moveDown(int speed) {
-        if (y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
+        if (y < ThePanel.getHEIGHT() -  2 * ThePanel.getTileSize()) {
             y += speed;
             for (int i = 0; i < rect.length; i++) {
                 this.rect[i].y += speed;

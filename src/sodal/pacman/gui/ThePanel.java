@@ -43,7 +43,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     //scoreBoard
-    private ScorePanel scorePanel;
+    private ScoreBoard scoreBoard;
 
 
     public ThePanel() {
@@ -53,7 +53,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setLayout(null);
         //entities
         player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3, this);
-        scorePanel = new ScorePanel();
+        scoreBoard = new ScoreBoard();
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -275,7 +275,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
         player.render(g2);
         renderWorld(g2);
-        scorePanel.render(g2);
+        scoreBoard.render(g2);
         g2.dispose();
     }
 

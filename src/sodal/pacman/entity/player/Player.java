@@ -56,7 +56,7 @@ public class Player extends Entity {
     }
 
     private void moveDown(int speed) {
-        if (this.rect.y < ThePanel.getHEIGHT() - ThePanel.getTileSize()) {
+        if (this.rect.y < ThePanel.getHEIGHT() -  2* ThePanel.getTileSize()) {
             this.yCenter += speed;
         }
 

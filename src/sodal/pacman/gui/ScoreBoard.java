@@ -1,16 +1,16 @@
 package sodal.pacman.gui;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class ScorePanel {
+public class ScoreBoard {
 
     private int x, y;
     private int width,height;
     private int points = 0;
     private int health = 3;
+    private int timer = 0;
 
-   public ScorePanel() {
+   public ScoreBoard() {
        this.x = 0;
        this.y = ThePanel.getHEIGHT() - ThePanel.getTileSize();
        this.width = ThePanel.getWIDTH();
