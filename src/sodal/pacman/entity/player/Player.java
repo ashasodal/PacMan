@@ -35,8 +35,6 @@ public class Player extends Entity {
     }
 
     private void worldCollision() {
-
-
         //circle - rectangular collision
         for (Rectangle rect : ThePanel.getWorld()) {
             if (this.rect.intersects(rect)) {
@@ -91,19 +89,19 @@ public class Player extends Entity {
 
     public void moveInOppositeDirection() {
         byte dir[] = ThePanel.getDirection();
-        System.out.println("dir: " + Arrays.toString(dir));
+       // System.out.println("dir: " + Arrays.toString(dir));
         if (dir[0] == 1) {
             moveDown(1);
-            System.out.println("backtrack DOWN");
+           /// System.out.println("backtrack DOWN");
         } else if (dir[1] == 1) {
             moveUp(1);
-            System.out.println("backtrack UP");
+          //  System.out.println("backtrack UP");
         } else if (dir[2] == 1) {
             moveRight(1);
-            System.out.println("backtrack RIGHT");
+          //  System.out.println("backtrack RIGHT");
         } else if (dir[3] == 1) {
             moveLeft(1);
-            System.out.println("backtrack LEFT");
+          //  System.out.println("backtrack LEFT");
         }
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
@@ -111,10 +109,10 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-        //  g2.setColor(Color.magenta);
-        // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+         // g2.setColor(Color.magenta);
+       //g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
-        g2.setColor(color);
+     //   g2.setColor(color);
         // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
 
     }
@@ -139,6 +137,13 @@ public class Player extends Entity {
 
     public Rectangle getRect() {
         return rect;
+    }
+
+
+    public void setLocation(int xCenter, int yCenter) {
+        this.xCenter = xCenter;
+        this.yCenter = yCenter;
+        this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
 
 

@@ -10,6 +10,7 @@ public class Enemy extends Entity {
 
     private Rectangle[] rect;
     protected int x, y;
+    protected int initialX, initialY;
 
     private byte[] direction;
 
@@ -20,11 +21,16 @@ public class Enemy extends Entity {
 
     private Rectangle enemyRect;
 
-    public Enemy(int x, int y, int width, int height, int speed, String path, int time) {
+    private String initialDir;
+
+    public Enemy(int x, int y, int width, int height, int speed, String path, String dir, int time) {
         super(width, height, speed, path);
         this.x = x;
         this.y = y;
+        this.initialX = x;
+        this.initialY = y;
         this.time = time;
+        this.initialDir = dir;
         createRectangles();
         direction = new byte[4];
 
@@ -32,13 +38,25 @@ public class Enemy extends Entity {
         //random num between 0-3
 
         rand = new Random();
-        direction[rand.nextInt(4)] = 1;
-
+        initialDirection();
         enemyRect = new Rectangle(x, y, width, height);
-
-
     }
 
+    public void initialDirection() {
+        resetDir();
+        if(initialDir.equals("up")) {
+            direction[0] = 1;
+        }
+        else if(initialDir.equals("down")) {
+            direction[1] = 1;
+        }
+        else if(initialDir.equals("left")) {
+            direction[2] = 1;
+        }
+        else if(initialDir.equals("right")) {
+            direction[3] = 1;
+        }
+    }
 
     private void createRectangles() {
         rect = new Rectangle[5];
@@ -77,7 +95,7 @@ public class Enemy extends Entity {
     }
 
     private void moveDown(int speed) {
-        if (y < ThePanel.getHEIGHT() -  2 * ThePanel.getTileSize()) {
+        if (y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
             y += speed;
             for (int i = 0; i < rect.length; i++) {
                 this.rect[i].y += speed;
@@ -167,10 +185,10 @@ public class Enemy extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-        //  g2.setColor(new Color(123,56,88));
-        //  g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
+         // g2.setColor(new Color(123,56,88));
+         // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-        //  this.paintRect(g2);
+         this.paintRect(g2);
     }
 
 
@@ -208,4 +226,33 @@ public class Enemy extends Entity {
 
 
     }
+
+    public int getInitialX() {
+        return initialX;
+    }
+
+    public int getInitialY() {
+        return initialY;
+    }
+
+    public void setLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+        enemyRect.setLocation(this.x, this.y);
+
+
+        rect[0] = new Rectangle(this.x, this.y + 11, this.width, this.height - 11);
+        rect[1] = new Rectangle(this.x + 2, this.y + 6, this.width - 4, 5);
+        rect[2] = new Rectangle(this.x + 4, this.y + 4, this.width - 8, 2);
+        rect[3] = new Rectangle(this.x + 6, this.y + 2, this.width - 12, 2);
+        rect[4] = new Rectangle(this.x + 10, this.y, this.width - 20, 2);
+
+
+    }
+
+
+    public void setCounterToZero() {
+        counter = 0;
+    }
+
 }
