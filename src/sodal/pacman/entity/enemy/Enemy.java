@@ -188,7 +188,7 @@ public class Enemy extends Entity {
          // g2.setColor(new Color(123,56,88));
          // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-         this.paintRect(g2);
+        // this.paintRect(g2);
     }
 
 

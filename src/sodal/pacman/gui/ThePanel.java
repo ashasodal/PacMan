@@ -18,8 +18,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static final int HEIGHT = numOfTilesHeight * TILE_SIZE;
 
 
-
-
     //entities
 
     //red ghost
@@ -67,9 +65,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         //enemies
         enemies[0] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
-        enemies[1] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
-        enemies[2] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
-        enemies[3] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right",  180);
+        enemies[1] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
+        enemies[2] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 3, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
+        enemies[3] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 5, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
 
 
         //worldRectangles
@@ -125,14 +123,19 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public void checkCollision() {
 
 
-        playerEnemyCollision();
-
-
         if (playerEnemyCollision) {
+
+            try {
+                Thread.sleep(70);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             //stop the game.
             //gameOver();
-
             //put player in house
+
             player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
             //put enemies in initial position
             for (Enemy enemy : enemies) {
@@ -141,14 +144,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 enemy.initialDirection();
             }
 
-
             playerEnemyCollision = false;
-
-
-
-
         }
 
+
+        playerEnemyCollision();
 
 
     }
@@ -195,7 +195,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     public void gameOver() {
-      //  gameOver = true;
+        //  gameOver = true;
         this.setFocusable(false);
         player.setSpeed(0);
         for (Enemy enemy : enemies) {
@@ -229,8 +229,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             player.moveInOppositeDirection();
             distance = getDistance(rect);
         }
-      //  System.out.println("distance: " + distance);
-       // System.out.println("radius: " + playerRadius);
+        //  System.out.println("distance: " + distance);
+        // System.out.println("radius: " + playerRadius);
     }
 
 
@@ -401,7 +401,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public static int getHEIGHT() {
         return HEIGHT;
     }
-
 
 
     public static Rectangle[] getWorld() {
