@@ -18,8 +18,8 @@ public class Enemy extends Entity {
 
     private Rectangle enemyRect;
 
-    public Enemy(int x, int y, int width, int height, int speed) {
-        super(width, height, speed, "./src/sodal/pacman/entity/enemy/image/clyde.png");
+    public Enemy(int x, int y, int width, int height, int speed, String path) {
+        super(width, height, speed, path);
         this.x = x;
         this.y = y;
         createRectangles();
@@ -31,7 +31,7 @@ public class Enemy extends Entity {
         rand = new Random();
         direction[rand.nextInt(4)] = 1;
 
-        enemyRect = new Rectangle(x,y,width,height);
+        enemyRect = new Rectangle(x, y, width, height);
 
 
     }
@@ -49,18 +49,18 @@ public class Enemy extends Entity {
     }
 
 
-    public void moveInOppositeDirection() {
+    public void moveInOppositeDirection(int width, int height) {
         if (direction[0] == 1) {
-            moveDown(1);
+            moveDown(height);
         } else if (direction[1] == 1) {
-            moveUp(1);
+            moveUp(height);
         } else if (direction[2] == 1) {
-            moveRight(1);
+            moveRight(width);
         } else if (direction[3] == 1) {
-            moveLeft(1);
+            moveLeft(width);
         }
 
-        enemyRect.setLocation(this.x,this.y);
+        enemyRect.setLocation(this.x, this.y);
     }
 
 
@@ -111,7 +111,7 @@ public class Enemy extends Entity {
         } else if (direction[3] == 1) {
             moveRight(speed);
         }
-        enemyRect.setLocation(this.x,this.y);
+        enemyRect.setLocation(this.x, this.y);
     }
 
 
@@ -129,14 +129,11 @@ public class Enemy extends Entity {
 
 
     public void worldCollision() {
-
         for (Rectangle rect : ThePanel.getWorld()) {
-           if(enemyRect.intersects(rect)) {
-               //backtrack
-               for(int i = 0; i < speed; i++) {
-                   moveInOppositeDirection();
-               }
-           }
+            if (enemyRect.intersects(rect)) {
+                Rectangle intersection = enemyRect.intersection(rect);
+                moveInOppositeDirection(intersection.width, intersection.height);
+            }
         }
     }
 
@@ -167,12 +164,15 @@ public class Enemy extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
+        //  g2.setColor(new Color(123,56,88));
+        //  g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-        this.paintRect(g2);
+        //  this.paintRect(g2);
     }
 
 
     public void paintRect(Graphics2D g2) {
+
 
         // Set a semi-transparent blue color (alpha range: 0.0f - fully transparent to 1.0f - fully opaque)
         float alpha = 1.0f; // 50% transparent
@@ -203,9 +203,6 @@ public class Enemy extends Entity {
 // Optional: reset composite to full opacity for other drawings
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
-
-        g2.setColor(new Color(123,56,88));
-        g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
 
     }
 }

@@ -24,7 +24,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     //red ghost
     // private static Enemy redGhost;
-    private Enemy[] enemies = new Enemy[2];
+    private Enemy[] enemies = new Enemy[4];
 
     //player
     private static Player player;
@@ -60,8 +60,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE,  TILE_SIZE, TILE_SIZE, 1);
-        enemies[1] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1);
+        enemies[0] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE,  TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png");
+        enemies[1] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png");
+        enemies[2] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png");
+        enemies[3] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png");
 
 
         //worldRectangles
@@ -207,7 +209,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             if (playerMoving) {
                 player.moveInOppositeDirection();
             } else {
-                enemy.moveInOppositeDirection();
+                enemy.moveInOppositeDirection(1,1);
             }
             distance = getDistance(rect);
         }
