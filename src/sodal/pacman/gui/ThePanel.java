@@ -42,13 +42,18 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static Rectangle[] world = new Rectangle[8];
 
 
+    //scoreBoard
+    private ScorePanel scorePanel;
+
+
     public ThePanel() {
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setOpaque(true);
         this.setDoubleBuffered(true);
+        this.setLayout(null);
         //entities
         player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3, this);
-        // redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE , TILE_SIZE, TILE_SIZE, 1);
+        scorePanel = new ScorePanel();
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -268,9 +273,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         for(Enemy enemy : enemies) {
             enemy.render(g2);
         }
-       // redGhost.render(g2);
         player.render(g2);
         renderWorld(g2);
+        scorePanel.render(g2);
         g2.dispose();
     }
 
