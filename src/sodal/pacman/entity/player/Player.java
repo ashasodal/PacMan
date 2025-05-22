@@ -15,15 +15,16 @@ public class Player extends Entity {
     protected int xCenter, yCenter;
     protected int radius;
     private Rectangle rect;
+    private ThePanel panel;
 
-    private boolean playerWorldCollision = false;
 
-
-    public Player(int xCenter, int yCenter, int radius, int speed) {
+    public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
         super(radius * 2, radius * 2, speed, "./src/sodal/pacman/entity/player/image/up/up1.png");
         this.xCenter = xCenter;
         this.yCenter = yCenter;
         this.radius = radius;
+        this.panel = panel;
+
         rect = new Rectangle(xCenter - radius, yCenter - radius, this.radius * 2, this.radius * 2);
     }
 
@@ -34,15 +35,18 @@ public class Player extends Entity {
     }
 
     private void playerWorldCollision() {
-        for (Rectangle worldRect : ThePanel.getWorld()) {
-            if (this.rect.intersects(worldRect)) {
-                for (int i = 0; i < speed; i++) {
-                    moveInOppositeDirection();
+
+
+        //circle - rectangular collision
+        for (Rectangle rect : ThePanel.getWorld()) {
+            if(this.rect.intersects(rect)) {
+                if(panel.circleRectCollision(rect)) {
+                    //backtrack player until it doesn't collide with worldRect.
+                    panel.backtrack(rect);
                 }
             }
-        }
-        playerWorldCollision = false;
 
+        }
     }
 
 
@@ -108,11 +112,11 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-        g2.setColor(Color.magenta);
-        g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+      //  g2.setColor(Color.magenta);
+       // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
-         g2.setColor(color);
-         g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
+        g2.setColor(color);
+       // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
 
     }
 

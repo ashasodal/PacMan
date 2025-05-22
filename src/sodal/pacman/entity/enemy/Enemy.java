@@ -17,6 +17,8 @@ public class Enemy extends Entity {
     private static int timeClyde = 0;
     private static Random rand;
 
+    private Rectangle enemyRect;
+
     public Enemy(int x, int y, int width, int height, int speed) {
         super(width, height, speed, "./src/sodal/pacman/entity/enemy/image/clyde.png");
         this.x = x;
@@ -29,6 +31,8 @@ public class Enemy extends Entity {
 
         rand = new Random();
         direction[rand.nextInt(4)] = 1;
+
+        enemyRect = new Rectangle(x,y,width,height);
 
 
     }
@@ -56,6 +60,8 @@ public class Enemy extends Entity {
         } else if (direction[3] == 1) {
             moveLeft(1);
         }
+
+        enemyRect.setLocation(this.x,this.y);
     }
 
 
@@ -106,6 +112,7 @@ public class Enemy extends Entity {
         } else if (direction[3] == 1) {
             moveRight(speed);
         }
+        enemyRect.setLocation(this.x,this.y);
     }
 
 
@@ -139,6 +146,10 @@ public class Enemy extends Entity {
             timeClyde = 0;
         }
 
+    }
+
+    public Rectangle getEnemyRect() {
+        return enemyRect;
     }
 
     @Override
@@ -178,6 +189,10 @@ public class Enemy extends Entity {
 
 // Optional: reset composite to full opacity for other drawings
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+
+
+        g2.setColor(Color.CYAN);
+        g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
 
     }
 }
