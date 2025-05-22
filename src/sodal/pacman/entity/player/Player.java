@@ -31,10 +31,10 @@ public class Player extends Entity {
     @Override
     public void update() {
         move();
-        playerWorldCollision();
+        worldCollision();
     }
 
-    private void playerWorldCollision() {
+    private void worldCollision() {
 
 
         //circle - rectangular collision

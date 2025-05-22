@@ -124,7 +124,21 @@ public class Enemy extends Entity {
     @Override
     public void update() {
         move();
+        worldCollision();
         moveRandom();
+    }
+
+
+    public void worldCollision() {
+
+        for (Rectangle rect : ThePanel.getWorld()) {
+           if(enemyRect.intersects(rect)) {
+               //backtrack
+               for(int i = 0; i < speed; i++) {
+                   moveInOppositeDirection();
+               }
+           }
+        }
     }
 
 
@@ -191,7 +205,7 @@ public class Enemy extends Entity {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
 
-        g2.setColor(Color.CYAN);
+        g2.setColor(new Color(123,56,88));
         g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
 
     }

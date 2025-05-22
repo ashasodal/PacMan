@@ -7,12 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -53,7 +47,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         //entities
         player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3, this);
-        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 1, TILE_SIZE, TILE_SIZE, 0);
+        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE , TILE_SIZE, TILE_SIZE, 1);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -63,7 +57,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //player direction
         direction = new byte[4];
 
-        // readWorld();
+
 
         //worldRectangles
 
@@ -267,7 +261,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public void renderWorld(Graphics2D g2) {
         g2.setColor(Color.blue);
         for (Rectangle r : world) {
-            g2.drawRect(r.x, r.y, r.width, r.height);
+            g2.fillRect(r.x, r.y, r.width, r.height);
         }
     }
 
