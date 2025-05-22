@@ -18,7 +18,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private static final int TILE_SIZE = 30;
 
-    private static final int numOfTilesWidth = 30;
+    private static final int numOfTilesWidth = 25;
     private static final int numOfTilesHeight = 15;
     private static final int WIDTH = numOfTilesWidth * TILE_SIZE;
     private static final int HEIGHT = numOfTilesHeight * TILE_SIZE;
@@ -53,7 +53,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         //entities
         player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3, this);
-        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE, 1);
+        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 1, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -66,7 +66,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         // readWorld();
 
         //worldRectangles
-        Rectangle rect1 = new Rectangle(8 * TILE_SIZE, 8 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
+        Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
         world[0] = rect1;
 
 
