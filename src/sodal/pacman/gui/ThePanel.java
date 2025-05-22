@@ -23,7 +23,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     //entities
 
     //red ghost
-    private static Enemy redGhost;
+    // private static Enemy redGhost;
+    private Enemy[] enemies = new Enemy[1];
 
     //player
     private static Player player;
@@ -47,7 +48,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         //entities
         player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3, this);
-        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE , TILE_SIZE, TILE_SIZE, 1);
+        // redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE , TILE_SIZE, TILE_SIZE, 1);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -58,26 +59,29 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         direction = new byte[4];
 
 
+        //enemies
+        enemies[0] = new Enemy(TILE_SIZE * 10, TILE_SIZE, TILE_SIZE, TILE_SIZE, 1);
+
 
         //worldRectangles
 
         //cross
         Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
-        Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE,  TILE_SIZE, 7 * TILE_SIZE);
+        Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
 
         //pacman house
-        Rectangle rect3 = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE,  3* TILE_SIZE,  TILE_SIZE);
-        Rectangle rect4 = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE,   TILE_SIZE,  TILE_SIZE);
-        Rectangle rect5 = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE,   TILE_SIZE,  TILE_SIZE);
+        Rectangle rect3 = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        Rectangle rect4 = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        Rectangle rect5 = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
         //shield
-        Rectangle rect6 = new Rectangle(  TILE_SIZE, 2 *  TILE_SIZE,    5* TILE_SIZE,  TILE_SIZE);
+        Rectangle rect6 = new Rectangle(TILE_SIZE, 2 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE);
 
 
         //L
 
-        Rectangle rect7 = new Rectangle(  0, 7 * TILE_SIZE,     TILE_SIZE,  6 * TILE_SIZE);
-        Rectangle rect8 = new Rectangle(   TILE_SIZE, 12 * TILE_SIZE,     10 * TILE_SIZE,   TILE_SIZE);
+        Rectangle rect7 = new Rectangle(0, 7 * TILE_SIZE, TILE_SIZE, 6 * TILE_SIZE);
+        Rectangle rect8 = new Rectangle(TILE_SIZE, 12 * TILE_SIZE, 10 * TILE_SIZE, TILE_SIZE);
 
 
         world[0] = rect1;
@@ -99,7 +103,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         if (!gameOver) {
             //due to backtracking, PLAYER SHOULD UPDATE FIRST
-            redGhost.update();
+            for (Enemy enemy : enemies) {
+                enemy.update();
+            }
+            // redGhost.update();
             player.update();
             checkCollision();
         }
@@ -147,19 +154,20 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     public void playerEnemyCollision() {
-        if(player.getRect().intersects(redGhost.getEnemyRect())) {
-            for (Rectangle rect : redGhost.getRect()) {
-                //collision!!!
-                if (circleRectCollision(rect)) {
-                    playerEnemyCollision = true;
-                    System.out.println(" Enemy Collision");
-                    // player.setColor(Color.GREEN);
-                    backtrack( rect);
+        for (Enemy enemy : enemies) {
+            if (player.getRect().intersects(enemy.getEnemyRect())) {
+                for (Rectangle rect : enemy.getRect()) {
+                    //collision!!!
+                    if (circleRectCollision(rect)) {
+                        playerEnemyCollision = true;
+                        System.out.println(" Enemy Collision");
+                        // player.setColor(Color.GREEN);
+                        backtrack(rect, enemy);
+                    }
                 }
+
             }
-
         }
-
     }
 
 
@@ -167,7 +175,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         gameOver = true;
         this.setFocusable(false);
         player.setSpeed(0);
-        redGhost.setSpeed(0);
+        for (Enemy enemy : enemies) {
+            enemy.setSpeed(0);
+        }
+        // redGhost.setSpeed(0);
 
     }
 
@@ -187,15 +198,15 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public void backtrack(Rectangle rect) {
+    public void backtrack(Rectangle rect, Enemy enemy)  {
         double playerRadius = player.getRadius();
         boolean playerMoving = playerMoving();
-       double distance = getDistance(rect);
+        double distance = getDistance(rect);
         while (distance < playerRadius) {
             if (playerMoving) {
                 player.moveInOppositeDirection();
             } else {
-                redGhost.moveInOppositeDirection();
+                enemy.moveInOppositeDirection();
             }
             distance = getDistance(rect);
         }
@@ -251,7 +262,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
         grid(g2);
-        redGhost.render(g2);
+        for(Enemy enemy : enemies) {
+            enemy.render(g2);
+        }
+       // redGhost.render(g2);
         player.render(g2);
         renderWorld(g2);
         g2.dispose();

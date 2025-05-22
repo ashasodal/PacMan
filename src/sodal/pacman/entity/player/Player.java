@@ -39,10 +39,10 @@ public class Player extends Entity {
 
         //circle - rectangular collision
         for (Rectangle rect : ThePanel.getWorld()) {
-            if(this.rect.intersects(rect)) {
-                if(panel.circleRectCollision(rect)) {
+            if (this.rect.intersects(rect)) {
+                if (panel.circleRectCollision(rect)) {
                     //backtrack player until it doesn't collide with worldRect.
-                    panel.backtrack(rect);
+                    panel.backtrack(rect, null);
                 }
             }
         }
@@ -111,11 +111,11 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-      //  g2.setColor(Color.magenta);
-       // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+        //  g2.setColor(Color.magenta);
+        // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         g2.setColor(color);
-       // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
+        // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
 
     }
 
