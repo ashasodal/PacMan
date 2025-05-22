@@ -16,6 +16,8 @@ public class Player extends Entity {
     protected int radius;
     private Rectangle rect;
 
+    private boolean playerWorldCollision = false;
+
 
     public Player(int xCenter, int yCenter, int radius, int speed) {
         super(radius * 2, radius * 2, speed, "./src/sodal/pacman/entity/player/image/up/up1.png");
@@ -28,6 +30,19 @@ public class Player extends Entity {
     @Override
     public void update() {
         move();
+        playerWorldCollision();
+    }
+
+    private void playerWorldCollision() {
+        for (Rectangle worldRect : ThePanel.getWorld()) {
+            if (this.rect.intersects(worldRect)) {
+                for (int i = 0; i < speed; i++) {
+                    moveInOppositeDirection();
+                }
+            }
+        }
+        playerWorldCollision = false;
+
     }
 
 
@@ -57,19 +72,17 @@ public class Player extends Entity {
     }
 
     private void move() {
-        if (!ThePanel.getCheckCollision()) {
-            byte[] dir = ThePanel.getDirection();
-            if (dir[0] == 1) {
-                moveUp(speed);
-            } else if (dir[1] == 1) {
-                moveDown(speed);
-            } else if (dir[2] == 1) {
-                moveLeft(speed);
-            } else if (dir[3] == 1) {
-                moveRight(speed);
-            }
-            this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
+        byte[] dir = ThePanel.getDirection();
+        if (dir[0] == 1) {
+            moveUp(speed);
+        } else if (dir[1] == 1) {
+            moveDown(speed);
+        } else if (dir[2] == 1) {
+            moveLeft(speed);
+        } else if (dir[3] == 1) {
+            moveRight(speed);
         }
+        this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
 
 
@@ -95,13 +108,11 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-
-
+        g2.setColor(Color.magenta);
+        g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
-        g2.setColor(color);
-        g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
-        // g2.drawRect(rect.x, rect.y, rect.width, rect.height);
-
+         g2.setColor(color);
+         g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
 
     }
 
@@ -121,6 +132,10 @@ public class Player extends Entity {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Rectangle getRect() {
+        return rect;
     }
 
 

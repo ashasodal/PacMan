@@ -7,7 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -39,13 +44,16 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameLoop;
 
 
+    private static Rectangle[] world = new Rectangle[1];
+
+
     public ThePanel() {
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         //entities
         player = new Player(TILE_SIZE * 2 - (TILE_SIZE / 2), TILE_SIZE - (TILE_SIZE / 2), TILE_SIZE / 2, 3);
-        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 7, TILE_SIZE, TILE_SIZE, 1);
+        redGhost = new Enemy(TILE_SIZE * 10, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE, 0);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -55,11 +63,22 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //player direction
         direction = new byte[4];
 
+       // readWorld();
+
+        //worldRectangles
+        Rectangle rect1 = new Rectangle(8*TILE_SIZE ,8*TILE_SIZE ,7*TILE_SIZE ,TILE_SIZE );
+        world[0] = rect1;
+
+
+
 
         //game loop
         gameLoop = new Thread(this);
         gameLoop.start();
     }
+
+
+
 
 
     private void update() {
@@ -74,13 +93,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public byte[] copyArray(byte[] arr) {
-        byte[] copy = new byte[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            copy[i] = arr[i];
-        }
-        return copy;
-    }
+
 
 
     /**
@@ -97,6 +110,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             gameOver();
         }
     }
+
+
 
 
     private void revertEnemyIfCollides() {
@@ -164,8 +179,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             double closestRectX = clamp(rect.x, rect.x + rect.width, player.getxCenter());
             double closestRectY = clamp(rect.y, rect.y + rect.height, player.getyCenter());
             distance = distance(closestRectX, closestRectY);
-
-
         }
         System.out.println("distance: " + distance);
         System.out.println("radius: " + playerRadius);
@@ -222,10 +235,19 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         grid(g2);
         redGhost.render(g2);
         player.render(g2);
+        renderWorld(g2);
 
 
         g2.dispose();
 
+    }
+
+
+    public void renderWorld(Graphics2D g2) {
+        g2.setColor(Color.blue);
+        for(Rectangle r : world) {
+            g2.drawRect(r.x,r.y,r.width,r.height);
+        }
     }
 
 
@@ -341,6 +363,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     public static boolean getGameOver() {
         return gameOver;
+    }
+
+    public static Rectangle[] getWorld() {
+        return world;
     }
 
 }
