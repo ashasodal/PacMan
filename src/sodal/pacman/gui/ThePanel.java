@@ -82,8 +82,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         //L
 
-        Rectangle rect7 = new Rectangle(  0, 9 * TILE_SIZE,     TILE_SIZE,  6 * TILE_SIZE);
-        Rectangle rect8 = new Rectangle(   TILE_SIZE, 14 * TILE_SIZE,     10 * TILE_SIZE,   TILE_SIZE);
+        Rectangle rect7 = new Rectangle(  0, 7 * TILE_SIZE,     TILE_SIZE,  6 * TILE_SIZE);
+        Rectangle rect8 = new Rectangle(   TILE_SIZE, 12 * TILE_SIZE,     10 * TILE_SIZE,   TILE_SIZE);
 
 
         world[0] = rect1;
