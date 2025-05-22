@@ -8,13 +8,12 @@ import java.util.Random;
 
 public class Enemy extends Entity {
 
-
     private Rectangle[] rect;
     protected int x, y;
 
     private byte[] direction;
 
-    private static int timeClyde = 0;
+    private int timeCounter = 0;
     private static Random rand;
 
     private Rectangle enemyRect;
@@ -152,12 +151,12 @@ public class Enemy extends Entity {
     }
 
     private void moveRandom() {
-        timeClyde++;
-        if (timeClyde == 180) {
+        timeCounter++;
+        if (timeCounter == 180) {
             //all slots gonna store 0.
             resetDir();
             direction[rand.nextInt(4)] = 1;
-            timeClyde = 0;
+            timeCounter = 0;
         }
 
     }

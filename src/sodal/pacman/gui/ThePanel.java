@@ -24,7 +24,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     //red ghost
     // private static Enemy redGhost;
-    private Enemy[] enemies = new Enemy[1];
+    private Enemy[] enemies = new Enemy[2];
 
     //player
     private static Player player;
@@ -60,7 +60,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE * 10, TILE_SIZE, TILE_SIZE, TILE_SIZE, 1);
+        enemies[0] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE,  TILE_SIZE, TILE_SIZE, 1);
+        enemies[1] = new Enemy(TILE_SIZE * 22,  3* TILE_SIZE, TILE_SIZE, TILE_SIZE, 1);
 
 
         //worldRectangles
