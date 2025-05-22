@@ -45,7 +45,6 @@ public class Player extends Entity {
                     panel.backtrack(rect);
                 }
             }
-
         }
     }
 

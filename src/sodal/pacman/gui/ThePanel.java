@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameLoop;
 
 
-    private static Rectangle[] world = new Rectangle[1];
+    private static Rectangle[] world = new Rectangle[2];
 
 
     public ThePanel() {
@@ -67,7 +67,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         //worldRectangles
         Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
+        Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE,  TILE_SIZE, 7 * TILE_SIZE);
         world[0] = rect1;
+        world[1] = rect2;
 
 
         //game loop
