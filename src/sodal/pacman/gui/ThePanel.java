@@ -56,7 +56,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //entities
         int radius = TILE_SIZE / 2;
         player = new Player(TILE_SIZE * 22 + radius, TILE_SIZE * 12 + radius, radius, 3, this);
-        scoreBoard = new ScoreBoard();
+        scoreBoard = new ScoreBoard(player);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -158,6 +158,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                         playerEnemyCollision = true;
                         collisionTimeStamp = System.currentTimeMillis();
                         System.out.println(" Enemy Collision");
+                        player.decrementHealth();
+                        System.out.println("player health: " + player.getHealth());
                         return;
                     }
                 }
@@ -254,7 +256,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         //paint
-        grid(g2);
+
         renderWorld(g2);
         player.render(g2);
         for (Enemy enemy : enemies) {
@@ -262,6 +264,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
 
         scoreBoard.render(g2);
+        grid(g2);
         g2.dispose();
     }
 

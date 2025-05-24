@@ -14,9 +14,9 @@ import java.util.Arrays;
 
 public class Player extends Entity {
 
-    private volatile Color color = Color.RED;
 
     protected int xCenter, yCenter;
+    protected int health = 3;
     protected int radius;
     private Rectangle rect;
     private ThePanel panel;
@@ -35,7 +35,6 @@ public class Player extends Entity {
     private BufferedImage[] right = new BufferedImage[3];
 
     //animation
-
 
     private int counterUp, counterDown, counterLeft, counterRight;
 
@@ -310,10 +309,6 @@ public class Player extends Entity {
     }
 
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public Rectangle getRect() {
         return rect;
     }
@@ -337,6 +332,19 @@ public class Player extends Entity {
 
     public void setPacManImage() {
         this.image = pacman;
+    }
+
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void decrementHealth() {
+        this.health -= 1;
+    }
+
+    public BufferedImage[] getLeftBuffer() {
+        return left;
     }
 
 
