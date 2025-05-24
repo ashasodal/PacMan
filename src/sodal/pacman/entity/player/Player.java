@@ -28,6 +28,8 @@ public class Player extends Entity {
     private BufferedImage[] up = new BufferedImage[3];
     private BufferedImage[] down = new BufferedImage[3];
 
+    private BufferedImage[] left = new BufferedImage[3];
+
     //animation
 
 
@@ -47,6 +49,7 @@ public class Player extends Entity {
         createPacManBuffer();
         createUpBuffer();
         createDownBuffer();
+        createLeftBuffer();
 
         this.image = pacman;
 
@@ -61,6 +64,22 @@ public class Player extends Entity {
             up[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
             up[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
             up[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void createLeftBuffer() {
+        try {
+
+
+            left[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left1.png"));
+            left[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left2.png"));
+            left[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left3.png"));
 
 
         } catch (IOException e) {
@@ -159,15 +178,38 @@ public class Player extends Entity {
         if (this.rect.y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
             this.yCenter += speed;
         }
-
         downAnimation();
-        
     }
 
     private void moveLeft(int speed) {
         if (this.rect.x > 0) {
             this.xCenter -= speed;
         }
+
+        leftAnimation();
+
+
+    }
+
+    private void  leftAnimation() {
+
+        if (counterLeft >= 0 && counterLeft <= 10) {
+            this.image = left[0];
+            counterLeft++;
+            return;
+
+        } else if (counterLeft > 10 && counterLeft <= 20) {
+            this.image = left[1];
+            counterLeft++;
+            return;
+
+        } else if (counterLeft > 20 && counterLeft <= 30) {
+            this.image = left[2];
+            counterLeft++;
+            return;
+        }
+        counterLeft = 0;
+
     }
 
     private void moveRight(int speed) {
