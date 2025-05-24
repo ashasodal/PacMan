@@ -26,10 +26,10 @@ public class Player extends Entity {
     private BufferedImage image;
     private BufferedImage pacman;
     private BufferedImage[] up = new BufferedImage[3];
+    private BufferedImage[] down = new BufferedImage[3];
 
     //animation
-    private long animationTimeStamp = -1;
-    private final long CHANGE_ANIMATION_MS = 10;
+
 
     private int counterUp, counterDown, counterLeft, counterRight;
 
@@ -44,27 +44,48 @@ public class Player extends Entity {
         rect = new Rectangle(xCenter - radius, yCenter - radius, this.radius * 2, this.radius * 2);
 
 
-        createBuffer();
+        createPacManBuffer();
+        createUpBuffer();
+        createDownBuffer();
+
+        this.image = pacman;
 
 
     }
 
 
-    private void createBuffer() {
+    private void createUpBuffer() {
         try {
-            this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
+
 
             up[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
-            ;
             up[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
             up[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
 
-            image = this.pacman;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+
+    private void createDownBuffer() {
+        try {
+            down[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down1.png"));
+            down[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down2.png"));
+            down[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down3.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createPacManBuffer() {
+        try {
+            this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -91,7 +112,11 @@ public class Player extends Entity {
             this.yCenter -= speed;
         }
 
-       if (counterUp >= 0 && counterUp <= 10) {
+        upAnimation();
+    }
+
+    private void upAnimation() {
+        if (counterUp >= 0 && counterUp <= 10) {
             this.image = up[0];
             counterUp++;
             return;
@@ -110,11 +135,33 @@ public class Player extends Entity {
         counterUp = 0;
     }
 
+
+    private void downAnimation() {
+        if (counterDown >= 0 && counterDown <= 10) {
+            this.image = down[0];
+            counterDown++;
+            return;
+
+        } else if (counterDown > 10 && counterDown <= 20) {
+            this.image = down[1];
+            counterDown++;
+            return;
+
+        } else if (counterDown > 20 && counterDown <= 30) {
+            this.image = down[2];
+            counterDown++;
+            return;
+        }
+        counterDown = 0;
+    }
+
     private void moveDown(int speed) {
         if (this.rect.y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
             this.yCenter += speed;
         }
 
+        downAnimation();
+        
     }
 
     private void moveLeft(int speed) {
