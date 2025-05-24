@@ -53,11 +53,7 @@ public class Player extends Entity {
         rect = new Rectangle(xCenter - radius, yCenter - radius, this.radius * 2, this.radius * 2);
 
 
-        createPacManBuffer();
-        createUpBuffer();
-        createDownBuffer();
-        createLeftBuffer();
-        createRightBuffer();
+        createBuffer();
 
         this.image = pacman;
 
@@ -65,20 +61,23 @@ public class Player extends Entity {
     }
 
 
-    private void createUpBuffer() {
+    private void createBuffer() {
         try {
+
+            this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
+
             up[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
             up[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
             up[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
+            down[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down1.png"));
+            down[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down2.png"));
+            down[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down3.png"));
 
+            left[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left1.png"));
+            left[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left2.png"));
+            left[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left3.png"));
 
-    private void createRightBuffer() {
-        try {
             right[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right1.png"));
             right[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right2.png"));
             right[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right3.png"));
@@ -88,35 +87,6 @@ public class Player extends Entity {
 
     }
 
-
-    private void createLeftBuffer() {
-        try {
-            left[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left1.png"));
-            left[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left2.png"));
-            left[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left3.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void createDownBuffer() {
-        try {
-            down[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down1.png"));
-            down[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down2.png"));
-            down[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down3.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createPacManBuffer() {
-        try {
-            this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void update() {
@@ -141,11 +111,19 @@ public class Player extends Entity {
         if (this.rect.y > 0) {
             this.yCenter -= speed;
         }
+        //if player is not backtracking
+        if (speed != 1) {
+            upAnimation();
+        }
 
-        upAnimation();
     }
 
     private void upAnimation() {
+
+        counterDown = 0;
+        counterLeft = 0;
+        counterRight = 0;
+
         if (counterUp >= 0 && counterUp <= 10) {
             this.image = up[0];
             counterUp++;
@@ -167,6 +145,11 @@ public class Player extends Entity {
 
 
     private void downAnimation() {
+
+        counterUp = 0;
+        counterLeft = 0;
+        counterRight = 0;
+
         if (counterDown >= 0 && counterDown <= 10) {
             this.image = down[0];
             counterDown++;
@@ -189,20 +172,29 @@ public class Player extends Entity {
         if (this.rect.y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
             this.yCenter += speed;
         }
-        downAnimation();
+        //if player is not backtracking
+        if (speed != 1) {
+            downAnimation();
+        }
+
     }
 
     private void moveLeft(int speed) {
         if (this.rect.x > 0) {
             this.xCenter -= speed;
         }
-
-        leftAnimation();
-
+        //if player is not backtracking
+        if (speed != 1) {
+            leftAnimation();
+        }
 
     }
 
     private void leftAnimation() {
+
+        counterUp = 0;
+        counterDown = 0;
+        counterRight = 0;
 
         if (counterLeft >= 0 && counterLeft <= 10) {
             this.image = left[0];
@@ -227,12 +219,17 @@ public class Player extends Entity {
         if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
             this.xCenter += speed;
         }
-
-        rightAnimation();
+        //if player is not backtracking
+        if (speed != 1) {
+            rightAnimation();
+        }
     }
 
 
     private void rightAnimation() {
+        counterUp = 0;
+        counterDown = 0;
+        counterLeft = 0;
         if (counterRight >= 0 && counterRight <= 10) {
             this.image = right[0];
             counterRight++;
@@ -268,7 +265,7 @@ public class Player extends Entity {
 
 
     public void moveInOppositeDirection() {
-        BufferedImage temp = this.image;
+        //BufferedImage temp = this.image;
         byte dir[] = this.direction;
         // System.out.println("dir: " + Arrays.toString(dir));
         if (dir[0] == 1) {
@@ -284,7 +281,7 @@ public class Player extends Entity {
             moveLeft(1);
             //  System.out.println("backtrack LEFT");
         }
-        this.image = temp;
+        // this.image = temp;
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
 
@@ -341,8 +338,6 @@ public class Player extends Entity {
     public void setPacManImage() {
         this.image = pacman;
     }
-
-
 
 
 }
