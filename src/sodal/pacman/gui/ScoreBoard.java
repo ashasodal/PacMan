@@ -33,7 +33,7 @@ public class ScoreBoard {
 
     private void createBuffer() {
         try {
-            this.healthImage = ImageIO.read(new File("./image/scoreboard/health.png"));
+            this.healthImage = ImageIO.read(new File("./res/image/scoreboard/health.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -262,14 +262,26 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
 
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0,0,WIDTH,HEIGHT);
         renderWorld(g2);
         player.render(g2);
         for (Enemy enemy : enemies) {
             enemy.render(g2);
         }
-
         scoreBoard.render(g2);
-        grid(g2);
+      //  grid(g2);
+
+        //draw over the lines in world
+        g2.setColor(Color.black);
+        //L
+        g2.drawLine(TILE_SIZE, 12 * TILE_SIZE +1 , TILE_SIZE    , 13*TILE_SIZE -1);
+
+        //house
+        g2.drawLine(21 * TILE_SIZE +1, 13 * TILE_SIZE,22 * TILE_SIZE -1, 13 * TILE_SIZE);
+        g2.drawLine(23 * TILE_SIZE +1, 13 * TILE_SIZE,24 * TILE_SIZE -1, 13 * TILE_SIZE);
+
+
         g2.dispose();
     }
 
@@ -277,7 +289,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public void renderWorld(Graphics2D g2) {
         g2.setColor(Color.blue);
         for (Rectangle r : world) {
-            g2.fillRect(r.x, r.y, r.width, r.height);
+            g2.drawRect(r.x, r.y, r.width, r.height);
         }
     }
 
