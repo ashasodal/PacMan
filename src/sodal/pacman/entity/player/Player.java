@@ -22,12 +22,16 @@ public class Player extends Entity {
     private ThePanel panel;
 
     //images
+
+    private BufferedImage image;
     private BufferedImage pacman;
-    protected BufferedImage up1, up2, up3;
+    private BufferedImage[] up = new BufferedImage[3];
 
     //animation
     private long animationTimeStamp = -1;
     private final long CHANGE_ANIMATION_MS = 10;
+
+    private int counterUp, counterDown, counterLeft, counterRight;
 
 
     public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
@@ -49,9 +53,13 @@ public class Player extends Entity {
     private void createBuffer() {
         try {
             this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
-            this.up1 = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
-            this.up2 = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
-            this.up3 = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
+
+            up[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
+            ;
+            up[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
+            up[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
+
+            image = this.pacman;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,14 +90,24 @@ public class Player extends Entity {
         if (this.rect.y > 0) {
             this.yCenter -= speed;
         }
-        /*if(animationTimeStamp == -1) {
-            animationTimeStamp = System.currentTimeMillis();
-            this.
+
+       if (counterUp >= 0 && counterUp <= 10) {
+            this.image = up[0];
+            counterUp++;
+            return;
+
+        } else if (counterUp > 10 && counterUp <= 20) {
+            this.image = up[1];
+            counterUp++;
+            return;
+
+        } else if (counterUp > 20 && counterUp <= 30) {
+            this.image = up[2];
+            counterUp++;
+            return;
         }
-        if(System.currentTimeMillis() - animationTimeStamp >= CHANGE_ANIMATION_MS) {
 
-        }*/
-
+        counterUp = 0;
     }
 
     private void moveDown(int speed) {
@@ -127,6 +145,7 @@ public class Player extends Entity {
 
 
     public void moveInOppositeDirection() {
+        BufferedImage temp = this.image;
         byte dir[] = ThePanel.getDirection();
         // System.out.println("dir: " + Arrays.toString(dir));
         if (dir[0] == 1) {
@@ -142,6 +161,7 @@ public class Player extends Entity {
             moveLeft(1);
             //  System.out.println("backtrack LEFT");
         }
+        this.image = temp;
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
 
@@ -150,7 +170,7 @@ public class Player extends Entity {
     public void render(Graphics2D g2) {
         // g2.setColor(Color.magenta);
         //g2.fillRect(rect.x, rect.y, rect.width, rect.height);
-        g2.drawImage(this.pacman, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
+        g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         //   g2.setColor(color);
         // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
 

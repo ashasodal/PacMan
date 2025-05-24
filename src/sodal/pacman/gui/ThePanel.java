@@ -334,16 +334,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int k = e.getKeyCode();
-        if (k == KeyEvent.VK_UP) {
-            direction[0] = 0;
-        } else if (k == KeyEvent.VK_DOWN) {
-            direction[1] = 0;
-        } else if (k == KeyEvent.VK_LEFT) {
-            direction[2] = 0;
-        } else if (k == KeyEvent.VK_RIGHT) {
-            direction[3] = 0;
-        }
+
     }
 
 
