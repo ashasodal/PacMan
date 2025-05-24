@@ -37,6 +37,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameLoop;
 
 
+    //collision
+    private long RESPAWN_DELAY_MS = 70; // in ms
+
+    private long collisionTimeStamp = -1;
+
     private static Rectangle[] world = new Rectangle[8];
 
 
@@ -65,9 +70,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         //enemies
         enemies[0] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
-        enemies[1] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
-        enemies[2] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 3, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
-        enemies[3] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 5, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
+        enemies[1] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
+        enemies[2] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
+        enemies[3] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
 
 
         //worldRectangles
@@ -109,10 +114,13 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void update() {
         //due to backtracking, PLAYER SHOULD UPDATE FIRST
-        for (Enemy enemy : enemies) {
-            enemy.update();
+        if (!playerEnemyCollision) {
+            for (Enemy enemy : enemies) {
+                enemy.update();
+            }
+            player.update();
         }
-        player.update();
+
         checkCollision();
     }
 
@@ -121,21 +129,17 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      * collision between player and enemy
      */
     public void checkCollision() {
-
-
         if (playerEnemyCollision) {
+            collisionDelay();
+        } else {
+            checkPlayerEnemyCollision();
+        }
+    }
 
-            try {
-                Thread.sleep(70);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            //stop the game.
-            //gameOver();
+    private void collisionDelay() {
+        if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
             //put player in house
-
             player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
             //put enemies in initial position
             for (Enemy enemy : enemies) {
@@ -143,14 +147,24 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 enemy.setCounterToZero();
                 enemy.initialDirection();
             }
-
             playerEnemyCollision = false;
         }
+    }
 
-
-        playerEnemyCollision();
-
-
+    public void checkPlayerEnemyCollision(){
+        for (Enemy enemy : enemies) {
+            if (player.getRect().intersects(enemy.getEnemyRect())) {
+                for (Rectangle rect : enemy.getRect()) {
+                    //collision!!!
+                    if (circleRectCollision(rect)) {
+                        playerEnemyCollision = true;
+                        collisionTimeStamp = System.currentTimeMillis();
+                        System.out.println(" Enemy Collision");
+                        return;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -173,24 +187,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         double closestRectX = clamp(rect.x, rect.x + rect.width, player.getxCenter());
         double closestRectY = clamp(rect.y, rect.y + rect.height, player.getyCenter());
         return distance(closestRectX, closestRectY);
-    }
-
-
-    public void playerEnemyCollision() {
-        for (Enemy enemy : enemies) {
-            if (player.getRect().intersects(enemy.getEnemyRect())) {
-                for (Rectangle rect : enemy.getRect()) {
-                    //collision!!!
-                    if (circleRectCollision(rect)) {
-                        playerEnemyCollision = true;
-                        System.out.println(" Enemy Collision");
-                        return;
-                    }
-                }
-
-            }
-        }
-
     }
 
 
@@ -281,11 +277,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
         grid(g2);
+        renderWorld(g2);
         player.render(g2);
         for (Enemy enemy : enemies) {
             enemy.render(g2);
         }
-        renderWorld(g2);
+
         scoreBoard.render(g2);
         g2.dispose();
     }

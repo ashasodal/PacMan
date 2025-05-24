@@ -15,7 +15,7 @@ public class Enemy extends Entity {
     private byte[] direction;
 
     //time
-    private int time;
+    private int delay;
     private int counter = 0;
     private static Random rand;
 
@@ -23,13 +23,13 @@ public class Enemy extends Entity {
 
     private String initialDir;
 
-    public Enemy(int x, int y, int width, int height, int speed, String path, String dir, int time) {
+    public Enemy(int x, int y, int width, int height, int speed, String path, String dir, int delay) {
         super(width, height, speed, path);
         this.x = x;
         this.y = y;
         this.initialX = x;
         this.initialY = y;
-        this.time = time;
+        this.delay = delay;
         this.initialDir = dir;
         createRectangles();
         direction = new byte[4];
@@ -170,7 +170,7 @@ public class Enemy extends Entity {
 
     private void moveRandom() {
         counter++;
-        if (counter == time) {
+        if (counter == delay) {
             //all slots gonna store 0.
             resetDir();
             direction[rand.nextInt(4)] = 1;
@@ -188,7 +188,7 @@ public class Enemy extends Entity {
          // g2.setColor(new Color(123,56,88));
          // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-        // this.paintRect(g2);
+        //this.paintRect(g2);
     }
 
 
