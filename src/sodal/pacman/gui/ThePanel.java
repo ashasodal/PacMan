@@ -115,7 +115,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             player.update();
         }
-
         checkCollision();
     }
 
@@ -124,13 +123,40 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
      * collision between player and enemy
      */
     public void checkCollision() {
-        if (playerEnemyCollision) {
-            collisionDelay();
-        } else {
+        if (!playerEnemyCollision) {
             checkPlayerEnemyCollision();
+            return;
+        }
+        handlePlayerEnemyCollision();
+
+    }
+
+    public void checkPlayerEnemyCollision() {
+        for (Enemy enemy : enemies) {
+            if (player.getRect().intersects(enemy.getEnemyRect())) {
+                for (Rectangle rect : enemy.getRect()) {
+                    //collision!!!
+                    if (circleRectCollision(rect)) {
+                        playerEnemyCollision = true;
+                        player.decrementHealth();
+                        collisionTimeStamp = System.currentTimeMillis();
+                        handlePlayerEnemyCollision();
+                        return;
+                    }
+                }
+            }
         }
     }
 
+
+    private void handlePlayerEnemyCollision() {
+        //game over.
+        if (player.getHealth() == 0) {
+            gameOver();
+        } else {
+            collisionDelay();
+        }
+    }
 
     private void collisionDelay() {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
@@ -149,22 +175,16 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    public void checkPlayerEnemyCollision() {
+    public void gameOver() {
+
+        //freeze game
+        player.resetDirectionArray();
+        this.setFocusable(false);
+        player.setSpeed(0);
         for (Enemy enemy : enemies) {
-            if (player.getRect().intersects(enemy.getEnemyRect())) {
-                for (Rectangle rect : enemy.getRect()) {
-                    //collision!!!
-                    if (circleRectCollision(rect)) {
-                        playerEnemyCollision = true;
-                        collisionTimeStamp = System.currentTimeMillis();
-                        System.out.println(" Enemy Collision");
-                        player.decrementHealth();
-                        System.out.println("player health: " + player.getHealth());
-                        return;
-                    }
-                }
-            }
+            enemy.setSpeed(0);
         }
+        //player dead animation
     }
 
 
@@ -185,28 +205,13 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public void gameOver() {
-        //  gameOver = true;
-        this.setFocusable(false);
-        player.setSpeed(0);
-        for (Enemy enemy : enemies) {
-            enemy.setSpeed(0);
-        }
-        // redGhost.setSpeed(0);
-
-    }
-
-
     public void backtrack(Rectangle rect) {
         double playerRadius = player.getRadius();
-        // boolean playerMoving = playerMoving();
         double distance = getDistance(rect);
         while (distance < playerRadius) {
             player.moveInOppositeDirection();
             distance = getDistance(rect);
         }
-        //  System.out.println("distance: " + distance);
-        // System.out.println("radius: " + playerRadius);
     }
 
 
@@ -317,8 +322,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
-
-
 
 
     //game loop.
