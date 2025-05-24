@@ -26,7 +26,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     //player
     private static Player player;
-    private static byte[] direction;
 
 
     private volatile boolean playerEnemyCollision = false;
@@ -56,16 +55,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setLayout(null);
         //entities
         int radius = TILE_SIZE / 2;
-        player = new Player(TILE_SIZE * 2 + radius, TILE_SIZE + radius, radius, 3, this);
+        player = new Player(TILE_SIZE * 22 + radius, TILE_SIZE * 12 + radius, radius, 3, this);
         scoreBoard = new ScoreBoard();
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
         this.requestFocusInWindow();
-
-
-        //player direction
-        direction = new byte[4];
 
 
         //enemies
@@ -141,6 +136,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
             //put player in house
             player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
+            //hfhfhhfhf player.g
             //put enemies in initial position
             for (Enemy enemy : enemies) {
                 enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
@@ -151,7 +147,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    public void checkPlayerEnemyCollision(){
+    public void checkPlayerEnemyCollision() {
         for (Enemy enemy : enemies) {
             if (player.getRect().intersects(enemy.getEnemyRect())) {
                 for (Rectangle rect : enemy.getRect()) {
@@ -167,11 +163,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-
-    private void revertEnemyIfCollides() {
-
-
-    }
 
     public boolean circleRectCollision(Rectangle rect) {
         double distance = getDistance(rect);
@@ -199,21 +190,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
         // redGhost.setSpeed(0);
 
-    }
-
-
-    /**
-     * checks if the player was moving when colliding with enemy.
-     *
-     * @return
-     */
-    private boolean playerMoving() {
-        for (int i = 0; i < direction.length; i++) {
-            if (direction[i] == 1) {
-                return true;
-            }
-        }
-        return false;
     }
 
 
@@ -302,12 +278,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void switchDirection(int index) {
-        for (int i = 0; i < direction.length; i++) {
+        for (int i = 0; i < player.getDirectionArray().length; i++) {
             if (i == index) {
-                direction[index] = 1;
+                player.getDirectionArray()[index] = 1;
                 continue;
             }
-            direction[i] = 0;
+            player.getDirectionArray()[i] = 0;
         }
     }
 
@@ -335,11 +311,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
-    }
-
-
-    public static byte[] getDirection() {
-        return direction;
     }
 
 

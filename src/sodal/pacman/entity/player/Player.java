@@ -21,6 +21,8 @@ public class Player extends Entity {
     private Rectangle rect;
     private ThePanel panel;
 
+    private byte[] direction;
+
     //images
 
     private BufferedImage image;
@@ -29,6 +31,8 @@ public class Player extends Entity {
     private BufferedImage[] down = new BufferedImage[3];
 
     private BufferedImage[] left = new BufferedImage[3];
+
+    private BufferedImage[] right = new BufferedImage[3];
 
     //animation
 
@@ -43,6 +47,9 @@ public class Player extends Entity {
         this.radius = radius;
         this.panel = panel;
 
+        //player direction
+        direction = new byte[4];
+
         rect = new Rectangle(xCenter - radius, yCenter - radius, this.radius * 2, this.radius * 2);
 
 
@@ -50,6 +57,7 @@ public class Player extends Entity {
         createUpBuffer();
         createDownBuffer();
         createLeftBuffer();
+        createRightBuffer();
 
         this.image = pacman;
 
@@ -59,13 +67,21 @@ public class Player extends Entity {
 
     private void createUpBuffer() {
         try {
-
-
             up[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
             up[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
             up[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
+    private void createRightBuffer() {
+        try {
+            right[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right1.png"));
+            right[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right2.png"));
+            right[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right3.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,17 +91,12 @@ public class Player extends Entity {
 
     private void createLeftBuffer() {
         try {
-
-
             left[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left1.png"));
             left[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left2.png"));
             left[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left3.png"));
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -191,7 +202,7 @@ public class Player extends Entity {
 
     }
 
-    private void  leftAnimation() {
+    private void leftAnimation() {
 
         if (counterLeft >= 0 && counterLeft <= 10) {
             this.image = left[0];
@@ -216,10 +227,33 @@ public class Player extends Entity {
         if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
             this.xCenter += speed;
         }
+
+        rightAnimation();
+    }
+
+
+    private void rightAnimation() {
+        if (counterRight >= 0 && counterRight <= 10) {
+            this.image = right[0];
+            counterRight++;
+            return;
+
+        } else if (counterRight > 10 && counterRight <= 20) {
+            this.image = right[1];
+            counterRight++;
+            return;
+
+        } else if (counterRight > 20 && counterRight <= 30) {
+            this.image = right[2];
+            counterRight++;
+            return;
+        }
+        counterRight = 0;
+
     }
 
     private void move() {
-        byte[] dir = ThePanel.getDirection();
+        byte[] dir = this.direction;
         if (dir[0] == 1) {
             moveUp(speed);
         } else if (dir[1] == 1) {
@@ -235,7 +269,7 @@ public class Player extends Entity {
 
     public void moveInOppositeDirection() {
         BufferedImage temp = this.image;
-        byte dir[] = ThePanel.getDirection();
+        byte dir[] = this.direction;
         // System.out.println("dir: " + Arrays.toString(dir));
         if (dir[0] == 1) {
             moveDown(1);
@@ -293,6 +327,12 @@ public class Player extends Entity {
         this.yCenter = yCenter;
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
     }
+
+    public byte[] getDirectionArray() {
+        return direction;
+    }
+
+
 
 
 }
