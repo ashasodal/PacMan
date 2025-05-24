@@ -238,7 +238,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     private void grid(Graphics2D g2) {
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.gray);
         int x = 0;
         int y = 0;
         for (int i = 0; i < this.numOfTilesHeight; i++) {
@@ -262,24 +262,36 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
 
-        g2.setColor(Color.BLACK);
+
         g2.fillRect(0,0,WIDTH,HEIGHT);
-        renderWorld(g2);
+        //grid(g2);
+
         player.render(g2);
         for (Enemy enemy : enemies) {
             enemy.render(g2);
         }
         scoreBoard.render(g2);
-      //  grid(g2);
+        renderWorld(g2);
+
 
         //draw over the lines in world
-        g2.setColor(Color.black);
+        g2.setColor(Color.BLACK);
         //L
         g2.drawLine(TILE_SIZE, 12 * TILE_SIZE +1 , TILE_SIZE    , 13*TILE_SIZE -1);
 
         //house
         g2.drawLine(21 * TILE_SIZE +1, 13 * TILE_SIZE,22 * TILE_SIZE -1, 13 * TILE_SIZE);
         g2.drawLine(23 * TILE_SIZE +1, 13 * TILE_SIZE,24 * TILE_SIZE -1, 13 * TILE_SIZE);
+
+        //cross
+        //left
+        g2.drawLine(12 * TILE_SIZE, 7 * TILE_SIZE +1,12 * TILE_SIZE,8 * TILE_SIZE -1 );
+        //top
+        g2.drawLine(12 * TILE_SIZE +1, 7 * TILE_SIZE ,13 * TILE_SIZE -1,7 * TILE_SIZE  );
+        //right
+        g2.drawLine(13 * TILE_SIZE, 7 * TILE_SIZE +1,13 * TILE_SIZE, 8 * TILE_SIZE -1 );
+        //bottom
+        g2.drawLine(12 * TILE_SIZE +1, 8 * TILE_SIZE, 13*TILE_SIZE -1, 8*TILE_SIZE);
 
 
         g2.dispose();
