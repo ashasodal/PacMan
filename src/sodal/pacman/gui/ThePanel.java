@@ -136,7 +136,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
             //put player in house
             player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
-            //hfhfhhfhf player.g
+            //direction = [0,0,0,0]
+            player.resetDirectionArray();
+            player.setPacManImage();
             //put enemies in initial position
             for (Enemy enemy : enemies) {
                 enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
@@ -314,9 +316,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-  /*  public static Enemy getRedGhost() {
-        return redGhost;
-    }*/
+
 
     //game loop.
     @Override

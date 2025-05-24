@@ -333,6 +333,16 @@ public class Player extends Entity {
     }
 
 
+    public void resetDirectionArray() {
+        Arrays.fill(direction, (byte) 0);
+    }
+
+
+    public void setPacManImage() {
+        this.image = pacman;
+    }
+
+
 
 
 }
