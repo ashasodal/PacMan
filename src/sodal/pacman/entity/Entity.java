@@ -15,17 +15,17 @@ public abstract class Entity {
 
     protected int width, height;
 
-    protected BufferedImage image;
 
 
 
 
-    public Entity(int width, int height, int speed, String path) {
+
+    public Entity(int width, int height, int speed) {
 
         this.speed = speed;
         this.width = width;
         this.height = height;
-        createBuffer(path);
+
 
 
        // test();
@@ -34,15 +34,7 @@ public abstract class Entity {
     }
 
 
-    private void createBuffer(String path) {
-        try {
-            image = ImageIO.read(new File(path));
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
@@ -62,21 +54,7 @@ public abstract class Entity {
         return height;
     }
 
-    public void test() {
-        Color c = new Color(100, 55, 6);
-        int newColor = c.getRGB();
 
-        for (int i = 0; i < image.getHeight(); i++) {
-            for (int j = 0; j < image.getWidth(); j++) {
-                int rgb = image.getRGB(j, i);
-                int alpha = (rgb >> 24) & 0xFF;
-
-                if (alpha == 0) {
-                    image.setRGB(j, i, newColor);
-                }
-            }
-        }
-    }
 
 
     public void setSpeed(int speed) {

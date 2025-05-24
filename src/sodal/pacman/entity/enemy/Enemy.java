@@ -3,7 +3,11 @@ package sodal.pacman.entity.enemy;
 import sodal.pacman.entity.Entity;
 import sodal.pacman.gui.ThePanel;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class Enemy extends Entity {
@@ -23,8 +27,10 @@ public class Enemy extends Entity {
 
     private String initialDir;
 
+    private BufferedImage image;
+
     public Enemy(int x, int y, int width, int height, int speed, String path, String dir, int delay) {
-        super(width, height, speed, path);
+        super(width, height, speed);
         this.x = x;
         this.y = y;
         this.initialX = x;
@@ -40,20 +46,30 @@ public class Enemy extends Entity {
         rand = new Random();
         initialDirection();
         enemyRect = new Rectangle(x, y, width, height);
+
+        createBuffer(path);
+
+
+    }
+
+    private void createBuffer(String path) {
+        try {
+            this.image = ImageIO.read(new File(path));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initialDirection() {
         resetDir();
-        if(initialDir.equals("up")) {
+        if (initialDir.equals("up")) {
             direction[0] = 1;
-        }
-        else if(initialDir.equals("down")) {
+        } else if (initialDir.equals("down")) {
             direction[1] = 1;
-        }
-        else if(initialDir.equals("left")) {
+        } else if (initialDir.equals("left")) {
             direction[2] = 1;
-        }
-        else if(initialDir.equals("right")) {
+        } else if (initialDir.equals("right")) {
             direction[3] = 1;
         }
     }
@@ -185,8 +201,8 @@ public class Enemy extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-         // g2.setColor(new Color(123,56,88));
-         // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
+        // g2.setColor(new Color(123,56,88));
+        // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
         //this.paintRect(g2);
     }
