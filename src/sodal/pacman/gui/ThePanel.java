@@ -15,127 +15,108 @@ import java.sql.SQLOutput;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
+    // SETTINGS / CONFIGURATION
     private static final int TILE_SIZE = 30;
-
-    private static final int numOfTilesWidth = 25;
-    private static final int numOfTilesHeight = 15;
-    private static final int WIDTH = numOfTilesWidth * TILE_SIZE;
-    private static final int HEIGHT = numOfTilesHeight * TILE_SIZE;
-
-
-    //entities
-
-    //red ghost
-    // private static Enemy redGhost;
-    private Enemy[] enemies = new Enemy[4];
-
-    //player
-    private static Player player;
+    private static final int NUM_TILES_WIDTH = 25;
+    private static final int NUM_TILES_HEIGHT = 15;
+    private static final int WIDTH = NUM_TILES_WIDTH * TILE_SIZE;
+    private static final int HEIGHT = NUM_TILES_HEIGHT * TILE_SIZE;
 
 
+    // GAME STATE FLAGS
+    private static boolean isRunning = false;
+    private boolean gameOver = false;
+    private boolean restart = false;
+    private boolean drawGameOver = false;
     private volatile boolean playerEnemyCollision = false;
 
-    //gameLoop
-    private static boolean isRunning;
+
+    // TIMERS / DELAYS
+    private final long RESPAWN_DELAY_MS = 2000;
+    private final long GAME_OVER_DELAY_MS = 3000;
+    private long collisionTimeStamp = 0;
+    private long gameOverTimeStamp = -1;
+
+
+    // CORE ENTITIES
+    private static Player player;
+    private Enemy[] enemies = new Enemy[4];
+    private static Rectangle[] world = new Rectangle[8];
+
+
+    // GAME LOOP
     private int FPS = 60;
     private Thread gameLoop;
 
 
-    //collision
-    private long RESPAWN_DELAY_MS = 2000; // in ms
-
-    private long collisionTimeStamp = 0;
-
-    private static Rectangle[] world = new Rectangle[8];
-
-
-    //scoreBoard
-    private ScoreBoard scoreBoard;
-
-
-    private boolean restart = false;
-
-
-    //gameover
+    // UI COMPONENTS / GRAPHICS
     private BufferedImage gameOverBuffer;
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
-
-    private boolean gameOver = false;
-
-    private final long GAME_OVER_DELAY_MS = 3000;
-    private long gameOverTimeStamp = -1;
-
     private Rectangle buttonRect;
 
 
-    private boolean drawGameOver = false;
+    // SCORE / UI ELEMENTS
+    private ScoreBoard scoreBoard;
 
 
     public ThePanel() {
-        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        this.setOpaque(true);
-        this.setDoubleBuffered(true);
-        this.setLayout(null);
-        //entities
+        setupPanel();
+        setUpEnemies();
+        setUpPlayer();
+        setUpScoreBoard();
+        setUpBuffer();
+        setUpWorldRectangles();
+        //movable rect when player dead
+        setUpButtonRect();
+        setUpGameLoop();
+    }
+
+
+    private void setUpGameLoop() {
+        //game loop
+        gameLoop = new Thread(this);
+        // gameLoop.start();
+    }
+
+    private void setUpButtonRect() {
+        buttonRect = new Rectangle(TILE_SIZE * 11, TILE_SIZE * 6, 3 * TILE_SIZE, TILE_SIZE);
+    }
+
+    private void setUpBuffer() {
+        this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
+        this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
+        this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
+    }
+
+    private void setUpScoreBoard() {
+        scoreBoard = new ScoreBoard(player);
+    }
+
+    private void setUpPlayer() {
         int radius = TILE_SIZE / 2;
         player = new Player(TILE_SIZE * 22 + radius, TILE_SIZE * 12 + radius, radius, 3, this);
-        scoreBoard = new ScoreBoard(player);
-        //lister
-        this.addKeyListener(this);
-        this.setFocusable(true);
-        this.requestFocusInWindow();
+    }
 
-
+    private void setUpEnemies() {
         //enemies
         enemies[0] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
         enemies[1] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
         enemies[2] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
         enemies[3] = new Enemy(TILE_SIZE * 20, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
+    }
 
+    private void setupPanel() {
 
-        //worldRectangles
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setOpaque(true);
+        this.setDoubleBuffered(true);
+        this.setLayout(null);
+        //lister
+        this.addKeyListener(this);
+        this.setFocusable(true);
+        this.requestFocusInWindow();
 
-        //cross
-        Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
-        Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
-
-        //pacman house
-        Rectangle rect3 = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
-        Rectangle rect4 = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        Rectangle rect5 = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-
-        //shield
-        Rectangle rect6 = new Rectangle(TILE_SIZE, 2 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE);
-
-
-        //L
-
-        Rectangle rect7 = new Rectangle(0, 7 * TILE_SIZE, TILE_SIZE, 6 * TILE_SIZE);
-        Rectangle rect8 = new Rectangle(TILE_SIZE, 12 * TILE_SIZE, 10 * TILE_SIZE, TILE_SIZE);
-
-
-        world[0] = rect1;
-        world[1] = rect2;
-        world[2] = rect3;
-        world[3] = rect4;
-        world[4] = rect5;
-        world[5] = rect6;
-        world[6] = rect7;
-        world[7] = rect8;
-
-
-        this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
-        this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
-        this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
-
-
-        buttonRect = new Rectangle(TILE_SIZE * 11, TILE_SIZE * 6, 3 * TILE_SIZE, TILE_SIZE);
-
-
-        //game loop
-        gameLoop = new Thread(this);
-        gameLoop.start();
     }
 
 
@@ -356,8 +337,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         g2.setColor(Color.gray);
         int x = 0;
         int y = 0;
-        for (int i = 0; i < this.numOfTilesHeight; i++) {
-            for (int j = 0; j < this.numOfTilesWidth; j++) {
+        for (int i = 0; i < NUM_TILES_HEIGHT; i++) {
+            for (int j = 0; j < NUM_TILES_WIDTH; j++) {
                 g2.drawRect(x, y, TILE_SIZE, TILE_SIZE);
                 x += TILE_SIZE;
             }
@@ -459,14 +440,16 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         if (!gameOver) {
-            if (k == KeyEvent.VK_UP) {
-                switchDirection(0);
-            } else if (k == KeyEvent.VK_DOWN) {
-                switchDirection(1);
-            } else if (k == KeyEvent.VK_LEFT) {
-                switchDirection(2);
-            } else if (k == KeyEvent.VK_RIGHT) {
-                switchDirection(3);
+            if (!playerEnemyCollision) {
+                if (k == KeyEvent.VK_UP) {
+                    switchDirection(0);
+                } else if (k == KeyEvent.VK_DOWN) {
+                    switchDirection(1);
+                } else if (k == KeyEvent.VK_LEFT) {
+                    switchDirection(2);
+                } else if (k == KeyEvent.VK_RIGHT) {
+                    switchDirection(3);
+                }
             }
         } else {
             if (k == KeyEvent.VK_UP) {
@@ -539,5 +522,31 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public static Rectangle[] getWorld() {
         return world;
     }
+
+    private void setUpWorldRectangles() {
+        //worldRectangles
+        //cross
+        Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
+        Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
+        //pacman house
+        Rectangle rect3 = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        Rectangle rect4 = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        Rectangle rect5 = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        //shield
+        Rectangle rect6 = new Rectangle(TILE_SIZE, 2 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE);
+        //L
+        Rectangle rect7 = new Rectangle(0, 7 * TILE_SIZE, TILE_SIZE, 6 * TILE_SIZE);
+        Rectangle rect8 = new Rectangle(TILE_SIZE, 12 * TILE_SIZE, 10 * TILE_SIZE, TILE_SIZE);
+
+        world[0] = rect1;
+        world[1] = rect2;
+        world[2] = rect3;
+        world[3] = rect4;
+        world[4] = rect5;
+        world[5] = rect6;
+        world[6] = rect7;
+        world[7] = rect8;
+    }
+
 
 }

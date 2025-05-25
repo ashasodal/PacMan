@@ -14,8 +14,9 @@ public class TheFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        //start game
+        panel.getGameLoop().start();
 
-        System.out.println(Math.pow(10.5,2));
 
     }
 }
