@@ -440,32 +440,41 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         if (!gameOver) {
-            if (!playerEnemyCollision) {
-                if (k == KeyEvent.VK_UP) {
-                    switchDirection(0);
-                } else if (k == KeyEvent.VK_DOWN) {
-                    switchDirection(1);
-                } else if (k == KeyEvent.VK_LEFT) {
-                    switchDirection(2);
-                } else if (k == KeyEvent.VK_RIGHT) {
-                    switchDirection(3);
-                }
-            }
+            handleGameInput(k);
         } else {
-            if (k == KeyEvent.VK_UP) {
-                System.out.println("up!!!");
-                buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 6);
-            } else if (k == KeyEvent.VK_DOWN) {
-                System.out.println("down!!!!");
-                buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 8);
-            } else if (k == KeyEvent.VK_ENTER) {
-                //replay game (buttonRect same pos as playButton).
-                if (buttonRect.getY() == TILE_SIZE * 6) {
-                    restart = true;
-                }
-            }
+            handleGameOverInput(k);
         }
 
+    }
+
+
+    private void handleGameOverInput(int k) {
+        if (k == KeyEvent.VK_UP) {
+            System.out.println("up!!!");
+            buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 6);
+        } else if (k == KeyEvent.VK_DOWN) {
+            System.out.println("down!!!!");
+            buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 8);
+        } else if (k == KeyEvent.VK_ENTER) {
+            //replay game (buttonRect same pos as playButton).
+            if (buttonRect.getY() == TILE_SIZE * 6) {
+                restart = true;
+            }
+        }
+    }
+
+    private void handleGameInput(int k) {
+        if (!playerEnemyCollision) {
+            if (k == KeyEvent.VK_UP) {
+                switchDirection(0);
+            } else if (k == KeyEvent.VK_DOWN) {
+                switchDirection(1);
+            } else if (k == KeyEvent.VK_LEFT) {
+                switchDirection(2);
+            } else if (k == KeyEvent.VK_RIGHT) {
+                switchDirection(3);
+            }
+        }
     }
 
 
