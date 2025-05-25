@@ -42,6 +42,7 @@ public class Player extends Entity {
     private int counterUp, counterDown, counterLeft, counterRight;
 
     private int deadCounter = 0;
+    private int playerDeadDelay = 10;
 
 
     public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
@@ -367,6 +368,10 @@ public class Player extends Entity {
 
     public void resetDeadCounter() {
         this.deadCounter = 0;
+    }
+
+    public int getPlayerDeadDelay() {
+        return playerDeadDelay;
     }
 
 

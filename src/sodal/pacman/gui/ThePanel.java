@@ -188,57 +188,14 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void deadAnimation() {
-
-        if(player.getDeadCounter() >= 0 && player.getDeadCounter() <= 10) {
-            player.setImage(player.getDeadBuffer()[0]);
-            player.incrementDeadCounter();
+        int delay = player.getPlayerDeadDelay();
+        for(int i = 0; i < player.getDeadBuffer().length; i++) {
+            if(player.getDeadCounter() >= i * delay  && player.getDeadCounter() < (i+1)*delay ) {
+                player.setImage(player.getDeadBuffer()[i]);
+                player.incrementDeadCounter();
+                return;
+            }
         }
-        else if(player.getDeadCounter() > 10 && player.getDeadCounter() <= 20) {
-            player.setImage(player.getDeadBuffer()[1]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 20 && player.getDeadCounter() <= 30) {
-            player.setImage(player.getDeadBuffer()[2]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 30 && player.getDeadCounter() <= 40) {
-            player.setImage(player.getDeadBuffer()[3]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 40 && player.getDeadCounter() <= 50) {
-            player.setImage(player.getDeadBuffer()[4]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 50 && player.getDeadCounter() <= 60) {
-            player.setImage(player.getDeadBuffer()[5]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 60 && player.getDeadCounter() <= 70) {
-            player.setImage(player.getDeadBuffer()[6]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 70 && player.getDeadCounter() <= 80) {
-            player.setImage(player.getDeadBuffer()[7]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 80 && player.getDeadCounter() <= 90) {
-            player.setImage(player.getDeadBuffer()[8]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 90 && player.getDeadCounter() <= 100) {
-            player.setImage(player.getDeadBuffer()[9]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 100 && player.getDeadCounter() <= 110) {
-            player.setImage(player.getDeadBuffer()[10]);
-            player.incrementDeadCounter();
-        }
-        else if(player.getDeadCounter() > 110 && player.getDeadCounter() <= 120) {
-            player.setImage(player.getDeadBuffer()[11]);
-            player.incrementDeadCounter();
-        }
-
-
     }
 
     public void gameOver() {
