@@ -112,6 +112,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         this.setLayout(null);
+        this.setDoubleBuffered(true);
         //lister
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -377,6 +378,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
         renderBackground(g2);
+
         renderGrid(g2);
         player.render(g2);
         renderEnemies(g2);
