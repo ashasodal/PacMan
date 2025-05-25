@@ -11,7 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
+
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -333,7 +333,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    private void grid(Graphics2D g2) {
+    private void renderGrid(Graphics2D g2) {
         g2.setColor(Color.gray);
         int x = 0;
         int y = 0;
@@ -357,30 +357,39 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         //paint
-
-
-        g2.fillRect(0, 0, WIDTH, HEIGHT);
-        grid(g2);
-
+        renderBackground(g2);
+        renderGrid(g2);
         player.render(g2);
+        renderEnemies(g2);
+        scoreBoard.render(g2);
+        renderWorld(g2);
+        //gameOver = true
+        //wait for GAME_OVER_DELAY_MS until displaying gameover state
+        if (drawGameOver) {
+            renderGameOver(g2);
+        }
+        g2.dispose();
+    }
+
+
+    private void renderBackground(Graphics2D g2) {
+        g2.fillRect(0, 0, WIDTH, HEIGHT);
+    }
+
+    private void renderEnemies(Graphics2D g2) {
         for (Enemy enemy : enemies) {
             enemy.render(g2);
         }
-        scoreBoard.render(g2);
-        renderWorld(g2);
+    }
 
-        //wait for GAME_OVER_DELAY_MS until displaying gameover state
-        if (drawGameOver) {
-            g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
-            g2.fillRect(0, 0, WIDTH, HEIGHT);
-            g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
-            g2.drawImage(playBuffer, TILE_SIZE * 11, TILE_SIZE * 6, null);
-            g2.drawImage(menuBuffer, TILE_SIZE * 11, TILE_SIZE * 8, null);
-            g2.setColor(Color.green);
-            g2.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);
-        }
-
-        g2.dispose();
+    private void renderGameOver(Graphics2D g2) {
+        g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
+        g2.fillRect(0, 0, WIDTH, HEIGHT);
+        g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
+        g2.drawImage(playBuffer, TILE_SIZE * 11, TILE_SIZE * 6, null);
+        g2.drawImage(menuBuffer, TILE_SIZE * 11, TILE_SIZE * 8, null);
+        g2.setColor(Color.green);
+        g2.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);
     }
 
 
@@ -389,11 +398,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
-
         //cover some part of the world
         renderLines(g2);
     }
 
+    //cover some part of the world
     private void renderLines(Graphics2D g2) {
         //draw over the lines in world
         g2.setColor(Color.BLACK);
@@ -535,26 +544,17 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void setUpWorldRectangles() {
         //worldRectangles
         //cross
-        Rectangle rect1 = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
-        Rectangle rect2 = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
+        world[0] = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
+        world[1] = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
         //pacman house
-        Rectangle rect3 = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
-        Rectangle rect4 = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        Rectangle rect5 = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        world[2] = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        world[3] = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        world[4] = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         //shield
-        Rectangle rect6 = new Rectangle(TILE_SIZE, 2 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE);
+        world[5] = new Rectangle(TILE_SIZE, 2 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE);
         //L
-        Rectangle rect7 = new Rectangle(0, 7 * TILE_SIZE, TILE_SIZE, 6 * TILE_SIZE);
-        Rectangle rect8 = new Rectangle(TILE_SIZE, 12 * TILE_SIZE, 10 * TILE_SIZE, TILE_SIZE);
-
-        world[0] = rect1;
-        world[1] = rect2;
-        world[2] = rect3;
-        world[3] = rect4;
-        world[4] = rect5;
-        world[5] = rect6;
-        world[6] = rect7;
-        world[7] = rect8;
+        world[6] = new Rectangle(0, 7 * TILE_SIZE, TILE_SIZE, 6 * TILE_SIZE);
+        world[7] = new Rectangle(TILE_SIZE, 12 * TILE_SIZE, 10 * TILE_SIZE, TILE_SIZE);
     }
 
 
