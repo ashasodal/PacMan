@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -52,6 +53,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private ScoreBoard scoreBoard;
 
 
+    private boolean restart = false;
+
+
     //gameover
     private BufferedImage gameOverBuffer;
     private BufferedImage playBuffer;
@@ -63,6 +67,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private long gameOverTimeStamp = -1;
 
     private Rectangle buttonRect;
+
+
+    private boolean drawGameOver = false;
 
 
     public ThePanel() {
@@ -123,7 +130,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
 
 
-        buttonRect = new Rectangle(TILE_SIZE * 11, TILE_SIZE * 6,3*TILE_SIZE,TILE_SIZE);
+        buttonRect = new Rectangle(TILE_SIZE * 11, TILE_SIZE * 6, 3 * TILE_SIZE, TILE_SIZE);
 
 
         //game loop
@@ -134,13 +141,27 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void update() {
         //due to backtracking, PLAYER SHOULD UPDATE FIRST
-        if (!playerEnemyCollision) {
+        if (!gameOver) {
             for (Enemy enemy : enemies) {
                 enemy.update();
             }
             player.update();
+            checkCollision();
+        } else {
+            //  GAME_OVER_DELAY_MS delay before gameover state is displayed on screen.
+            if (System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
+                drawGameOver = true;
+            }
+            if (restart) {
+                restart();
+            }
         }
-        checkCollision();
+
+    }
+
+
+    private void restart() {
+        System.out.println("restart");
     }
 
 
@@ -153,7 +174,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             return;
         }
         handlePlayerEnemyCollision();
-
     }
 
     public void checkPlayerEnemyCollision() {
@@ -164,6 +184,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                     if (circleRectCollision(rect)) {
                         playerEnemyCollision = true;
                         player.decrementHealth();
+                        stopPlayerEnemiesMovement();
+                        player.resetDirectionArray();
                         collisionTimeStamp = System.currentTimeMillis();
                         handlePlayerEnemyCollision();
                         return;
@@ -183,8 +205,36 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
+    private void stopPlayerEnemiesMovement() {
+        player.setSpeed(0);
+        for (Enemy enemy : enemies) {
+            enemy.setSpeed(0);
+        }
+    }
+
+    public void gameOver() {
+        if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
+            //make enemies invisible
+            for (Enemy enemy : enemies) {
+                enemy.setSize(0, 0);
+            }
+            deadAnimation();
+            //animation done
+            if (player.getDeadCounter() == 120) {
+                player.setSize(0, 0);
+                //display gameover
+                gameOver = true;
+                gameOverTimeStamp = System.currentTimeMillis();
+            }
+        }
+    }
+
     private void collisionDelay() {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
+            //make enemies invisible
+            for (Enemy enemy : enemies) {
+                enemy.setSize(0, 0);
+            }
             //dead animation
             deadAnimation();
             //animation has finished
@@ -199,15 +249,18 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
         //direction = [0,0,0,0]
         player.resetDirectionArray();
+        player.resetDeadCounter();
         player.setPacManImage();
+        player.setSpeed(3);
         //put enemies in initial position
         for (Enemy enemy : enemies) {
+            enemy.setSize(TILE_SIZE, TILE_SIZE);
             enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
             enemy.setCounterToZero();
             enemy.initialDirection();
+            enemy.setSpeed(1);
         }
         playerEnemyCollision = false;
-        player.resetDeadCounter();
     }
 
     private void deadAnimation() {
@@ -221,30 +274,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 System.out.println("playerDeadCounter incremented: " + player.getDeadCounter());
                 System.out.println("-------");
                 return;
-            }
-        }
-    }
-
-    public void gameOver() {
-
-        if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
-            //make enemies invisible
-            for (Enemy enemy : enemies) {
-                enemy.setSize(0, 0);
-                enemy.setSpeed(0);
-            }
-            deadAnimation();
-            //animation done
-            if (player.getDeadCounter() == 120) {
-                player.resetDirectionArray();
-                // this.setFocusable(false);
-                player.setSpeed(0);
-                //display gameover
-                gameOver = true;
-                if (gameOverTimeStamp == -1) {
-                    gameOverTimeStamp = System.currentTimeMillis();
-                }
-
             }
         }
     }
@@ -360,16 +389,15 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         renderWorld(g2);
 
         //wait for GAME_OVER_DELAY_MS until displaying gameover state
-        if (gameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
+        if (drawGameOver) {
             g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
             g2.fillRect(0, 0, WIDTH, HEIGHT);
             g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
             g2.drawImage(playBuffer, TILE_SIZE * 11, TILE_SIZE * 6, null);
             g2.drawImage(menuBuffer, TILE_SIZE * 11, TILE_SIZE * 8, null);
             g2.setColor(Color.green);
-            g2.drawRect(buttonRect.x,buttonRect.y,buttonRect.width,buttonRect.height);
+            g2.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);
         }
-
 
         g2.dispose();
     }
@@ -440,16 +468,18 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             } else if (k == KeyEvent.VK_RIGHT) {
                 switchDirection(3);
             }
-        }
-
-        else {
+        } else {
             if (k == KeyEvent.VK_UP) {
                 System.out.println("up!!!");
                 buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 6);
-            }
-            else if (k == KeyEvent.VK_DOWN) {
+            } else if (k == KeyEvent.VK_DOWN) {
                 System.out.println("down!!!!");
                 buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 8);
+            } else if (k == KeyEvent.VK_ENTER) {
+                //replay game (buttonRect same pos as playButton).
+                if (buttonRect.getY() == TILE_SIZE * 6) {
+                    restart = true;
+                }
             }
         }
 

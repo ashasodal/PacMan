@@ -204,7 +204,7 @@ public class Enemy extends Entity {
         // g2.setColor(new Color(123,56,88));
         // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-        //this.paintRect(g2);
+       // this.paintRect(g2);
     }
 
 
@@ -274,14 +274,13 @@ public class Enemy extends Entity {
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
-
-        for(Rectangle r : rect) {
-            r.setSize(0,0);
+        for (Rectangle r : rect) {
+            r.setSize(width, height);
         }
-
-
-        this.enemyRect.setSize(0,0);
-
+        this.enemyRect.setSize(width, height);
     }
 
+    public int getSpeed() {
+        return speed;
+    }
 }

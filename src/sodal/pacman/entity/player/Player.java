@@ -289,8 +289,8 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-        // g2.setColor(Color.magenta);
-        //g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+       // g2.setColor(Color.magenta);
+       // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         //   g2.setColor(color);
         // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
@@ -372,6 +372,19 @@ public class Player extends Entity {
 
     public int getPlayerDeadDelay() {
         return playerDeadDelay;
+    }
+
+
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.rect.setSize(this.width,this.height);
+    }
+
+
+    public int getSpeed() {
+        return speed;
     }
 
 
