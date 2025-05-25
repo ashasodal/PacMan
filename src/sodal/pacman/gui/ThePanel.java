@@ -160,39 +160,41 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void collisionDelay() {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
-
             //dead animation
             deadAnimation();
-
             //animation has finished
-            if(player.getDeadCounter() > 120) {
-
-                //put player in house
-                player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
-                //direction = [0,0,0,0]
-                player.resetDirectionArray();
-                player.setPacManImage();
-                //put enemies in initial position
-                for (Enemy enemy : enemies) {
-                    enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
-                    enemy.setCounterToZero();
-                    enemy.initialDirection();
-                }
-                playerEnemyCollision = false;
-                player.resetDeadCounter();
-
+            if (player.getDeadCounter() == 120) {
+                respawn();
             }
-
-
         }
+    }
+
+    private void respawn() {
+        //put player in house
+        player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
+        //direction = [0,0,0,0]
+        player.resetDirectionArray();
+        player.setPacManImage();
+        //put enemies in initial position
+        for (Enemy enemy : enemies) {
+            enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
+            enemy.setCounterToZero();
+            enemy.initialDirection();
+        }
+        playerEnemyCollision = false;
+        player.resetDeadCounter();
     }
 
     private void deadAnimation() {
         int delay = player.getPlayerDeadDelay();
-        for(int i = 0; i < player.getDeadBuffer().length; i++) {
-            if(player.getDeadCounter() >= i * delay  && player.getDeadCounter() < (i+1)*delay ) {
+        for (int i = 0; i < player.getDeadBuffer().length; i++) {
+            if (player.getDeadCounter() >= i * delay && player.getDeadCounter() < (i + 1) * delay) {
                 player.setImage(player.getDeadBuffer()[i]);
+                System.out.println("-------");
+                System.out.println("playerDeadCounter: " + player.getDeadCounter());
                 player.incrementDeadCounter();
+                System.out.println("playerDeadCounter incremented: " + player.getDeadCounter());
+                System.out.println("-------");
                 return;
             }
         }
@@ -286,7 +288,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //paint
 
 
-        g2.fillRect(0,0,WIDTH,HEIGHT);
+        g2.fillRect(0, 0, WIDTH, HEIGHT);
         //grid(g2);
 
         player.render(g2);
@@ -300,21 +302,21 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //draw over the lines in world
         g2.setColor(Color.BLACK);
         //L
-        g2.drawLine(TILE_SIZE, 12 * TILE_SIZE +1 , TILE_SIZE    , 13*TILE_SIZE -1);
+        g2.drawLine(TILE_SIZE, 12 * TILE_SIZE + 1, TILE_SIZE, 13 * TILE_SIZE - 1);
 
         //house
-        g2.drawLine(21 * TILE_SIZE +1, 13 * TILE_SIZE,22 * TILE_SIZE -1, 13 * TILE_SIZE);
-        g2.drawLine(23 * TILE_SIZE +1, 13 * TILE_SIZE,24 * TILE_SIZE -1, 13 * TILE_SIZE);
+        g2.drawLine(21 * TILE_SIZE + 1, 13 * TILE_SIZE, 22 * TILE_SIZE - 1, 13 * TILE_SIZE);
+        g2.drawLine(23 * TILE_SIZE + 1, 13 * TILE_SIZE, 24 * TILE_SIZE - 1, 13 * TILE_SIZE);
 
         //cross
         //left
-        g2.drawLine(12 * TILE_SIZE, 7 * TILE_SIZE +1,12 * TILE_SIZE,8 * TILE_SIZE -1 );
+        g2.drawLine(12 * TILE_SIZE, 7 * TILE_SIZE + 1, 12 * TILE_SIZE, 8 * TILE_SIZE - 1);
         //top
-        g2.drawLine(12 * TILE_SIZE +1, 7 * TILE_SIZE ,13 * TILE_SIZE -1,7 * TILE_SIZE  );
+        g2.drawLine(12 * TILE_SIZE + 1, 7 * TILE_SIZE, 13 * TILE_SIZE - 1, 7 * TILE_SIZE);
         //right
-        g2.drawLine(13 * TILE_SIZE, 7 * TILE_SIZE +1,13 * TILE_SIZE, 8 * TILE_SIZE -1 );
+        g2.drawLine(13 * TILE_SIZE, 7 * TILE_SIZE + 1, 13 * TILE_SIZE, 8 * TILE_SIZE - 1);
         //bottom
-        g2.drawLine(12 * TILE_SIZE +1, 8 * TILE_SIZE, 13*TILE_SIZE -1, 8*TILE_SIZE);
+        g2.drawLine(12 * TILE_SIZE + 1, 8 * TILE_SIZE, 13 * TILE_SIZE - 1, 8 * TILE_SIZE);
 
 
         g2.dispose();
