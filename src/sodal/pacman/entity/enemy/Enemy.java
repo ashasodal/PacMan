@@ -267,7 +267,7 @@ public class Enemy extends Entity {
     }
 
 
-    public void setCounterToZero() {
+    public void resetCounter() {
         counter = 0;
     }
 

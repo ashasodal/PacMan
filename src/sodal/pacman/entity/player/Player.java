@@ -42,7 +42,7 @@ public class Player extends Entity {
     private int counterUp, counterDown, counterLeft, counterRight;
 
     private int deadCounter = 0;
-    private int playerDeadDelay = 10;
+    private final int playerDeadDelay = 10;
 
 
     public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
@@ -387,6 +387,23 @@ public class Player extends Entity {
         return speed;
     }
 
+
+    public void resetAllCounters() {
+        resetDeadCounter();
+        resetDirCounter();
+    }
+
+
+    public void resetDirCounter() {
+        this.counterUp = 0;
+        this.counterDown = 0;
+        this.counterLeft = 0;
+        this.counterRight = 0;
+    }
+
+    public void resetHealth() {
+        this.health = 3;
+    }
 
 }
 

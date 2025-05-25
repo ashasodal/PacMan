@@ -27,7 +27,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static boolean isRunning = false;
     private boolean gameOver = false;
     private boolean restart = false;
-    private boolean drawGameOver = false;
+    private volatile boolean drawGameOver = false;
     private volatile boolean playerEnemyCollision = false;
 
 
@@ -144,9 +144,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    private void restart() {
 
-    }
 
 
     private void updatePlayerAndEnemies() {
@@ -155,7 +153,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
         player.update();
     }
-
 
 
 
@@ -243,18 +240,27 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
         //direction = [0,0,0,0]
         player.resetDirectionArray();
-        player.resetDeadCounter();
+        player.resetAllCounters();
         player.setPacManImage();
         player.setSpeed(3);
+        player.setSize(TILE_SIZE,TILE_SIZE);
         //put enemies in initial position
         for (Enemy enemy : enemies) {
             enemy.setSize(TILE_SIZE, TILE_SIZE);
             enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
-            enemy.setCounterToZero();
+            enemy.resetCounter();
             enemy.initialDirection();
             enemy.setSpeed(1);
         }
         playerEnemyCollision = false;
+    }
+
+    private void restart() {
+        gameOver = false;
+        respawn();
+        player.resetHealth();
+        drawGameOver = false;
+        restart = false;
     }
 
     private void deadAnimation() {
