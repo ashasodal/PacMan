@@ -35,7 +35,7 @@ public class Player extends Entity {
     private BufferedImage[] right = new BufferedImage[3];
 
 
-    private BufferedImage[] dead = new BufferedImage[11];
+    private BufferedImage[] dead = new BufferedImage[12];
 
     //animation
 
@@ -80,7 +80,7 @@ public class Player extends Entity {
             for (int i = 0; i < dead.length; i++) {
                 dead[i] = ImageIO.read(new File("./res/image/player/dead/dead" + (i + 1) + ".png"));
             }
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -355,6 +355,18 @@ public class Player extends Entity {
 
     public int getDeadCounter() {
         return deadCounter;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public void incrementDeadCounter() {
+        this.deadCounter += 1;
+    }
+
+    public void resetDeadCounter() {
+        this.deadCounter = 0;
     }
 
 

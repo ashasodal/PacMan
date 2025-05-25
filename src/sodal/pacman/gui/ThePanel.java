@@ -164,23 +164,79 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             //dead animation
             deadAnimation();
 
-            //put player in house
-            player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
-            //direction = [0,0,0,0]
-            player.resetDirectionArray();
-            player.setPacManImage();
-            //put enemies in initial position
-            for (Enemy enemy : enemies) {
-                enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
-                enemy.setCounterToZero();
-                enemy.initialDirection();
+            //animation has finished
+            if(player.getDeadCounter() > 120) {
+
+                //put player in house
+                player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
+                //direction = [0,0,0,0]
+                player.resetDirectionArray();
+                player.setPacManImage();
+                //put enemies in initial position
+                for (Enemy enemy : enemies) {
+                    enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
+                    enemy.setCounterToZero();
+                    enemy.initialDirection();
+                }
+                playerEnemyCollision = false;
+                player.resetDeadCounter();
+
             }
-            playerEnemyCollision = false;
+
+
         }
     }
 
     private void deadAnimation() {
 
+        if(player.getDeadCounter() >= 0 && player.getDeadCounter() <= 10) {
+            player.setImage(player.getDeadBuffer()[0]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 10 && player.getDeadCounter() <= 20) {
+            player.setImage(player.getDeadBuffer()[1]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 20 && player.getDeadCounter() <= 30) {
+            player.setImage(player.getDeadBuffer()[2]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 30 && player.getDeadCounter() <= 40) {
+            player.setImage(player.getDeadBuffer()[3]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 40 && player.getDeadCounter() <= 50) {
+            player.setImage(player.getDeadBuffer()[4]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 50 && player.getDeadCounter() <= 60) {
+            player.setImage(player.getDeadBuffer()[5]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 60 && player.getDeadCounter() <= 70) {
+            player.setImage(player.getDeadBuffer()[6]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 70 && player.getDeadCounter() <= 80) {
+            player.setImage(player.getDeadBuffer()[7]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 80 && player.getDeadCounter() <= 90) {
+            player.setImage(player.getDeadBuffer()[8]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 90 && player.getDeadCounter() <= 100) {
+            player.setImage(player.getDeadBuffer()[9]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 100 && player.getDeadCounter() <= 110) {
+            player.setImage(player.getDeadBuffer()[10]);
+            player.incrementDeadCounter();
+        }
+        else if(player.getDeadCounter() > 110 && player.getDeadCounter() <= 120) {
+            player.setImage(player.getDeadBuffer()[11]);
+            player.incrementDeadCounter();
+        }
 
 
     }
