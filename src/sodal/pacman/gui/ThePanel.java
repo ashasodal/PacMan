@@ -37,7 +37,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     //collision
-    private long RESPAWN_DELAY_MS = 70; // in ms
+    private long RESPAWN_DELAY_MS = 3000; // in ms
 
     private long collisionTimeStamp = -1;
 
@@ -160,6 +160,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void collisionDelay() {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
+
+            //dead animation
+            deadAnimation();
+
             //put player in house
             player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
             //direction = [0,0,0,0]
@@ -173,6 +177,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             playerEnemyCollision = false;
         }
+    }
+
+    private void deadAnimation() {
+
+
+
     }
 
     public void gameOver() {

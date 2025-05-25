@@ -34,9 +34,14 @@ public class Player extends Entity {
 
     private BufferedImage[] right = new BufferedImage[3];
 
+
+    private BufferedImage[] dead = new BufferedImage[11];
+
     //animation
 
     private int counterUp, counterDown, counterLeft, counterRight;
+
+    private int deadCounter = 0;
 
 
     public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
@@ -65,21 +70,17 @@ public class Player extends Entity {
 
             this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
 
-            up[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up1.png"));
-            up[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up2.png"));
-            up[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up3.png"));
+            for (int i = 0; i < 3; i++) {
+                up[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up" + (i + 1) + ".png"));
+                down[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down" + (i + 1) + ".png"));
+                left[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left" + (i + 1) + ".png"));
+                right[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right" + (i + 1) + ".png"));
+            }
 
-            down[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down1.png"));
-            down[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down2.png"));
-            down[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down3.png"));
-
-            left[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left1.png"));
-            left[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left2.png"));
-            left[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left3.png"));
-
-            right[0] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right1.png"));
-            right[1] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right2.png"));
-            right[2] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right3.png"));
+            for (int i = 0; i < dead.length; i++) {
+                dead[i] = ImageIO.read(new File("./res/image/player/dead/dead" + (i + 1) + ".png"));
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -345,6 +346,15 @@ public class Player extends Entity {
 
     public BufferedImage[] getLeftBuffer() {
         return left;
+    }
+
+
+    public BufferedImage[] getDeadBuffer() {
+        return dead;
+    }
+
+    public int getDeadCounter() {
+        return deadCounter;
     }
 
 
