@@ -62,7 +62,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private final long GAME_OVER_DELAY_MS = 3000;
     private long gameOverTimeStamp = -1;
 
-
+    private Rectangle buttonRect;
 
 
     public ThePanel() {
@@ -118,9 +118,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         world[7] = rect8;
 
 
-       this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
-       this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
+        this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
+        this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
         this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
+
+
+        buttonRect = new Rectangle(TILE_SIZE * 11, TILE_SIZE * 6,3*TILE_SIZE,TILE_SIZE);
 
 
         //game loop
@@ -234,11 +237,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             //animation done
             if (player.getDeadCounter() == 120) {
                 player.resetDirectionArray();
-                this.setFocusable(false);
+                // this.setFocusable(false);
                 player.setSpeed(0);
                 //display gameover
                 gameOver = true;
-                if(gameOverTimeStamp == -1) {
+                if (gameOverTimeStamp == -1) {
                     gameOverTimeStamp = System.currentTimeMillis();
                 }
 
@@ -357,12 +360,14 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         renderWorld(g2);
 
         //wait for GAME_OVER_DELAY_MS until displaying gameover state
-        if (gameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS ) {
+        if (gameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
             g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
             g2.fillRect(0, 0, WIDTH, HEIGHT);
             g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
-            g2.drawImage(playBuffer,TILE_SIZE * 11, TILE_SIZE* 6, null);
-            g2.drawImage(menuBuffer,TILE_SIZE * 11, TILE_SIZE* 8, null);
+            g2.drawImage(playBuffer, TILE_SIZE * 11, TILE_SIZE * 6, null);
+            g2.drawImage(menuBuffer, TILE_SIZE * 11, TILE_SIZE * 8, null);
+            g2.setColor(Color.green);
+            g2.drawRect(buttonRect.x,buttonRect.y,buttonRect.width,buttonRect.height);
         }
 
 
@@ -425,15 +430,29 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
-        if (k == KeyEvent.VK_UP) {
-            switchDirection(0);
-        } else if (k == KeyEvent.VK_DOWN) {
-            switchDirection(1);
-        } else if (k == KeyEvent.VK_LEFT) {
-            switchDirection(2);
-        } else if (k == KeyEvent.VK_RIGHT) {
-            switchDirection(3);
+        if (!gameOver) {
+            if (k == KeyEvent.VK_UP) {
+                switchDirection(0);
+            } else if (k == KeyEvent.VK_DOWN) {
+                switchDirection(1);
+            } else if (k == KeyEvent.VK_LEFT) {
+                switchDirection(2);
+            } else if (k == KeyEvent.VK_RIGHT) {
+                switchDirection(3);
+            }
         }
+
+        else {
+            if (k == KeyEvent.VK_UP) {
+                System.out.println("up!!!");
+                buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 6);
+            }
+            else if (k == KeyEvent.VK_DOWN) {
+                System.out.println("down!!!!");
+                buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 8);
+            }
+        }
+
     }
 
 
