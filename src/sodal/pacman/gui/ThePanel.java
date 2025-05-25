@@ -121,29 +121,42 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     private void update() {
-        //due to backtracking, PLAYER SHOULD UPDATE FIRST
         if (!gameOver) {
-            for (Enemy enemy : enemies) {
-                enemy.update();
-            }
-            player.update();
+            updatePlayerAndEnemies();
             checkCollision();
         } else {
-            //  GAME_OVER_DELAY_MS delay before gameover state is displayed on screen.
-            if (System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
-                drawGameOver = true;
-            }
-            if (restart) {
-                restart();
-            }
+            handleGameOverDelay();
+            handleRestart();
         }
-
     }
 
+    private void handleGameOverDelay() {
+        //  GAME_OVER_DELAY_MS delay before gameover state is displayed on screen.
+        if (!drawGameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
+            drawGameOver = true;
+        }
+    }
+
+    private void handleRestart() {
+        //delay game over time has passed
+        if(drawGameOver && restart) {
+            restart();
+        }
+    }
 
     private void restart() {
-        System.out.println("restart");
+
     }
+
+
+    private void updatePlayerAndEnemies() {
+        for (Enemy enemy : enemies) {
+            enemy.update();
+        }
+        player.update();
+    }
+
+
 
 
     /**
@@ -468,6 +481,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             //replay game (buttonRect same pos as playButton).
             if (buttonRect.getY() == TILE_SIZE * 6) {
                 restart = true;
+                System.out.println("enter");
             }
         }
     }
