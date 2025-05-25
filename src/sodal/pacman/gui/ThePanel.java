@@ -202,14 +202,20 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     public void gameOver() {
 
-        //freeze game
-        player.resetDirectionArray();
-        this.setFocusable(false);
-        player.setSpeed(0);
-        for (Enemy enemy : enemies) {
-            enemy.setSpeed(0);
+        if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
+            //make enemies invisible
+            for (Enemy enemy : enemies) {
+                enemy.setSize(0,0);
+                enemy.setSpeed(0);
+            }
+
+            deadAnimation();
+            
+            player.resetDirectionArray();
+            this.setFocusable(false);
+            player.setSpeed(0);
+
         }
-        //player dead animation
     }
 
 

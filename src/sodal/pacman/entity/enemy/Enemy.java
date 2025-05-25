@@ -271,4 +271,17 @@ public class Enemy extends Entity {
         counter = 0;
     }
 
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        for(Rectangle r : rect) {
+            r.setSize(0,0);
+        }
+
+
+        this.enemyRect.setSize(0,0);
+
+    }
+
 }
