@@ -3,10 +3,14 @@ package sodal.pacman.gui;
 import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.player.Player;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
 
@@ -37,15 +41,26 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     //collision
-    private long RESPAWN_DELAY_MS = 3000; // in ms
+    private long RESPAWN_DELAY_MS = 2000; // in ms
 
-    private long collisionTimeStamp = -1;
+    private long collisionTimeStamp = 0;
 
     private static Rectangle[] world = new Rectangle[8];
 
 
     //scoreBoard
     private ScoreBoard scoreBoard;
+
+
+    //gameover
+    private BufferedImage gameOverBuffer;
+
+    private boolean gameOver = false;
+
+    private final long GAME_OVER_DELAY_MS = 3000;
+    private long gameOverTimeStamp = -1;
+
+
 
 
     public ThePanel() {
@@ -99,6 +114,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         world[5] = rect6;
         world[6] = rect7;
         world[7] = rect8;
+
+
+        createGameOverBuffer();
 
 
         //game loop
@@ -205,17 +223,53 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
             //make enemies invisible
             for (Enemy enemy : enemies) {
-                enemy.setSize(0,0);
+                enemy.setSize(0, 0);
                 enemy.setSpeed(0);
             }
-
             deadAnimation();
-            
-            player.resetDirectionArray();
-            this.setFocusable(false);
-            player.setSpeed(0);
+            //animation done
+            if (player.getDeadCounter() == 120) {
+                player.resetDirectionArray();
+                this.setFocusable(false);
+                player.setSpeed(0);
+                //display gameover
+                gameOver = true;
+                if(gameOverTimeStamp == -1) {
+                    gameOverTimeStamp = System.currentTimeMillis();
+                }
 
+            }
         }
+    }
+
+
+    private void createGameOverBuffer() {
+        try {
+            // Load the original image
+            BufferedImage original = ImageIO.read(new File("./res/image/gameover/gameOver.png"));
+
+            // Set desired width and height
+            int newWidth = TILE_SIZE * 3;  // replace with your desired width
+            int newHeight = TILE_SIZE * 3; // replace with your desired height
+
+            // Create a new resized image
+            BufferedImage resized = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = resized.createGraphics();
+
+            // Apply rendering hints for better quality
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.drawImage(original, 0, 0, newWidth, newHeight, null);
+            g2d.dispose();
+
+            // Now `resized` contains your resized image
+            // You can store it in a field or use it as needed
+
+            this.gameOverBuffer = resized;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -295,7 +349,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
         g2.fillRect(0, 0, WIDTH, HEIGHT);
-        //grid(g2);
+        grid(g2);
 
         player.render(g2);
         for (Enemy enemy : enemies) {
@@ -304,25 +358,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         scoreBoard.render(g2);
         renderWorld(g2);
 
-
-        //draw over the lines in world
-        g2.setColor(Color.BLACK);
-        //L
-        g2.drawLine(TILE_SIZE, 12 * TILE_SIZE + 1, TILE_SIZE, 13 * TILE_SIZE - 1);
-
-        //house
-        g2.drawLine(21 * TILE_SIZE + 1, 13 * TILE_SIZE, 22 * TILE_SIZE - 1, 13 * TILE_SIZE);
-        g2.drawLine(23 * TILE_SIZE + 1, 13 * TILE_SIZE, 24 * TILE_SIZE - 1, 13 * TILE_SIZE);
-
-        //cross
-        //left
-        g2.drawLine(12 * TILE_SIZE, 7 * TILE_SIZE + 1, 12 * TILE_SIZE, 8 * TILE_SIZE - 1);
-        //top
-        g2.drawLine(12 * TILE_SIZE + 1, 7 * TILE_SIZE, 13 * TILE_SIZE - 1, 7 * TILE_SIZE);
-        //right
-        g2.drawLine(13 * TILE_SIZE, 7 * TILE_SIZE + 1, 13 * TILE_SIZE, 8 * TILE_SIZE - 1);
-        //bottom
-        g2.drawLine(12 * TILE_SIZE + 1, 8 * TILE_SIZE, 13 * TILE_SIZE - 1, 8 * TILE_SIZE);
+        //wait for GAME_OVER_DELAY_MS until displaying gameover state
+        if (gameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS ) {
+            g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
+            g2.fillRect(0, 0, WIDTH, HEIGHT);
+            g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
+        }
 
 
         g2.dispose();
@@ -334,6 +375,29 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
+
+        //cover some part of the world
+        renderLines(g2);
+    }
+
+    private void renderLines(Graphics2D g2) {
+        //draw over the lines in world
+        g2.setColor(Color.BLACK);
+        //L
+        g2.drawLine(TILE_SIZE, 12 * TILE_SIZE + 1, TILE_SIZE, 13 * TILE_SIZE - 1);
+        //house
+        g2.drawLine(21 * TILE_SIZE + 1, 13 * TILE_SIZE, 22 * TILE_SIZE - 1, 13 * TILE_SIZE);
+        g2.drawLine(23 * TILE_SIZE + 1, 13 * TILE_SIZE, 24 * TILE_SIZE - 1, 13 * TILE_SIZE);
+        //cross
+        //left
+        g2.drawLine(12 * TILE_SIZE, 7 * TILE_SIZE + 1, 12 * TILE_SIZE, 8 * TILE_SIZE - 1);
+        //top
+        g2.drawLine(12 * TILE_SIZE + 1, 7 * TILE_SIZE, 13 * TILE_SIZE - 1, 7 * TILE_SIZE);
+        //right
+        g2.drawLine(13 * TILE_SIZE, 7 * TILE_SIZE + 1, 13 * TILE_SIZE, 8 * TILE_SIZE - 1);
+        //bottom
+        g2.drawLine(12 * TILE_SIZE + 1, 8 * TILE_SIZE, 13 * TILE_SIZE - 1, 8 * TILE_SIZE);
+
     }
 
 
