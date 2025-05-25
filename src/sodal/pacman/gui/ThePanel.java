@@ -54,6 +54,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     //gameover
     private BufferedImage gameOverBuffer;
+    private BufferedImage playBuffer;
+    private BufferedImage menuBuffer;
 
     private boolean gameOver = false;
 
@@ -116,7 +118,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         world[7] = rect8;
 
 
-        createGameOverBuffer();
+       this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
+       this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
+        this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
 
 
         //game loop
@@ -243,33 +247,27 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    private void createGameOverBuffer() {
+    private BufferedImage createBuffer(int width, int height, String path) {
         try {
             // Load the original image
-            BufferedImage original = ImageIO.read(new File("./res/image/gameover/gameOver.png"));
-
-            // Set desired width and height
-            int newWidth = TILE_SIZE * 3;  // replace with your desired width
-            int newHeight = TILE_SIZE * 3; // replace with your desired height
+            BufferedImage original = ImageIO.read(new File(path));
 
             // Create a new resized image
-            BufferedImage resized = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = resized.createGraphics();
 
             // Apply rendering hints for better quality
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.drawImage(original, 0, 0, newWidth, newHeight, null);
+            g2d.drawImage(original, 0, 0, width, height, null);
             g2d.dispose();
 
-            // Now `resized` contains your resized image
-            // You can store it in a field or use it as needed
-
-            this.gameOverBuffer = resized;
+            return resized;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        // file could not be found!
+        return null;
     }
 
 
@@ -363,6 +361,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
             g2.fillRect(0, 0, WIDTH, HEIGHT);
             g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
+            g2.drawImage(playBuffer,TILE_SIZE * 11, TILE_SIZE* 6, null);
+            g2.drawImage(menuBuffer,TILE_SIZE * 11, TILE_SIZE* 8, null);
         }
 
 
