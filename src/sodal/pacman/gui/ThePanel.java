@@ -57,8 +57,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage gameOverBuffer;
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
-    private Rectangle buttonRect;
+   // private Rectangle buttonRect;
     private BufferedImage[] worldImages = new BufferedImage[6];
+   private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 10);
 
 
     // SCORE / UI ELEMENTS
@@ -73,7 +74,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         setUpBuffer();
         setUpWorldRectangles();
         //movable rect when player dead
-        setUpButtonRect();
        // createWorldBuffer();
        // loadWorldMap();
         setUpGameLoop();
@@ -116,9 +116,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         // gameLoop.start();
     }
 
-    private void setUpButtonRect() {
-        buttonRect = new Rectangle(TILE_SIZE * 11, TILE_SIZE * 6, 3 * TILE_SIZE, TILE_SIZE);
-    }
 
     private void setUpBuffer() {
         this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
@@ -443,11 +440,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void renderGameOver(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
         g2.fillRect(0, 0, WIDTH, HEIGHT);
-        g2.drawImage(gameOverBuffer, TILE_SIZE * 11, TILE_SIZE, null);
-        g2.drawImage(playBuffer, TILE_SIZE * 11, TILE_SIZE * 6, null);
-        g2.drawImage(menuBuffer, TILE_SIZE * 11, TILE_SIZE * 8, null);
+        g2.drawImage(gameOverBuffer, TILE_SIZE * 7, TILE_SIZE * 5, null);
+        g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 10, null);
+        g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
         g2.setColor(Color.green);
-        g2.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);
+        g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
     }
 
 
@@ -518,13 +515,13 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void handleGameOverInput(int k) {
         if (k == KeyEvent.VK_UP) {
             System.out.println("up!!!");
-            buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 6);
+            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 10);
         } else if (k == KeyEvent.VK_DOWN) {
             System.out.println("down!!!!");
-            buttonRect.setLocation(TILE_SIZE * 11, TILE_SIZE * 8);
+            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 12);
         } else if (k == KeyEvent.VK_ENTER) {
-            //replay game (buttonRect same pos as playButton).
-            if (buttonRect.getY() == TILE_SIZE * 6) {
+            //replay game (hover same pos as playButton).
+            if (gameOverHover.getY() == TILE_SIZE*10) {
                 restart = true;
                 System.out.println("enter");
             }
