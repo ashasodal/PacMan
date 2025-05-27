@@ -17,8 +17,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     // SETTINGS / CONFIGURATION
     private static final int TILE_SIZE = 30;
-    private static final int NUM_TILES_WIDTH = 25;
-    private static final int NUM_TILES_HEIGHT = 15;
+    private static final int NUM_TILES_WIDTH = 17;
+    private static final int NUM_TILES_HEIGHT = 23;
     private static final int WIDTH = NUM_TILES_WIDTH * TILE_SIZE;
     private static final int HEIGHT = NUM_TILES_HEIGHT * TILE_SIZE;
 
