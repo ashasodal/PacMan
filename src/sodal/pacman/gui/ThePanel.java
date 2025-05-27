@@ -132,7 +132,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void setUpPlayer() {
         int radius = TILE_SIZE / 2;
-        player = new Player(TILE_SIZE * 22 + radius, TILE_SIZE * 12 + radius, radius, 3, this);
+        player = new Player(TILE_SIZE * 8 + radius, (HEIGHT - 3* TILE_SIZE) + radius, radius, 3, this);
     }
 
     private void setUpEnemies() {
@@ -275,7 +275,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void respawn() {
         //put player in house
-        player.setLocation(22 * TILE_SIZE + player.getRadius(), 12 * TILE_SIZE + player.getRadius());
+        player.setLocation(player.getInitialXCenter(), player.getInitialYCenter());
         //direction = [0,0,0,0]
         player.resetDirectionArray();
         player.resetAllCounters();

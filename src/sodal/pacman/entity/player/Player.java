@@ -16,6 +16,7 @@ public class Player extends Entity {
 
 
     protected int xCenter, yCenter;
+    private int initialXCenter, initialYCenter;
     protected int health = 3;
     protected int radius;
     private Rectangle rect;
@@ -49,6 +50,8 @@ public class Player extends Entity {
         super(radius * 2, radius * 2, speed);
         this.xCenter = xCenter;
         this.yCenter = yCenter;
+        this.initialXCenter = xCenter;
+        this.initialYCenter = yCenter;
         this.radius = radius;
         this.panel = panel;
 
@@ -403,6 +406,14 @@ public class Player extends Entity {
 
     public void resetHealth() {
         this.health = 3;
+    }
+
+    public int getInitialXCenter() {
+        return initialXCenter;
+    }
+
+    public int getInitialYCenter() {
+        return initialYCenter;
     }
 
 }
