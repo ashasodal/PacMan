@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     // CORE ENTITIES
     private static Player player;
     private Enemy[] enemies = new Enemy[4];
-    private static Rectangle[] world = new Rectangle[4];
+    private static Rectangle[] world = new Rectangle[8];
     private byte[][] worldData = new byte[NUM_TILES_HEIGHT][NUM_TILES_WIDTH];
 
 
@@ -601,12 +601,17 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void setUpWorldRectangles() {
-        //worldRectangles
-        //cross
+        //left portal
         world[0] = new Rectangle(0,  2* TILE_SIZE , TILE_SIZE,  7 * TILE_SIZE);
         world[1] = new Rectangle( 0, 9 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
         world[2] = new Rectangle( 0, 11 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
         world[3] = new Rectangle(0, 12 *TILE_SIZE , TILE_SIZE ,  7 * TILE_SIZE);
+        //right portals
+        world[4] = new Rectangle(WIDTH - TILE_SIZE,  2* TILE_SIZE , TILE_SIZE,  7 * TILE_SIZE);
+        world[5] = new Rectangle( WIDTH- 3*TILE_SIZE, 9 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
+        world[6] = new Rectangle( WIDTH - 3* TILE_SIZE, 11 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
+        world[7] = new Rectangle(WIDTH-TILE_SIZE, 12 *TILE_SIZE , TILE_SIZE ,  7 * TILE_SIZE);
+
 
     }
 
