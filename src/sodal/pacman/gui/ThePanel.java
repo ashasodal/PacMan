@@ -21,7 +21,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     // SETTINGS / CONFIGURATION
     private static final int TILE_SIZE = 30;
     private static final int NUM_TILES_WIDTH = 17;
-    private static final int NUM_TILES_HEIGHT = 23;
+    private static final int NUM_TILES_HEIGHT = 22;
     private static final int WIDTH = NUM_TILES_WIDTH * TILE_SIZE;
     private static final int HEIGHT = NUM_TILES_HEIGHT * TILE_SIZE;
 
@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     // CORE ENTITIES
     private static Player player;
     private Enemy[] enemies = new Enemy[4];
-    private static Rectangle[] world = new Rectangle[8];
+    private static Rectangle[] world = new Rectangle[4];
     private byte[][] worldData = new byte[NUM_TILES_HEIGHT][NUM_TILES_WIDTH];
 
 
@@ -74,8 +74,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         setUpWorldRectangles();
         //movable rect when player dead
         setUpButtonRect();
-        createWorldBuffer();
-        loadWorldMap();
+       // createWorldBuffer();
+       // loadWorldMap();
         setUpGameLoop();
     }
 
@@ -416,7 +416,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //paint
         renderBackground(g2);
 
-      //  renderGrid(g2);
+       renderGrid(g2);
         player.render(g2);
         renderEnemies(g2);
         scoreBoard.render(g2);
@@ -452,48 +452,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     public void renderWorld(Graphics2D g2) {
-     /*   g2.setColor(Color.blue);
+        g2.setColor(Color.blue);
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
         //cover some part of the world
-        renderLines(g2);*/
-
-        int x = 0;
-        int y = 0;
-        for(int i = 0; i < worldData.length; i++) {
-            byte[] line = worldData[i];
-            for(int j = 0; j < line.length; j++) {
-                byte num = line[j];
-                //up and down
-                if(num == 1) {
-                    g2.drawImage(worldImages[0],x,y,null);
-                }
-                //left and right
-                else if(num == 2) {
-                    g2.drawImage(worldImages[1],x,y,null);
-                }
-                //up
-                else if(num == 3) {
-                    g2.drawImage(worldImages[2],x,y,null);
-                }
-                //down
-                else if(num == 4) {
-                    g2.drawImage(worldImages[3],x,y,null);
-                }
-                //left
-                else if(num == 5) {
-                    g2.drawImage(worldImages[4],x,y,null);
-                }
-                //right
-                else if(num == 6) {
-                    g2.drawImage(worldImages[5],x,y,null);
-                }
-                x+= TILE_SIZE;
-            }
-            x = 0;
-            y += TILE_SIZE;
-        }
+      //  renderLines(g2);
     }
 
     //cover some part of the world
@@ -639,17 +603,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void setUpWorldRectangles() {
         //worldRectangles
         //cross
-        world[0] = new Rectangle(9 * TILE_SIZE, 7 * TILE_SIZE, 7 * TILE_SIZE, TILE_SIZE);
-        world[1] = new Rectangle(12 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
-        //pacman house
-        world[2] = new Rectangle(21 * TILE_SIZE, 13 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
-        world[3] = new Rectangle(21 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        world[4] = new Rectangle(23 * TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        //shield
-        world[5] = new Rectangle(TILE_SIZE, 2 * TILE_SIZE, 5 * TILE_SIZE, TILE_SIZE);
-        //L
-        world[6] = new Rectangle(0, 7 * TILE_SIZE, TILE_SIZE, 6 * TILE_SIZE);
-        world[7] = new Rectangle(TILE_SIZE, 12 * TILE_SIZE, 10 * TILE_SIZE, TILE_SIZE);
+        world[0] = new Rectangle(0,  2* TILE_SIZE , TILE_SIZE,  7 * TILE_SIZE);
+        world[1] = new Rectangle( 0, 9 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
+        world[2] = new Rectangle( 0, 11 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
+        world[3] = new Rectangle(0, 12 *TILE_SIZE , TILE_SIZE ,  7 * TILE_SIZE);
+
     }
 
 
