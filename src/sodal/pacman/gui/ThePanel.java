@@ -44,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     // CORE ENTITIES
     private static Player player;
     private Enemy[] enemies = new Enemy[4];
-    private static Rectangle[] world = new Rectangle[8];
+    private static Rectangle[] world = new Rectangle[15];
     private byte[][] worldData = new byte[NUM_TILES_HEIGHT][NUM_TILES_WIDTH];
 
 
@@ -611,6 +611,36 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         world[5] = new Rectangle( WIDTH- 3*TILE_SIZE, 9 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
         world[6] = new Rectangle( WIDTH - 3* TILE_SIZE, 11 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
         world[7] = new Rectangle(WIDTH-TILE_SIZE, 12 *TILE_SIZE , TILE_SIZE ,  7 * TILE_SIZE);
+
+        //pacman house
+        //left
+        world[8] = new Rectangle(7*TILE_SIZE, HEIGHT - 3*TILE_SIZE , TILE_SIZE ,  2 * TILE_SIZE);
+        //middle
+        world[9] = new Rectangle(8*TILE_SIZE, HEIGHT - 2*TILE_SIZE , TILE_SIZE ,   TILE_SIZE);
+        //right
+        world[10] = new Rectangle(9*TILE_SIZE, HEIGHT - 3*TILE_SIZE , TILE_SIZE ,  2 * TILE_SIZE);
+
+
+        //top "house
+        world[11] = new Rectangle(7*TILE_SIZE, 0, TILE_SIZE ,  2 * TILE_SIZE);
+        world[12] = new Rectangle(8*TILE_SIZE, 0 , TILE_SIZE ,   TILE_SIZE);
+        world[13] = new Rectangle(9*TILE_SIZE, 0, TILE_SIZE ,  2 * TILE_SIZE);
+
+        //block in middle
+        world[14] = new Rectangle(7*TILE_SIZE, 7* TILE_SIZE , 3 * TILE_SIZE ,  7 * TILE_SIZE);
+
+
+
+        //ghost house
+        //top
+       /* world[11] = new Rectangle(5*TILE_SIZE + TILE_SIZE/2, 0 ,6* TILE_SIZE ,   TILE_SIZE);
+        //left
+        world[12] = new Rectangle(5*TILE_SIZE + TILE_SIZE/2, TILE_SIZE , TILE_SIZE ,   3*  TILE_SIZE);
+        //right
+        world[13] = new Rectangle(10*TILE_SIZE + TILE_SIZE/2, TILE_SIZE ,  TILE_SIZE ,   3*  TILE_SIZE);*/
+
+
+
 
 
     }
