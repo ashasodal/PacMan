@@ -9,8 +9,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class ThePanel extends JPanel implements Runnable, KeyListener {
@@ -42,6 +45,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static Player player;
     private Enemy[] enemies = new Enemy[4];
     private static Rectangle[] world = new Rectangle[8];
+    private byte[][] worldData = new byte[NUM_TILES_HEIGHT][NUM_TILES_WIDTH];
 
 
     // GAME LOOP
@@ -54,6 +58,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
     private Rectangle buttonRect;
+    private BufferedImage[] worldImages = new BufferedImage[6];
 
 
     // SCORE / UI ELEMENTS
@@ -69,7 +74,39 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         setUpWorldRectangles();
         //movable rect when player dead
         setUpButtonRect();
+        createWorldBuffer();
+        loadWorldMap();
         setUpGameLoop();
+    }
+
+    private void createWorldBuffer() {
+        try {
+            for(int i = 0; i < worldImages.length; i++) {
+                worldImages[i] = ImageIO.read(new File("./res/image/world/" + (i +1) + ".png"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadWorldMap() {
+        String filePath = "./res/worldMap/world.txt"; // Replace with your actual file path
+        try  {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            String line = br.readLine();
+            int index = 0;
+            while (line != null) {
+                for(int i = 0; i < NUM_TILES_WIDTH; i++) {
+                    byte num = Byte.parseByte(String.valueOf(line.charAt(i)));
+                    worldData[index][i] = num;
+                }
+                index++;
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
 
@@ -379,7 +416,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //paint
         renderBackground(g2);
 
-        renderGrid(g2);
+      //  renderGrid(g2);
         player.render(g2);
         renderEnemies(g2);
         scoreBoard.render(g2);
@@ -415,12 +452,48 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     public void renderWorld(Graphics2D g2) {
-        g2.setColor(Color.blue);
+     /*   g2.setColor(Color.blue);
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
         //cover some part of the world
-        renderLines(g2);
+        renderLines(g2);*/
+
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < worldData.length; i++) {
+            byte[] line = worldData[i];
+            for(int j = 0; j < line.length; j++) {
+                byte num = line[j];
+                //up and down
+                if(num == 1) {
+                    g2.drawImage(worldImages[0],x,y,null);
+                }
+                //left and right
+                else if(num == 2) {
+                    g2.drawImage(worldImages[1],x,y,null);
+                }
+                //up
+                else if(num == 3) {
+                    g2.drawImage(worldImages[2],x,y,null);
+                }
+                //down
+                else if(num == 4) {
+                    g2.drawImage(worldImages[3],x,y,null);
+                }
+                //left
+                else if(num == 5) {
+                    g2.drawImage(worldImages[4],x,y,null);
+                }
+                //right
+                else if(num == 6) {
+                    g2.drawImage(worldImages[5],x,y,null);
+                }
+                x+= TILE_SIZE;
+            }
+            x = 0;
+            y += TILE_SIZE;
+        }
     }
 
     //cover some part of the world
