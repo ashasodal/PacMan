@@ -32,6 +32,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private boolean restart = false;
     private volatile boolean drawGameOver = false;
     private volatile boolean playerEnemyCollision = false;
+    private boolean startGame = false;
 
 
     // TIMERS / DELAYS
@@ -135,8 +136,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void setUpEnemies() {
         //enemies
         enemies[0] = new Enemy(TILE_SIZE , 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
-        enemies[1] = new Enemy(TILE_SIZE , HEIGHT-3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
-        enemies[2] = new Enemy(WIDTH - 2*TILE_SIZE, HEIGHT-3 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
+        enemies[1] = new Enemy(TILE_SIZE , HEIGHT-4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
+        enemies[2] = new Enemy(WIDTH - 2*TILE_SIZE, HEIGHT-4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
         enemies[3] = new Enemy(WIDTH - 2* TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
     }
 
@@ -157,8 +158,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void update() {
         if (!gameOver) {
-            updatePlayerAndEnemies();
-            checkCollision();
+            if(startGame) {
+                updatePlayerAndEnemies();
+                checkCollision();
+            }
         } else {
             handleGameOverDelay();
             handleRestart();
@@ -250,6 +253,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 player.setSize(0, 0);
                 //display gameover
                 gameOver = true;
+                startGame = false;
                 gameOverTimeStamp = System.currentTimeMillis();
             }
         }
@@ -503,7 +507,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
+        System.out.println("pressed!!");
         if (!gameOver) {
+            System.out.println("hello");
             handleGameInput(k);
         } else {
             handleGameOverInput(k);
@@ -526,6 +532,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 System.out.println("enter");
             }
         }
+
+
     }
 
     private void handleGameInput(int k) {
@@ -540,6 +548,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 switchDirection(3);
             }
         }
+        startGame = true;
     }
 
 
