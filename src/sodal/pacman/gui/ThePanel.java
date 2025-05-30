@@ -68,7 +68,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     //DEAD ANIMATION
-    private final long ANIMATION_DELAY_MS = 1000;
+    private final long ANIMATION_DELAY_MS = 150;
     private long deathAnimationStartTime = 0;
     private boolean startDeadAnimation = false;
 

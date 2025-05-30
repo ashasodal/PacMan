@@ -42,8 +42,7 @@ public class Player extends Entity {
 
     private int counterUp, counterDown, counterLeft, counterRight;
 
-    private int deadCounter = 0;
-    private final int playerDeadDelay = 10;
+
 
 
     public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
@@ -357,26 +356,11 @@ public class Player extends Entity {
         return dead;
     }
 
-    public int getDeadCounter() {
-        return deadCounter;
-    }
+
 
     public void setImage(BufferedImage image) {
         this.image = image;
     }
-
-    public void incrementDeadCounter() {
-        this.deadCounter += 1;
-    }
-
-    public void resetDeadCounter() {
-        this.deadCounter = 0;
-    }
-
-    public int getPlayerDeadDelay() {
-        return playerDeadDelay;
-    }
-
 
 
     public void setSize(int width, int height) {
@@ -392,7 +376,6 @@ public class Player extends Entity {
 
 
     public void resetAllCounters() {
-        resetDeadCounter();
         resetDirCounter();
     }
 
