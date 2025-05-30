@@ -5,6 +5,7 @@ import sodal.pacman.entity.Entity;
 import sodal.pacman.gui.ThePanel;
 
 import javax.imageio.ImageIO;
+import javax.print.attribute.standard.OrientationRequested;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -38,11 +39,10 @@ public class Player extends Entity {
 
     private BufferedImage[] dead = new BufferedImage[12];
 
-    //animation
-
-    private int counterUp, counterDown, counterLeft, counterRight;
-
-
+  // ANIMATION
+    private final long PLAYER_FRAME_INTERVAL_MS = 1000;   // Interval between image changes
+    private long playerAnimationStartTime = -1;           // When animation started
+    private boolean isPlayerUpAnimating, isPlayerDownAnimating, isPlayerLeftAnimating, isPlayerRightAnimating;            // Animation state flag
 
 
     public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
@@ -123,52 +123,53 @@ public class Player extends Entity {
 
     private void upAnimation() {
 
-        counterDown = 0;
-        counterLeft = 0;
-        counterRight = 0;
+        isPlayerDownAnimating = false;
+        isPlayerLeftAnimating = false;
+        isPlayerRightAnimating = false;
 
-        if (counterUp >= 0 && counterUp <= 10) {
-            this.image = up[0];
-            counterUp++;
-            return;
-
-        } else if (counterUp > 10 && counterUp <= 20) {
-            this.image = up[1];
-            counterUp++;
-            return;
-
-        } else if (counterUp > 20 && counterUp <= 30) {
-            this.image = up[2];
-            counterUp++;
-            return;
+        if (!isPlayerUpAnimating) {
+            isPlayerUpAnimating = true;
+            playerAnimationStartTime = System.currentTimeMillis();
         }
 
-        counterUp = 0;
+        long currentTime = System.currentTimeMillis() - playerAnimationStartTime;
+
+        if (currentTime >= 0 && currentTime < PLAYER_FRAME_INTERVAL_MS) {
+            this.image = up[0];
+        } else if (currentTime >= PLAYER_FRAME_INTERVAL_MS && currentTime < 2 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = up[1];
+        } else if (currentTime >= 2 * PLAYER_FRAME_INTERVAL_MS && currentTime < 3 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = up[2];
+        } else if (currentTime >= 3 * PLAYER_FRAME_INTERVAL_MS) {
+            isPlayerUpAnimating = false;
+        }
+
     }
 
 
     private void downAnimation() {
 
-        counterUp = 0;
-        counterLeft = 0;
-        counterRight = 0;
+        isPlayerUpAnimating = false;
+        isPlayerLeftAnimating = false;
+        isPlayerRightAnimating = false;
 
-        if (counterDown >= 0 && counterDown <= 10) {
-            this.image = down[0];
-            counterDown++;
-            return;
-
-        } else if (counterDown > 10 && counterDown <= 20) {
-            this.image = down[1];
-            counterDown++;
-            return;
-
-        } else if (counterDown > 20 && counterDown <= 30) {
-            this.image = down[2];
-            counterDown++;
-            return;
+        if (!isPlayerDownAnimating) {
+            isPlayerDownAnimating = true;
+            playerAnimationStartTime = System.currentTimeMillis();
         }
-        counterDown = 0;
+
+        long currentTime = System.currentTimeMillis() - playerAnimationStartTime;
+
+        if (currentTime >= 0 && currentTime < PLAYER_FRAME_INTERVAL_MS) {
+            this.image = down[0];
+        } else if (currentTime >= PLAYER_FRAME_INTERVAL_MS && currentTime < 2 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = down[1];
+        } else if (currentTime >= 2 * PLAYER_FRAME_INTERVAL_MS && currentTime < 3 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = down[2];
+        } else if (currentTime >= 3 * PLAYER_FRAME_INTERVAL_MS) {
+            isPlayerDownAnimating = false;
+        }
+
     }
 
     private void moveDown(int speed) {
@@ -195,26 +196,26 @@ public class Player extends Entity {
 
     private void leftAnimation() {
 
-        counterUp = 0;
-        counterDown = 0;
-        counterRight = 0;
+        isPlayerUpAnimating = false;
+        isPlayerDownAnimating = false;
+        isPlayerRightAnimating = false;
 
-        if (counterLeft >= 0 && counterLeft <= 10) {
-            this.image = left[0];
-            counterLeft++;
-            return;
-
-        } else if (counterLeft > 10 && counterLeft <= 20) {
-            this.image = left[1];
-            counterLeft++;
-            return;
-
-        } else if (counterLeft > 20 && counterLeft <= 30) {
-            this.image = left[2];
-            counterLeft++;
-            return;
+        if (!isPlayerLeftAnimating) {
+            isPlayerLeftAnimating = true;
+            playerAnimationStartTime = System.currentTimeMillis();
         }
-        counterLeft = 0;
+
+        long currentTime = System.currentTimeMillis() - playerAnimationStartTime;
+
+        if (currentTime >= 0 && currentTime < PLAYER_FRAME_INTERVAL_MS) {
+            this.image = left[0];
+        } else if (currentTime >= PLAYER_FRAME_INTERVAL_MS && currentTime < 2 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = left[1];
+        } else if (currentTime >= 2 * PLAYER_FRAME_INTERVAL_MS && currentTime < 3 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = left[2];
+        } else if (currentTime >= 3 * PLAYER_FRAME_INTERVAL_MS) {
+            isPlayerLeftAnimating = false;
+        }
 
     }
 
@@ -230,25 +231,27 @@ public class Player extends Entity {
 
 
     private void rightAnimation() {
-        counterUp = 0;
-        counterDown = 0;
-        counterLeft = 0;
-        if (counterRight >= 0 && counterRight <= 10) {
-            this.image = right[0];
-            counterRight++;
-            return;
 
-        } else if (counterRight > 10 && counterRight <= 20) {
-            this.image = right[1];
-            counterRight++;
-            return;
+        isPlayerUpAnimating = false;
+        isPlayerDownAnimating = false;
+        isPlayerLeftAnimating = false;
 
-        } else if (counterRight > 20 && counterRight <= 30) {
-            this.image = right[2];
-            counterRight++;
-            return;
+        if (!isPlayerRightAnimating) {
+            isPlayerRightAnimating = true;
+            playerAnimationStartTime = System.currentTimeMillis();
         }
-        counterRight = 0;
+
+        long currentTime = System.currentTimeMillis() - playerAnimationStartTime;
+
+        if (currentTime >= 0 && currentTime < PLAYER_FRAME_INTERVAL_MS) {
+            this.image = right[0];
+        } else if (currentTime >= PLAYER_FRAME_INTERVAL_MS && currentTime < 2 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = right[1];
+        } else if (currentTime >= 2 * PLAYER_FRAME_INTERVAL_MS && currentTime < 3 * PLAYER_FRAME_INTERVAL_MS) {
+            this.image = right[2];
+        } else if (currentTime >= 3 * PLAYER_FRAME_INTERVAL_MS) {
+            isPlayerRightAnimating = false;
+        }
 
     }
 
@@ -291,8 +294,8 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g2) {
-       // g2.setColor(Color.magenta);
-       // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
+        // g2.setColor(Color.magenta);
+        // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
         //   g2.setColor(color);
         // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
@@ -357,7 +360,6 @@ public class Player extends Entity {
     }
 
 
-
     public void setImage(BufferedImage image) {
         this.image = image;
     }
@@ -366,7 +368,7 @@ public class Player extends Entity {
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
-        this.rect.setSize(this.width,this.height);
+        this.rect.setSize(this.width, this.height);
     }
 
 
@@ -375,17 +377,13 @@ public class Player extends Entity {
     }
 
 
-    public void resetAllCounters() {
-        resetDirCounter();
+    public void resetMovementAnimations() {
+        isPlayerUpAnimating = false;
+        isPlayerDownAnimating = false;
+        isPlayerLeftAnimating = false;
+        isPlayerRightAnimating = false;
     }
 
-
-    public void resetDirCounter() {
-        this.counterUp = 0;
-        this.counterDown = 0;
-        this.counterLeft = 0;
-        this.counterRight = 0;
-    }
 
     public void resetHealth() {
         this.health = 3;
