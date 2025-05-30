@@ -74,6 +74,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private ScoreBoard scoreBoard;
 
 
+    private Clip backgroundClip;
+
+
 
 
 
@@ -170,6 +173,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         if (!gameOver) {
             if (startGame) {
+                playBackgroundSound();
                 updatePlayerAndEnemies();
                 checkCollision();
             }
@@ -263,7 +267,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             deadAnimation();
             //animation done
-
             if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS ) {
                 //animation done
                 player.setSize(0, 0);
@@ -671,6 +674,28 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             clip.loop(count);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public static Clip playBackground(String filePath) {
+        File file = new File(filePath);
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            return  clip;
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        //something wrong... clip should not be null
+        return null;
+    }
+
+    private void playBackgroundSound( ) {
+        if(backgroundClip == null) {
+            backgroundClip = playBackground("./res/sound/siren.wav");
         }
     }
 
