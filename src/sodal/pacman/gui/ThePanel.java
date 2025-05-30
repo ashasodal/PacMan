@@ -75,6 +75,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     private Clip backgroundClip;
+    private boolean startBackgroundSound = false;
 
 
 
@@ -87,9 +88,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         setUpScoreBoard();
         setUpBuffer();
         setUpWorldRectangles();
-        //movable rect when player dead
-        // createWorldBuffer();
-        // loadWorldMap();
+        backgroundClip = getClip("./res/sound/siren.wav");
         setUpGameLoop();
 
     }
@@ -225,6 +224,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                     for (Rectangle rect : enemy.getRect()) {
                         //collision!!!
                         if (circleRectCollision(rect)) {
+                            //stop background sound
+                            backgroundClip.close();
                             System.out.println(" collided!!!");
                             playerEnemyCollision = true;
                             player.decrementHealth();
@@ -304,6 +305,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             startDeadAnimation = false;
             playerEnemyCollision = false;
+            //replay background sound
+            backgroundClip = getClip("./res/sound/siren.wav");
+            backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
 
@@ -678,13 +682,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public static Clip playBackground(String filePath) {
+    public static Clip getClip(String filePath) {
         File file = new File(filePath);
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
             return  clip;
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
@@ -693,11 +696,19 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         return null;
     }
 
-    private void playBackgroundSound( ) {
-        if(backgroundClip == null) {
-            backgroundClip = playBackground("./res/sound/siren.wav");
+
+    /**
+     * play background at the start of the game
+     */
+    private void playBackgroundSound() {
+        if(!startBackgroundSound) {
+            backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+            startBackgroundSound = true;
         }
+
     }
+
+
 
 
 }
