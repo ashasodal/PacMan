@@ -18,38 +18,30 @@ public class Enemy extends Entity {
 
     private byte[] direction;
 
-    //time
-    private int delay;
-    private int counter = 0;
+
     private static Random rand;
+
+
+    private long CHANGE_DIRECTION_MS;
+    private long startTime = -1;
 
     private Rectangle enemyRect;
 
-    private String initialDir;
 
     private BufferedImage image;
 
-    public Enemy(int x, int y, int width, int height, int speed, String path, String dir, int delay) {
+    public Enemy(int x, int y, int width, int height, int speed, String path, int delay) {
         super(width, height, speed);
         this.x = x;
         this.y = y;
         this.initialX = x;
         this.initialY = y;
-        this.delay = delay;
-        this.initialDir = dir;
+        this.CHANGE_DIRECTION_MS = delay;
         createRectangles();
-        direction = new byte[4];
-
-        //random starting Clyde direction
-        //random num between 0-3
-
-        rand = new Random();
-        initialDirection();
-        enemyRect = new Rectangle(x, y, width, height);
-
         createBuffer(path);
-
-
+        direction = new byte[4];
+        rand = new Random();
+        randomDir();
     }
 
     private void createBuffer(String path) {
@@ -61,20 +53,9 @@ public class Enemy extends Entity {
         }
     }
 
-    public void initialDirection() {
-        resetDir();
-        if (initialDir.equals("up")) {
-            direction[0] = 1;
-        } else if (initialDir.equals("down")) {
-            direction[1] = 1;
-        } else if (initialDir.equals("left")) {
-            direction[2] = 1;
-        } else if (initialDir.equals("right")) {
-            direction[3] = 1;
-        }
-    }
 
     private void createRectangles() {
+        enemyRect = new Rectangle(x, y, width, height);
         rect = new Rectangle[5];
        /* rect[0] = new Rectangle(this.x, this.y, this.width *3, this.height*2);
         rect[1] = new Rectangle(this.x + this.width/2, this.y -this.height , this.width *2, this.height);*/
@@ -83,7 +64,10 @@ public class Enemy extends Entity {
         rect[2] = new Rectangle(this.x + 4, this.y + 4, this.width - 8, 2);
         rect[3] = new Rectangle(this.x + 6, this.y + 2, this.width - 12, 2);
         rect[4] = new Rectangle(this.x + 10, this.y, this.width - 20, 2);
+
+
     }
+
 
 
     public void moveInOppositeDirection(int width, int height) {
@@ -96,7 +80,6 @@ public class Enemy extends Entity {
         } else if (direction[3] == 1) {
             moveLeft(width);
         }
-
         enemyRect.setLocation(this.x, this.y);
     }
 
@@ -185,14 +168,14 @@ public class Enemy extends Entity {
     }
 
     private void moveRandom() {
-        counter++;
-        if (counter == delay) {
-            //all slots gonna store 0.
-            resetDir();
-            direction[rand.nextInt(4)] = 1;
-            counter = 0;
+        if (startTime == -1) {
+            startTime = System.currentTimeMillis();
         }
-
+        long deltaTime = System.currentTimeMillis() - startTime;
+        if (deltaTime >= CHANGE_DIRECTION_MS) {
+            randomDir();
+            startTime = -1;
+        }
     }
 
     public Rectangle getEnemyRect() {
@@ -202,9 +185,9 @@ public class Enemy extends Entity {
     @Override
     public void render(Graphics2D g2) {
         // g2.setColor(new Color(123,56,88));
-       // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
+        // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
-       // this.paintRect(g2);
+        // this.paintRect(g2);
     }
 
 
@@ -243,13 +226,6 @@ public class Enemy extends Entity {
 
     }
 
-    public int getInitialX() {
-        return initialX;
-    }
-
-    public int getInitialY() {
-        return initialY;
-    }
 
     public void setLocation(int x, int y) {
         this.x = x;
@@ -263,15 +239,15 @@ public class Enemy extends Entity {
     }
 
 
-    public void resetCounter() {
-        counter = 0;
+    public void resetStartTime() {
+        startTime = -1;
     }
 
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
         this.enemyRect.setSize(width, height);
-        rect[0].setSize( this.width, this.height - 11);
+        rect[0].setSize(this.width, this.height - 11);
         rect[1].setSize(this.width - 4, 5);
         rect[2].setSize(this.width - 8, 2);
         rect[3].setSize(this.width - 12, 2);
@@ -279,17 +255,20 @@ public class Enemy extends Entity {
     }
 
 
-
-
-    public int getSpeed() {
-        return speed;
-    }
-
     public void resetToInitialState() {
         this.setLocation(this.initialX, this.initialY);
         this.setSize(ThePanel.getTileSize(), ThePanel.getTileSize());
-        this.resetCounter();
-        this.initialDirection();
+        this.resetStartTime();
+        this.randomDir();
         this.setSpeed(1);
     }
+
+    private void randomDir() {
+        resetDir();
+        direction[rand.nextInt(4)] = 1;
+    }
+
 }
+
+
+

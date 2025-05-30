@@ -144,10 +144,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void setUpEnemies() {
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
-        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
-        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
-        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
+        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", 1000);
+        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", 2000);
+        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", 3000);
+        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", 4000);
     }
 
     private void setupPanel() {
