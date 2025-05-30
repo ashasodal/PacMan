@@ -58,9 +58,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage gameOverBuffer;
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
-   // private Rectangle buttonRect;
+    // private Rectangle buttonRect;
     private BufferedImage[] worldImages = new BufferedImage[6];
-   private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 10);
+    private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 10);
 
 
     // SCORE / UI ELEMENTS
@@ -75,15 +75,15 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         setUpBuffer();
         setUpWorldRectangles();
         //movable rect when player dead
-       // createWorldBuffer();
-       // loadWorldMap();
+        // createWorldBuffer();
+        // loadWorldMap();
         setUpGameLoop();
     }
 
     private void createWorldBuffer() {
         try {
-            for(int i = 0; i < worldImages.length; i++) {
-                worldImages[i] = ImageIO.read(new File("./res/image/world/" + (i +1) + ".png"));
+            for (int i = 0; i < worldImages.length; i++) {
+                worldImages[i] = ImageIO.read(new File("./res/image/world/" + (i + 1) + ".png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,12 +93,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void loadWorldMap() {
         String filePath = "./res/worldMap/world.txt"; // Replace with your actual file path
-        try  {
+        try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
             int index = 0;
             while (line != null) {
-                for(int i = 0; i < NUM_TILES_WIDTH; i++) {
+                for (int i = 0; i < NUM_TILES_WIDTH; i++) {
                     byte num = Byte.parseByte(String.valueOf(line.charAt(i)));
                     worldData[index][i] = num;
                 }
@@ -130,15 +130,15 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void setUpPlayer() {
         int radius = TILE_SIZE / 2;
-        player = new Player(TILE_SIZE * 8 + radius, (HEIGHT - 3* TILE_SIZE) + radius, radius, 3, this);
+        player = new Player(TILE_SIZE * 8 + radius, (HEIGHT - 3 * TILE_SIZE) + radius, radius, 3, this);
     }
 
     private void setUpEnemies() {
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE , 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
-        enemies[1] = new Enemy(TILE_SIZE , HEIGHT-4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
-        enemies[2] = new Enemy(WIDTH - 2*TILE_SIZE, HEIGHT-4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
-        enemies[3] = new Enemy(WIDTH - 2* TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
+        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
+        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
+        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
+        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
     }
 
     private void setupPanel() {
@@ -158,7 +158,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void update() {
         if (!gameOver) {
-            if(startGame) {
+            if (startGame) {
                 updatePlayerAndEnemies();
                 checkCollision();
             }
@@ -177,51 +177,51 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void handleRestart() {
         //delay game over time has passed
-        if(drawGameOver && restart) {
+        if (drawGameOver && restart) {
             restart();
         }
     }
 
 
-
-
     private void updatePlayerAndEnemies() {
-        for (Enemy enemy : enemies) {
-            enemy.update();
+        if (!playerEnemyCollision) {
+            for (Enemy enemy : enemies) {
+                enemy.update();
+            }
+            player.update();
         }
-        player.update();
     }
-
 
 
     /**
      * collision between player and enemy
      */
     public void checkCollision() {
-        if (!playerEnemyCollision) {
-            checkPlayerEnemyCollision();
-            return;
-        }
-        handlePlayerEnemyCollision();
+        checkPlayerEnemyCollision();
     }
 
     public void checkPlayerEnemyCollision() {
-        for (Enemy enemy : enemies) {
-            if (player.getRect().intersects(enemy.getEnemyRect())) {
-                for (Rectangle rect : enemy.getRect()) {
-                    //collision!!!
-                    if (circleRectCollision(rect)) {
-                        playerEnemyCollision = true;
-                        player.decrementHealth();
-                        stopPlayerEnemiesMovement();
-                        player.resetDirectionArray();
-                        collisionTimeStamp = System.currentTimeMillis();
-                        handlePlayerEnemyCollision();
-                        return;
+        if (!playerEnemyCollision) {
+            for (Enemy enemy : enemies) {
+                if (player.getRect().intersects(enemy.getEnemyRect())) {
+                    for (Rectangle rect : enemy.getRect()) {
+                        //collision!!!
+                        if (circleRectCollision(rect)) {
+                            System.out.println(" collided!!!");
+                            playerEnemyCollision = true;
+                            player.decrementHealth();
+                            stopPlayerEnemiesMovement();
+                            player.resetDirectionArray();
+                            collisionTimeStamp = System.currentTimeMillis();
+                            return;
+                        }
                     }
                 }
             }
+        } else {
+            handlePlayerEnemyCollision();
         }
+
     }
 
 
@@ -282,7 +282,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         player.resetAllCounters();
         player.setPacManImage();
         player.setSpeed(3);
-        player.setSize(TILE_SIZE,TILE_SIZE);
+        player.setSize(TILE_SIZE, TILE_SIZE);
         //put enemies in initial position
         for (Enemy enemy : enemies) {
             enemy.setSize(TILE_SIZE, TILE_SIZE);
@@ -417,7 +417,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //paint
         renderBackground(g2);
 
-       renderGrid(g2);
+        renderGrid(g2);
         player.render(g2);
         renderEnemies(g2);
         scoreBoard.render(g2);
@@ -458,7 +458,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
         //cover some part of the world
-      //  renderLines(g2);
+        //  renderLines(g2);
     }
 
     //cover some part of the world
@@ -507,9 +507,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
-        System.out.println("pressed!!");
+        // System.out.println("pressed!!");
         if (!gameOver) {
-            System.out.println("hello");
+            //System.out.println("hello");
             handleGameInput(k);
         } else {
             handleGameOverInput(k);
@@ -527,7 +527,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 12);
         } else if (k == KeyEvent.VK_ENTER) {
             //replay game (hover same pos as playButton).
-            if (gameOverHover.getY() == TILE_SIZE*10) {
+            if (gameOverHover.getY() == TILE_SIZE * 10) {
                 restart = true;
                 System.out.println("enter");
             }
@@ -608,33 +608,32 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void setUpWorldRectangles() {
         //left portal
-        world[0] = new Rectangle(0,  2* TILE_SIZE , TILE_SIZE,  7 * TILE_SIZE);
-        world[1] = new Rectangle( 0, 9 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
-        world[2] = new Rectangle( 0, 11 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
-        world[3] = new Rectangle(0, 12 *TILE_SIZE , TILE_SIZE ,  7 * TILE_SIZE);
+        world[0] = new Rectangle(0, 2 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
+        world[1] = new Rectangle(0, 9 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        world[2] = new Rectangle(0, 11 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        world[3] = new Rectangle(0, 12 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
         //right portals
-        world[4] = new Rectangle(WIDTH - TILE_SIZE,  2* TILE_SIZE , TILE_SIZE,  7 * TILE_SIZE);
-        world[5] = new Rectangle( WIDTH- 3*TILE_SIZE, 9 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
-        world[6] = new Rectangle( WIDTH - 3* TILE_SIZE, 11 * TILE_SIZE ,  3 * TILE_SIZE,  TILE_SIZE);
-        world[7] = new Rectangle(WIDTH-TILE_SIZE, 12 *TILE_SIZE , TILE_SIZE ,  7 * TILE_SIZE);
+        world[4] = new Rectangle(WIDTH - TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
+        world[5] = new Rectangle(WIDTH - 3 * TILE_SIZE, 9 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        world[6] = new Rectangle(WIDTH - 3 * TILE_SIZE, 11 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+        world[7] = new Rectangle(WIDTH - TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
 
         //pacman house
         //left
-        world[8] = new Rectangle(7*TILE_SIZE, HEIGHT - 3*TILE_SIZE , TILE_SIZE ,  2 * TILE_SIZE);
+        world[8] = new Rectangle(7 * TILE_SIZE, HEIGHT - 3 * TILE_SIZE, TILE_SIZE, 2 * TILE_SIZE);
         //middle
-        world[9] = new Rectangle(8*TILE_SIZE, HEIGHT - 2*TILE_SIZE , TILE_SIZE ,   TILE_SIZE);
+        world[9] = new Rectangle(8 * TILE_SIZE, HEIGHT - 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         //right
-        world[10] = new Rectangle(9*TILE_SIZE, HEIGHT - 3*TILE_SIZE , TILE_SIZE ,  2 * TILE_SIZE);
+        world[10] = new Rectangle(9 * TILE_SIZE, HEIGHT - 3 * TILE_SIZE, TILE_SIZE, 2 * TILE_SIZE);
 
 
         //top "house
-        world[11] = new Rectangle(7*TILE_SIZE, 0, TILE_SIZE ,  2 * TILE_SIZE);
-        world[12] = new Rectangle(8*TILE_SIZE, 0 , TILE_SIZE ,   TILE_SIZE);
-        world[13] = new Rectangle(9*TILE_SIZE, 0, TILE_SIZE ,  2 * TILE_SIZE);
+        world[11] = new Rectangle(7 * TILE_SIZE, 0, TILE_SIZE, 2 * TILE_SIZE);
+        world[12] = new Rectangle(8 * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
+        world[13] = new Rectangle(9 * TILE_SIZE, 0, TILE_SIZE, 2 * TILE_SIZE);
 
         //block in middle
-        world[14] = new Rectangle(7*TILE_SIZE, 7* TILE_SIZE , 3 * TILE_SIZE ,  7 * TILE_SIZE);
-
+        world[14] = new Rectangle(7 * TILE_SIZE, 7 * TILE_SIZE, 3 * TILE_SIZE, 7 * TILE_SIZE);
 
 
         //ghost house
@@ -644,9 +643,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         world[12] = new Rectangle(5*TILE_SIZE + TILE_SIZE/2, TILE_SIZE , TILE_SIZE ,   3*  TILE_SIZE);
         //right
         world[13] = new Rectangle(10*TILE_SIZE + TILE_SIZE/2, TILE_SIZE ,  TILE_SIZE ,   3*  TILE_SIZE);*/
-
-
-
 
 
     }
