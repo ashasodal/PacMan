@@ -39,7 +39,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private final long RESPAWN_DELAY_MS = 2000;
     private final long GAME_OVER_DELAY_MS = 3000;
     private long collisionTimeStamp = 0;
-    private long gameOverTimeStamp = 0;
+    private long gameOverTimeStamp = -1;
 
 
     // CORE ENTITIES
@@ -175,6 +175,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void handleGameOverDelay() {
+        if(gameOverTimeStamp == -1) {
+            gameOverTimeStamp = System.currentTimeMillis();
+        }
         //  GAME_OVER_DELAY_MS delay before gameover state is displayed on screen.
         if (!drawGameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
             drawGameOver = true;
@@ -256,12 +259,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             deadAnimation();
             //animation done
             if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
+                //animation done
                 player.setSize(0, 0);
                 //display gameover
                 gameOver = true;
                 startGame = false;
                 startDeadAnimation = false;
-                gameOverTimeStamp = System.currentTimeMillis();
             }
         }
     }
@@ -274,26 +277,24 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 enemy.setSize(0, 0);
             }
 
-            //dead animation
             deadAnimation();
-            //animation has finished
-            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
-                startDeadAnimation = false;
-                respawn();
-            }
+            respawn();
+
         }
     }
 
     private void respawn() {
-        player.resetToInitialState();
-        //put enemies in initial position
-        for (Enemy enemy : enemies) {
-            enemy.resetToInitialState();
+        if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
+            //Dead animation has finished
+            player.resetToInitialState();
+            //put enemies in initial position
+            for (Enemy enemy : enemies) {
+                enemy.resetToInitialState();
+            }
+            startDeadAnimation = false;
+            playerEnemyCollision = false;
         }
-        playerEnemyCollision = false;
     }
-
-
 
 
     private void restart() {
@@ -302,6 +303,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         player.resetHealth();
         drawGameOver = false;
         restart = false;
+        gameOverTimeStamp = -1;
     }
 
     private void deadAnimation() {
