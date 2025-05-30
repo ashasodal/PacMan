@@ -283,4 +283,12 @@ public class Enemy extends Entity {
     public int getSpeed() {
         return speed;
     }
+
+    public void resetToInitialState() {
+        this.setLocation(this.initialX, this.initialY);
+        this.setSize(ThePanel.getTileSize(), ThePanel.getTileSize());
+        this.resetCounter();
+        this.initialDirection();
+        this.setSpeed(1);
+    }
 }

@@ -141,10 +141,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void setUpEnemies() {
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
-        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
-        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
-        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
+        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", "up", 60);
+        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", "down", 90);
+        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", "left", 120);
+        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", "right", 180);
     }
 
     private void setupPanel() {
@@ -285,24 +285,16 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void respawn() {
-        //put player in house
-        player.setLocation(player.getInitialXCenter(), player.getInitialYCenter());
-        //direction = [0,0,0,0]
-        player.resetDirectionArray();
-        player.resetMovementAnimations();
-        player.setPacManImage();
-        player.setSpeed(3);
-        player.setSize(TILE_SIZE, TILE_SIZE);
+        player.resetToInitialState();
         //put enemies in initial position
         for (Enemy enemy : enemies) {
-            enemy.setSize(TILE_SIZE, TILE_SIZE);
-            enemy.setLocation(enemy.getInitialX(), enemy.getInitialY());
-            enemy.resetCounter();
-            enemy.initialDirection();
-            enemy.setSpeed(1);
+            enemy.resetToInitialState();
         }
         playerEnemyCollision = false;
     }
+
+
+
 
     private void restart() {
         gameOver = false;

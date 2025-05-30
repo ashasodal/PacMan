@@ -40,7 +40,7 @@ public class Player extends Entity {
     private BufferedImage[] dead = new BufferedImage[12];
 
   // ANIMATION
-    private final long PLAYER_FRAME_INTERVAL_MS = 1000;   // Interval between image changes
+    private final long PLAYER_FRAME_INTERVAL_MS = 100;   // Interval between image changes
     private long playerAnimationStartTime = -1;           // When animation started
     private boolean isPlayerUpAnimating, isPlayerDownAnimating, isPlayerLeftAnimating, isPlayerRightAnimating;            // Animation state flag
 
@@ -395,6 +395,17 @@ public class Player extends Entity {
 
     public int getInitialYCenter() {
         return initialYCenter;
+    }
+
+
+    public void resetToInitialState() {
+        //put player in house
+        this.setLocation(this.initialXCenter, this.initialYCenter);
+        this.resetDirectionArray();
+        this.resetMovementAnimations();
+        this.setPacManImage();
+        this.setSpeed(3);
+        this.setSize(ThePanel.getTileSize(), ThePanel.getTileSize());
     }
 
 }
