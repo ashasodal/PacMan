@@ -4,6 +4,7 @@ import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.player.Player;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -43,7 +44,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private long gameOverTimeStamp = -1;
 
     //DEAD ANIMATION
-    private final long DEATH_ANIMATION_DELAY_MS = 150;
+    private final long DEATH_ANIMATION_DELAY_MS = 120;
     private long deathAnimationStartTime = 0;
     private boolean startDeadAnimation = false;
 
@@ -87,6 +88,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         // createWorldBuffer();
         // loadWorldMap();
         setUpGameLoop();
+
     }
 
     private void createWorldBuffer() {
@@ -261,7 +263,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             deadAnimation();
             //animation done
-            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS) {
+
+            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS ) {
                 //animation done
                 player.setSize(0, 0);
                 //display gameover
@@ -287,7 +290,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void respawn() {
-        if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS) {
+        //display transparent image for 1 extra second
+        final long EXTRA_TIME_MS = 1000;
+        if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + EXTRA_TIME_MS) {
             //Dead animation has finished
             player.resetToInitialState();
             //put enemies in initial position
@@ -313,6 +318,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         if (!startDeadAnimation) {
             startDeadAnimation = true;
+            playSound("./res/sound/dead.wav",0);
             deathAnimationStartTime = System.currentTimeMillis();
 
         }
@@ -653,6 +659,19 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         world[13] = new Rectangle(10*TILE_SIZE + TILE_SIZE/2, TILE_SIZE ,  TILE_SIZE ,   3*  TILE_SIZE);*/
 
 
+    }
+
+
+    public static void playSound(String filePath, int count) {
+        File file = new File(filePath);
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(count);
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
 
