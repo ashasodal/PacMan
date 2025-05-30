@@ -202,7 +202,7 @@ public class Enemy extends Entity {
     @Override
     public void render(Graphics2D g2) {
         // g2.setColor(new Color(123,56,88));
-        // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
+       // g2.fillRect(this.enemyRect.x,this.enemyRect.y,this.enemyRect.width,this.enemyRect.height);
         g2.drawImage(this.image, this.x, this.y, this.width, this.height, null);
        // this.paintRect(g2);
     }
@@ -255,15 +255,11 @@ public class Enemy extends Entity {
         this.x = x;
         this.y = y;
         enemyRect.setLocation(this.x, this.y);
-
-
-        rect[0] = new Rectangle(this.x, this.y + 11, this.width, this.height - 11);
-        rect[1] = new Rectangle(this.x + 2, this.y + 6, this.width - 4, 5);
-        rect[2] = new Rectangle(this.x + 4, this.y + 4, this.width - 8, 2);
-        rect[3] = new Rectangle(this.x + 6, this.y + 2, this.width - 12, 2);
-        rect[4] = new Rectangle(this.x + 10, this.y, this.width - 20, 2);
-
-
+        rect[0].setLocation(this.x, this.y + 11);
+        rect[1].setLocation(this.x + 2, this.y + 6);
+        rect[2].setLocation(this.x + 4, this.y + 4);
+        rect[3].setLocation(this.x + 6, this.y + 2);
+        rect[4].setLocation(this.x + 10, this.y);
     }
 
 
@@ -274,11 +270,16 @@ public class Enemy extends Entity {
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
-        for (Rectangle r : rect) {
-            r.setSize(width, height);
-        }
         this.enemyRect.setSize(width, height);
+        rect[0].setSize( this.width, this.height - 11);
+        rect[1].setSize(this.width - 4, 5);
+        rect[2].setSize(this.width - 8, 2);
+        rect[3].setSize(this.width - 12, 2);
+        rect[4].setSize(this.width - 20, 2);
     }
+
+
+
 
     public int getSpeed() {
         return speed;

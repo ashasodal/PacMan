@@ -38,8 +38,14 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     // TIMERS / DELAYS
     private final long RESPAWN_DELAY_MS = 2000;
     private final long GAME_OVER_DELAY_MS = 3000;
+    //player and enemy have collided with each other.
     private long collisionTimeStamp = 0;
     private long gameOverTimeStamp = -1;
+
+    //DEAD ANIMATION
+    private final long DEATH_ANIMATION_DELAY_MS = 150;
+    private long deathAnimationStartTime = 0;
+    private boolean startDeadAnimation = false;
 
 
     // CORE ENTITIES
@@ -67,10 +73,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private ScoreBoard scoreBoard;
 
 
-    //DEAD ANIMATION
-    private final long ANIMATION_DELAY_MS = 150;
-    private long deathAnimationStartTime = 0;
-    private boolean startDeadAnimation = false;
+
 
 
     public ThePanel() {
@@ -258,7 +261,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             deadAnimation();
             //animation done
-            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
+            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS) {
                 //animation done
                 player.setSize(0, 0);
                 //display gameover
@@ -284,7 +287,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void respawn() {
-        if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
+        if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS) {
             //Dead animation has finished
             player.resetToInitialState();
             //put enemies in initial position
@@ -316,7 +319,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
         long currentTime = System.currentTimeMillis() - deathAnimationStartTime;
         for (int i = 0; i < player.getDeadBuffer().length; i++) {
-            if (currentTime >= i * ANIMATION_DELAY_MS && currentTime < (i + 1) * ANIMATION_DELAY_MS) {
+            if (currentTime >= i * DEATH_ANIMATION_DELAY_MS && currentTime < (i + 1) * DEATH_ANIMATION_DELAY_MS) {
                 player.setImage(player.getDeadBuffer()[i]);
             }
         }
@@ -423,8 +426,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         renderBackground(g2);
 
         renderGrid(g2);
-        player.render(g2);
         renderEnemies(g2);
+        player.render(g2);
         scoreBoard.render(g2);
         renderWorld(g2);
         //gameOver = true
