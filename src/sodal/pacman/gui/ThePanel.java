@@ -255,11 +255,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             }
             deadAnimation();
             //animation done
-            if (player.getDeadCounter() == 120) {
+            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
                 player.setSize(0, 0);
                 //display gameover
                 gameOver = true;
                 startGame = false;
+                startDeadAnimation = false;
                 gameOverTimeStamp = System.currentTimeMillis();
             }
         }
@@ -276,7 +277,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             //dead animation
             deadAnimation();
             //animation has finished
-            if (System.currentTimeMillis() - deathAnimationStartTime >= 12 *ANIMATION_DELAY_MS) {
+            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * ANIMATION_DELAY_MS) {
                 startDeadAnimation = false;
                 respawn();
             }
@@ -320,44 +321,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
 
         long currentTime = System.currentTimeMillis() - deathAnimationStartTime;
-
-        if (currentTime >= 0 && currentTime <  ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[0]);
-        } else if (currentTime >=  ANIMATION_DELAY_MS && currentTime <  2* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[1]);
+        for (int i = 0; i < player.getDeadBuffer().length; i++) {
+            if (currentTime >= i * ANIMATION_DELAY_MS && currentTime < (i + 1) * ANIMATION_DELAY_MS) {
+                player.setImage(player.getDeadBuffer()[i]);
+            }
         }
-        else if (currentTime >=  2*ANIMATION_DELAY_MS && currentTime <  3* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[2]);
-        }
-        else if (currentTime >=  3*ANIMATION_DELAY_MS && currentTime <  4* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[3]);
-        }
-        else if (currentTime >=  4*ANIMATION_DELAY_MS && currentTime <  5* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[4]);
-        }
-        else if (currentTime >=  5*ANIMATION_DELAY_MS && currentTime <  6* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[5]);
-        }
-        else if (currentTime >=  6*ANIMATION_DELAY_MS && currentTime <  7* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[6]);
-        }
-        else if (currentTime >=  7*ANIMATION_DELAY_MS && currentTime <  8* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[7]);
-        }
-        else if (currentTime >=  8*ANIMATION_DELAY_MS && currentTime <  9* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[8]);
-        }
-        else if (currentTime >=  9*ANIMATION_DELAY_MS && currentTime <  10* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[9]);
-        }
-        else if (currentTime >=  10*ANIMATION_DELAY_MS && currentTime <  11* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[10]);
-        }
-        else if (currentTime >=  11*ANIMATION_DELAY_MS && currentTime <  12* ANIMATION_DELAY_MS) {
-            player.setImage(player.getDeadBuffer()[11]);
-        }
-
-
     }
 
 
