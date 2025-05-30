@@ -234,6 +234,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void processPlayerEnemyCollision() {
         //stop background sound
+        backgroundClip.stop();
         backgroundClip.close();
         System.out.println(" collided!!!");
         playerEnemyCollision = true;
@@ -709,8 +710,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
             startBackgroundSound = true;
         }
-
     }
-
 
 }
