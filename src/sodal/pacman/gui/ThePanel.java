@@ -235,14 +235,17 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void processPlayerEnemyCollision() {
         //stop background sound
-        backgroundClip.stop();
-        backgroundClip.close();
+        stopBackgroundSound();
         System.out.println(" collided!!!");
         playerEnemyCollision = true;
         player.decrementHealth();
         stopPlayerEnemiesMovement();
-        player.resetDirectionArray();
         collisionTimeStamp = System.currentTimeMillis();
+    }
+
+    private void stopBackgroundSound() {
+        backgroundClip.stop();
+        backgroundClip.close();
     }
 
 
@@ -296,7 +299,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //display gameover
         gameOver = true;
         startGame = false;
-
     }
 
     private void respawn() {
@@ -348,7 +350,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 player.setImage(player.getDeadBuffer()[i]);
             }
         }
-
     }
 
 
@@ -367,7 +368,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             g2d.dispose();
 
             return resized;
-
         } catch (IOException e) {
             e.printStackTrace();
         }
