@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Arrays;
 
@@ -84,7 +85,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     ///FOOD
     private Food food;
 
-    private List<Food> allFood = new ArrayList<>();
+    private  static  List<Food> allFood = new ArrayList<>();
 
 
     public ThePanel() {
@@ -508,8 +509,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void renderFood(Graphics2D g2) {
-        for(Food food : allFood) {
-            food.render(g2);
+        Iterator<Food> it =  ThePanel.getAllFood().iterator();
+        while (it.hasNext()) {
+            Food food = it.next();
+           food.render(g2);
         }
     }
 
@@ -774,6 +777,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void replayBackgroundSound() {
         backgroundClip = getClip("./res/sound/siren.wav");
         backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+
+    public  static List<Food> getAllFood() {
+        return allFood;
     }
 
 }

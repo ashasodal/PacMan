@@ -2,6 +2,7 @@ package sodal.pacman.entity.player;
 
 import sodal.pacman.entity.Entity;
 //import sodal.pacman.entity.enemy.Enemy;
+import sodal.pacman.entity.food.Food;
 import sodal.pacman.gui.ThePanel;
 
 import javax.imageio.ImageIO;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Player extends Entity {
 
@@ -95,6 +97,7 @@ public class Player extends Entity {
     public void update() {
         move();
         worldCollision();
+        foodCollision();
     }
 
     private void worldCollision() {
@@ -108,6 +111,20 @@ public class Player extends Entity {
             }
         }
     }
+
+    private void foodCollision() {
+        Iterator<Food> it =  ThePanel.getAllFood().iterator();
+        while (it.hasNext()) {
+            Food food = it.next();
+            Rectangle foodRect = food.getFoodRect();
+            if(panel.circleRectCollision(foodRect)) {
+                //make food invisible
+                it.remove();
+            }
+        }
+    }
+
+
 
 
     private void moveUp(int speed) {
