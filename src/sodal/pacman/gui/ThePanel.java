@@ -322,21 +322,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private boolean deadAnimation() {
-        if (!startDeadAnimation) {
-            startDeadAnimation = true;
-            playSound("./res/sound/dead.wav", 0);
-            deathAnimationStartTime = System.currentTimeMillis();
-        }
-
+        beginDeathAnimation();
         long deltaTime = System.currentTimeMillis() - deathAnimationStartTime;
-        for (int i = 0; i < player.getDeadBuffer().length; i++) {
-            if (deltaTime >= i * DEATH_ANIMATION_DELAY_MS && deltaTime < (i + 1) * DEATH_ANIMATION_DELAY_MS) {
-                player.setImage(player.getDeadBuffer()[i]);
-            }
-        }
-
-        long extra_time_ms =  player.getHealth() == 0 ? 0 : 1000;
-        long timeDuration =  player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + extra_time_ms;
+        updateDeadAnimationFrame(deltaTime);
+        long extra_time_ms = player.getHealth() == 0 ? 0 : 1000;
+        long timeDuration = player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + extra_time_ms;
         if (deltaTime >= timeDuration) {
             startDeadAnimation = false;
             return true;
@@ -344,6 +334,22 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         return false;
     }
 
+    private void beginDeathAnimation() {
+        if (!startDeadAnimation) {
+            startDeadAnimation = true;
+            playSound("./res/sound/dead.wav", 0);
+            deathAnimationStartTime = System.currentTimeMillis();
+        }
+    }
+
+    private void updateDeadAnimationFrame(long deltaTime) {
+        for (int i = 0; i < player.getDeadBuffer().length; i++) {
+            if (deltaTime >= i * DEATH_ANIMATION_DELAY_MS && deltaTime < (i + 1) * DEATH_ANIMATION_DELAY_MS) {
+                player.setImage(player.getDeadBuffer()[i]);
+            }
+        }
+
+    }
 
 
     private BufferedImage createBuffer(int width, int height, String path) {
