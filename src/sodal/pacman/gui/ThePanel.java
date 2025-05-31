@@ -1,6 +1,7 @@
 package sodal.pacman.gui;
 
 import sodal.pacman.entity.enemy.Enemy;
+import sodal.pacman.entity.food.Food;
 import sodal.pacman.entity.player.Player;
 
 import javax.imageio.ImageIO;
@@ -14,6 +15,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 
 
@@ -78,6 +81,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private boolean startBackgroundSound = false;
 
 
+    ///FOOD
+    private Food food;
+
+    private List<Food> allFood = new ArrayList<>();
+
+
     public ThePanel() {
         setupPanel();
         setUpEnemies();
@@ -86,8 +95,15 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         setUpBuffer();
         setUpWorldRectangles();
         backgroundClip = getClip("./res/sound/siren.wav");
+        //FOOD
+        loadWorldMap();
         setUpGameLoop();
+    }
 
+
+    private void addAllFood() {
+        int foodSize = Food.getSize();
+        food = new Food(0 + TILE_SIZE / 2 - foodSize / 2, 0 + TILE_SIZE / 2 - foodSize / 2);
     }
 
     private void createWorldBuffer() {
@@ -105,20 +121,43 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         String filePath = "./res/worldMap/world.txt"; // Replace with your actual file path
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
-            String line = br.readLine();
-            int index = 0;
-            while (line != null) {
-                for (int i = 0; i < NUM_TILES_WIDTH; i++) {
-                    byte num = Byte.parseByte(String.valueOf(line.charAt(i)));
-                    worldData[index][i] = num;
-                }
-                index++;
-                line = br.readLine();
-            }
+            addAllFood(br);
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
     }
+
+    private void addAllFood(BufferedReader br) {
+        try {
+            String line = br.readLine();
+            int x = 0;
+            int y = 0;
+            while (line != null) {
+                for (int i = 0; i < line.length(); i++) {
+                    char c = line.charAt(i);
+                    if (c == '0') {
+                        //add fruit
+                       addFruit(x,y);
+                    }
+                    x += TILE_SIZE;
+                }
+                x = 0;
+                y += TILE_SIZE;
+
+                line = br.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addFruit(int x, int y) {
+        int foodSize = Food.getSize();
+        Food food = new Food(x + TILE_SIZE / 2 - foodSize / 2, y + TILE_SIZE / 2 - foodSize / 2);
+        allFood.add(food);
+    }
+
 
 
     private void setUpGameLoop() {
@@ -461,7 +500,17 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         if (drawGameOver) {
             renderGameOver(g2);
         }
+
+        //render all food
+        renderFood(g2);
+
         g2.dispose();
+    }
+
+    private void renderFood(Graphics2D g2) {
+        for(Food food : allFood) {
+            food.render(g2);
+        }
     }
 
 
