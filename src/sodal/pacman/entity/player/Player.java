@@ -114,12 +114,10 @@ public class Player extends Entity {
 
     private void foodCollision() {
         for(Food food: ThePanel.getAllFood()) {
-            Rectangle foodRect = food.getFoodRect();
+            Rectangle foodRect = new Rectangle(food.getX(), food.getY(), food.getWidth(), food.getHeight());
             if(!food.isEaten() && panel.circleRectCollision(foodRect)) {
                 //make food invisible
                 food.setSize((byte)0,(byte)0);
-                foodRect.setSize(0,0);
-                //  it.remove();
             }
         }
     }

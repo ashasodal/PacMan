@@ -356,11 +356,19 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void restart() {
         respawn();
         player.resetHealth();
+        //make all food
+        resetAllFoodSize();
         drawGameOver = false;
         restart = false;
         startBackgroundSound = false;
         gameOverTimeStamp = -1;
         gameOver = false;
+    }
+
+    private void resetAllFoodSize() {
+        for(Food food : allFood) {
+            food.setSize(Food.getSize(),Food.getSize());
+        }
     }
 
     private boolean deadAnimation() {

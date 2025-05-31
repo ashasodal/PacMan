@@ -7,14 +7,13 @@ public class Food {
     private volatile byte width;
     private volatile byte height;
 
-    private static  byte size = 4;
+    private static final  byte SIZE = 4;
 
     private int x;
     private int y;
 
     private static final Color color = new Color(234, 130, 229);
 
-    private Rectangle rect;
 
 
     public Food(int x, int y) {
@@ -22,8 +21,7 @@ public class Food {
         this.y = y;
         width = 4;
         height = 4;
-        size = width; // size = width = height
-        this.rect = new Rectangle(x,y,width,height);
+
     }
 
 
@@ -33,13 +31,11 @@ public class Food {
     }
 
     public static byte getSize() {
-        return size; // or height because WIDTH = HEIGHT
+        return SIZE; // or height because WIDTH = HEIGHT
     }
 
 
-    public Rectangle getFoodRect() {
-        return rect;
-    }
+
 
     public void setSize(byte width, byte height) {
         this.width = width;
@@ -49,6 +45,24 @@ public class Food {
 
     public boolean isEaten() {
         return width == 0; // or height == 0.
+    }
+
+    public int getX() {
+        return x;
+    }
+
+
+    public int getY() {
+        return y;
+    }
+
+
+    public byte getWidth() {
+        return width;
+    }
+
+    public byte getHeight() {
+        return height;
     }
 
 
