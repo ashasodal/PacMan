@@ -287,31 +287,26 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             for (Enemy enemy : enemies) {
                 enemy.setSize(0, 0);
             }
-
             deadAnimation();
-            respawn();
-
+            long EXTRA_TIME_MS = 1000;
+            //dead animation done (last image (transparent image)  will be displayed 1000 ms extra).
+            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + EXTRA_TIME_MS) {
+                respawn();
+                replayBackgroundSound();
+            }
         }
     }
 
     private void respawn() {
         //display transparent image for 1 extra second
-        final long EXTRA_TIME_MS = 1000;
-        if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + EXTRA_TIME_MS) {
-            //Dead animation has finished
-            player.resetToInitialState();
-            //put enemies in initial position
-            for (Enemy enemy : enemies) {
-                enemy.resetToInitialState();
-            }
-            startDeadAnimation = false;
-            playerEnemyCollision = false;
-            if(!gameOver) {
-                //replay background sound
-                backgroundClip = getClip("./res/sound/siren.wav");
-                backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
+        //Dead animation has finished
+        player.resetToInitialState();
+        //put enemies in initial position
+        for (Enemy enemy : enemies) {
+            enemy.resetToInitialState();
         }
+        startDeadAnimation = false;
+        playerEnemyCollision = false;
     }
 
 
@@ -331,12 +326,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             startDeadAnimation = true;
             playSound("./res/sound/dead.wav", 0);
             deathAnimationStartTime = System.currentTimeMillis();
-
         }
 
-        long currentTime = System.currentTimeMillis() - deathAnimationStartTime;
+        long deltaTime = System.currentTimeMillis() - deathAnimationStartTime;
         for (int i = 0; i < player.getDeadBuffer().length; i++) {
-            if (currentTime >= i * DEATH_ANIMATION_DELAY_MS && currentTime < (i + 1) * DEATH_ANIMATION_DELAY_MS) {
+            if (deltaTime >= i * DEATH_ANIMATION_DELAY_MS && deltaTime < (i + 1) * DEATH_ANIMATION_DELAY_MS) {
                 player.setImage(player.getDeadBuffer()[i]);
             }
         }
@@ -710,6 +704,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
             startBackgroundSound = true;
         }
+    }
+
+
+    private void replayBackgroundSound() {
+        backgroundClip = getClip("./res/sound/siren.wav");
+        backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
 }
