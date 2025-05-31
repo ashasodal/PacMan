@@ -113,15 +113,13 @@ public class Player extends Entity {
     }
 
     private void foodCollision() {
-        Iterator<Food> it =  ThePanel.getAllFood().iterator();
-        while (it.hasNext()) {
-            Food food = it.next();
+        for(Food food: ThePanel.getAllFood()) {
             Rectangle foodRect = food.getFoodRect();
             if(!food.isEaten() && panel.circleRectCollision(foodRect)) {
                 //make food invisible
                 food.setSize((byte)0,(byte)0);
                 foodRect.setSize(0,0);
-              //  it.remove();
+                //  it.remove();
             }
         }
     }
@@ -316,8 +314,8 @@ public class Player extends Entity {
        //  g2.setColor(Color.magenta);
         // g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.drawImage(this.image, rect.x, rect.y, this.radius * 2, this.radius * 2, null);
-        //g2.setColor(Color.red);
-        // g2.drawOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
+       // g2.setColor(Color.red);
+        // g2.fillOval(rect.x, rect.y, this.radius * 2, this.radius * 2);
 
     }
 

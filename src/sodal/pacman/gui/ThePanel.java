@@ -509,9 +509,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void renderFood(Graphics2D g2) {
-        Iterator<Food> it =  ThePanel.getAllFood().iterator();
-        while (it.hasNext()) {
-            Food food = it.next();
+        for(Food food :  getAllFood()) {
             if(!food.isEaten()) {
                 food.render(g2);
             }
