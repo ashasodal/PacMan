@@ -37,7 +37,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
 
     // TIMERS / DELAYS
-    private final long RESPAWN_DELAY_MS = 2000;
+    private final long FREEZE_DURATION_MS = 2000;
     private final long GAME_OVER_DELAY_MS = 3000;
     //player and enemy have collided with each other.
     private long collisionTimeStamp = 0;
@@ -187,6 +187,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         if (!drawGameOver && System.currentTimeMillis() - gameOverTimeStamp >= GAME_OVER_DELAY_MS) {
             drawGameOver = true;
         }
+
     }
 
     private void handleRestart() {
@@ -228,7 +229,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 }
             }
         } else {
-            handlePlayerEnemyCollision();
+            collisionDelay();
         }
     }
 
@@ -245,15 +246,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    private void handlePlayerEnemyCollision() {
-        //game over.
-        if (player.getHealth() == 0) {
-            gameOver();
-        } else {
-            collisionDelay();
-        }
-    }
-
     private void stopPlayerEnemiesMovement() {
         player.setSpeed(0);
         for (Enemy enemy : enemies) {
@@ -261,40 +253,50 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    public void gameOver() {
-        if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
-            //make enemies invisible
-            for (Enemy enemy : enemies) {
-                enemy.setSize(0, 0);
-            }
-            deadAnimation();
-            //animation done
-            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS) {
-                //animation done
-                player.setSize(0, 0);
-                //display gameover
-                gameOver = true;
-                startGame = false;
-                startDeadAnimation = false;
-            }
+
+    private void hideEnemies() {
+        for (Enemy enemy : enemies) {
+            enemy.setSize(0, 0);
         }
+    }
+
+    /**
+     * the time in which pacman and enemies freeze when pacman hots enemies
+     *
+     * @return
+     */
+
+    private boolean freezeCollision() {
+        if (System.currentTimeMillis() - collisionTimeStamp >= FREEZE_DURATION_MS) {
+            return true;
+        }
+        return false;
     }
 
     private void collisionDelay() {
         //The player enemy collision "freeze"
-        if (System.currentTimeMillis() - collisionTimeStamp >= RESPAWN_DELAY_MS) {
+        if (freezeCollision()) {
             //make enemies invisible
-            for (Enemy enemy : enemies) {
-                enemy.setSize(0, 0);
-            }
-            deadAnimation();
-            long EXTRA_TIME_MS = 1000;
-            //dead animation done (last image (transparent image)  will be displayed 1000 ms extra).
-            if (System.currentTimeMillis() - deathAnimationStartTime >= player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + EXTRA_TIME_MS) {
-                respawn();
-                replayBackgroundSound();
+            hideEnemies();
+            if (deadAnimation()) {
+                if (player.getHealth() == 0) {
+                    handleGameOverState();
+                } else {
+                    respawn();
+                    replayBackgroundSound();
+                }
             }
         }
+
+    }
+
+    private void handleGameOverState() {
+        //animation done
+        player.setSize(0, 0);
+        //display gameover
+        gameOver = true;
+        startGame = false;
+
     }
 
     private void respawn() {
@@ -305,7 +307,6 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         for (Enemy enemy : enemies) {
             enemy.resetToInitialState();
         }
-        startDeadAnimation = false;
         playerEnemyCollision = false;
     }
 
@@ -320,8 +321,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         gameOver = false;
     }
 
-    private void deadAnimation() {
-
+    private boolean deadAnimation() {
         if (!startDeadAnimation) {
             startDeadAnimation = true;
             playSound("./res/sound/dead.wav", 0);
@@ -334,7 +334,16 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 player.setImage(player.getDeadBuffer()[i]);
             }
         }
+
+        long extra_time_ms =  player.getHealth() == 0 ? 0 : 1000;
+        long timeDuration =  player.getDeadBuffer().length * DEATH_ANIMATION_DELAY_MS + extra_time_ms;
+        if (deltaTime >= timeDuration) {
+            startDeadAnimation = false;
+            return true;
+        }
+        return false;
     }
+
 
 
     private BufferedImage createBuffer(int width, int height, String path) {
