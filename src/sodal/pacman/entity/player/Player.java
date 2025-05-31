@@ -117,9 +117,11 @@ public class Player extends Entity {
         while (it.hasNext()) {
             Food food = it.next();
             Rectangle foodRect = food.getFoodRect();
-            if(panel.circleRectCollision(foodRect)) {
+            if(!food.isEaten() && panel.circleRectCollision(foodRect)) {
                 //make food invisible
-                it.remove();
+                food.setSize((byte)0,(byte)0);
+                foodRect.setSize(0,0);
+              //  it.remove();
             }
         }
     }

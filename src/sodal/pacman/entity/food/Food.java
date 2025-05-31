@@ -4,8 +4,8 @@ import javax.swing.plaf.PanelUI;
 import java.awt.*;
 
 public class Food {
-    private  byte width;
-    private  byte height;
+    private volatile byte width;
+    private volatile byte height;
 
     private static  byte size = 4;
 
@@ -44,6 +44,11 @@ public class Food {
     public void setSize(byte width, byte height) {
         this.width = width;
         this.height = height;
+    }
+
+
+    public boolean isEaten() {
+        return width == 0; // or height == 0.
     }
 
 

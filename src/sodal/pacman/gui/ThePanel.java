@@ -512,7 +512,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Iterator<Food> it =  ThePanel.getAllFood().iterator();
         while (it.hasNext()) {
             Food food = it.next();
-           food.render(g2);
+            if(!food.isEaten()) {
+                food.render(g2);
+            }
         }
     }
 
