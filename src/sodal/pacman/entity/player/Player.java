@@ -123,8 +123,6 @@ public class Player extends Entity {
     }
 
 
-
-
     private void moveUp(int speed) {
         if (this.rect.y > 0) {
             this.yCenter -= speed;
