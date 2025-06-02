@@ -12,11 +12,15 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PipedReader;
 import java.util.Arrays;
 import java.util.Iterator;
 
 public class Player extends Entity {
 
+
+
+    protected int score = 0;
 
     protected int xCenter, yCenter;
     private int initialXCenter, initialYCenter;
@@ -118,6 +122,8 @@ public class Player extends Entity {
             if(!food.isEaten() && panel.circleRectCollision(foodRect)) {
                 //make food invisible
                 food.setSize((byte)0,(byte)0);
+                score++;
+                System.out.println(score);
             }
         }
     }
@@ -419,6 +425,11 @@ public class Player extends Entity {
         this.setPacManImage();
         this.setSpeed(3);
         this.setSize(ThePanel.getTileSize(), ThePanel.getTileSize());
+    }
+
+
+    public int getScore() {
+        return score;
     }
 
 }
