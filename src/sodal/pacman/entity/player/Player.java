@@ -117,12 +117,18 @@ public class Player extends Entity {
     }
 
     private void foodCollision() {
+        boolean eatFoodSound = false;
         for(Food food: ThePanel.getAllFood()) {
             Rectangle foodRect = new Rectangle(food.getX(), food.getY(), food.getWidth(), food.getHeight());
             if(!food.isEaten() && panel.circleRectCollision(foodRect)) {
                 //make food invisible
                 food.setSize((byte)0,(byte)0);
                 score++;
+                if(!eatFoodSound) {
+                    //play once when pacman hits more than one food at the same time
+                    ThePanel.playSound("./res/sound/x.wav",0, -9f);
+                    eatFoodSound = true;
+                }
             }
         }
     }

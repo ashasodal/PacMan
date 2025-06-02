@@ -391,7 +391,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void beginDeathAnimation() {
         if (!startDeadAnimation) {
             startDeadAnimation = true;
-            playSound("./res/sound/dead.wav", 0);
+            playSound("./res/sound/dead.wav", 0,0);
             deathAnimationStartTime = System.currentTimeMillis();
         }
     }
@@ -746,12 +746,14 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public static void playSound(String filePath, int count) {
+    public static void playSound(String filePath, int count, float volume) {
         File file = new File(filePath);
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(volume); // Reduce volume by 10 decibels.
             clip.loop(count);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
