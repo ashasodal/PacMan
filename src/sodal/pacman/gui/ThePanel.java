@@ -37,7 +37,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private boolean restart = false;
     private volatile boolean drawGameOver = false;
     private volatile boolean playerEnemyCollision = false;
-    private boolean startGame = false;
+    private static boolean startGame = false;
 
 
     // TIMERS / DELAYS
@@ -209,7 +209,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         if (!gameOver) {
             if (startGame) {
-                playBackgroundSound();
+               // playBackgroundSound();
+                scoreBoard.update();
                 updatePlayerAndEnemies();
                 checkCollision();
             }
@@ -792,5 +793,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     public  static List<Food> getAllFood() {
         return allFood;
     }
+
+
+   public static boolean getStartGame() {
+        return startGame;
+   }
 
 }
