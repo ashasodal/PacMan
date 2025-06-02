@@ -24,7 +24,6 @@ public class ScoreBoard {
     private Font font;
 
 
-
     public ScoreBoard(Player player) {
         this.x = 0;
         this.y = ThePanel.getHEIGHT() - ThePanel.getTileSize();
@@ -33,7 +32,8 @@ public class ScoreBoard {
         this.player = player;
         this.healthImage = this.player.getLeftBuffer()[2];
 
-        font = getFont("./res/font/pixel.otf", 20f);;
+        font = getFont("./res/font/pixel.otf", 20f);
+        ;
 
         createBuffer();
 
@@ -42,7 +42,7 @@ public class ScoreBoard {
 
     public void update() {
         if (ThePanel.getStartGame()) {
-            if(timer == -1) {
+            if (timer == -1) {
                 System.out.println("start TIMER");
                 timer = System.currentTimeMillis();
             }
@@ -51,44 +51,12 @@ public class ScoreBoard {
             //one second has passed
             if (deltaTime >= 1000) {
                 displayTime++;
+                int minutes = (int) Math.floor(displayTime / 60.0);
+                displayTimerString.replace(0, 2, "0" + minutes);
                 //second part in 00:|00| <-
                 int seconds = displayTime % 60;
-                if(displayTime >= 60 && displayTime < 2 * 60) {
-                    displayTimerString.replace(0, 2,"01");
-                }
-
-                else if(displayTime >= 2 * 60 && displayTime < 3*60) {
-                    displayTimerString.replace(0, 2,"02");
-                }
-
-                else if(displayTime >= 3 * 60 && displayTime < 4*60) {
-                    displayTimerString.replace(0, 2,"03");
-                }
-
-                else if(displayTime >= 4 * 60 && displayTime < 5*60) {
-                    displayTimerString.replace(0, 2,"04");
-                }
-
-                else if(displayTime >= 5 * 60 && displayTime < 6*60) {
-                    displayTimerString.replace(0, 2,"05");
-                }
-
-                if(seconds >= 0 && seconds <= 9) {
-                    displayTimerString.replace(displayTimerString.length() -2, displayTimerString.length(), "00");
-                    displayTimerString.replace(displayTimerString.length()-1, displayTimerString.length(), String.valueOf(seconds));
-                }
-                else {
-                    displayTimerString.replace(displayTimerString.length() -2, displayTimerString.length(), "00");
-                    displayTimerString.replace(displayTimerString.length()-2, displayTimerString.length(),String.valueOf(seconds));
-                }
-
-               // System.out.println(seconds);
-               // System.out.println(displayTimerString);
-
-
-
-
-
+                displayTimerString.replace(displayTimerString.length() - 2, displayTimerString.length(), "00");
+                displayTimerString.replace(displayTimerString.length() - (String.valueOf(seconds).length()), displayTimerString.length(), String.valueOf(seconds));
                 timer = System.currentTimeMillis();
             }
         }
@@ -116,15 +84,14 @@ public class ScoreBoard {
         g2.setFont(font);
         g2.setColor(new Color(100, 0, 0));
         String text = String.valueOf(displayTimerString);
-        int x = this.width - 3* ThePanel.getTileSize();
-        int y = alignY(g2,font);
+        int x = this.width - 3 * ThePanel.getTileSize();
+        int y = alignY(g2, font);
         g2.drawString(text, x, y);
     }
 
     private void renderScoreBoard(Graphics2D g2) {
         g2.setColor(Color.gray);
         g2.fillRect(this.x, this.y, this.width, this.height);
-
 
 
     }
@@ -135,8 +102,8 @@ public class ScoreBoard {
         //font color
         g2.setColor(new Color(100, 0, 0));
         String text = "SCORE: " + player.getScore();
-        int x = alignX(g2,font,text);
-        int y = alignY(g2,font);
+        int x = alignX(g2, font, text);
+        int y = alignY(g2, font);
         g2.drawString(text, x, y);
     }
 
@@ -177,9 +144,6 @@ public class ScoreBoard {
             x += ThePanel.getTileSize();
         }
     }
-
-
-
 
 
 }
