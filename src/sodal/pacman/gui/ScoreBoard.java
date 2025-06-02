@@ -55,11 +55,9 @@ public class ScoreBoard {
             if (deltaTime >= 1000) {
                 displayTime++;
                 int minutes = (int) Math.floor(displayTime / 60.0);
-                displayTimerString.replace(0, 2, "0" + minutes);
-                //second part in 00:|00| <-
                 int seconds = displayTime % 60;
-                displayTimerString.replace(displayTimerString.length() - 2, displayTimerString.length(), "00");
-                displayTimerString.replace(displayTimerString.length() - (String.valueOf(seconds).length()), displayTimerString.length(), String.valueOf(seconds));
+                String format = String.format("%02d:%02d", minutes, seconds);
+                displayTimerString.replace(0, displayTimerString.length(), format);
                 timer = System.currentTimeMillis();
             }
         }
@@ -152,7 +150,7 @@ public class ScoreBoard {
     public void resetTimer() {
         timer = -1;
         displayTime = 0;
-        displayTimerString.replace(0,displayTimerString.length(), "00:00");
+        displayTimerString.replace(0, displayTimerString.length(), "00:00");
     }
 
 
