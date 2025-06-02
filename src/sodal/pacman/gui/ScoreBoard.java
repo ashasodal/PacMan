@@ -21,6 +21,8 @@ public class ScoreBoard {
     private int displayTime = 0;
     private StringBuffer displayTimerString = new StringBuffer("00:00");
 
+    private Font font;
+
 
 
     public ScoreBoard(Player player) {
@@ -29,8 +31,9 @@ public class ScoreBoard {
         this.width = ThePanel.getWIDTH();
         this.height = ThePanel.getTileSize();
         this.player = player;
-
         this.healthImage = this.player.getLeftBuffer()[2];
+
+        font = getFont("./res/font/pixel.otf", 20f);;
 
         createBuffer();
 
@@ -50,8 +53,24 @@ public class ScoreBoard {
                 displayTime++;
                 //second part in 00:|00| <-
                 int seconds = displayTime % 60;
-                if(displayTime >= 60 && displayTime < 120) {
+                if(displayTime >= 60 && displayTime < 2 * 60) {
                     displayTimerString.replace(0, 2,"01");
+                }
+
+                else if(displayTime >= 2 * 60 && displayTime < 3*60) {
+                    displayTimerString.replace(0, 2,"02");
+                }
+
+                else if(displayTime >= 3 * 60 && displayTime < 4*60) {
+                    displayTimerString.replace(0, 2,"03");
+                }
+
+                else if(displayTime >= 4 * 60 && displayTime < 5*60) {
+                    displayTimerString.replace(0, 2,"04");
+                }
+
+                else if(displayTime >= 5 * 60 && displayTime < 6*60) {
+                    displayTimerString.replace(0, 2,"05");
                 }
 
                 if(seconds >= 0 && seconds <= 9) {
@@ -63,8 +82,8 @@ public class ScoreBoard {
                     displayTimerString.replace(displayTimerString.length()-2, displayTimerString.length(),String.valueOf(seconds));
                 }
 
-                System.out.println(seconds);
-                System.out.println(displayTimerString);
+               // System.out.println(seconds);
+               // System.out.println(displayTimerString);
 
 
 
@@ -94,11 +113,10 @@ public class ScoreBoard {
 
 
     private void renderTimer(Graphics2D g2) {
-        g2.setColor(new Color(100, 0, 0));
-        Font font = getFont("./res/font/pixel.otf", 20f);
         g2.setFont(font);
-        String text = "TIME: " + displayTimerString;
-        int x = this.width - 6* ThePanel.getTileSize();
+        g2.setColor(new Color(100, 0, 0));
+        String text = String.valueOf(displayTimerString);
+        int x = this.width - 3* ThePanel.getTileSize();
         int y = alignY(g2,font);
         g2.drawString(text, x, y);
     }
@@ -113,11 +131,9 @@ public class ScoreBoard {
 
 
     private void renderScore(Graphics2D g2) {
+        g2.setFont(font);
         //font color
         g2.setColor(new Color(100, 0, 0));
-        float fontSize = 20f;
-        Font font = getFont("./res/font/pixel.otf", fontSize);
-        g2.setFont(font);
         String text = "SCORE: " + player.getScore();
         int x = alignX(g2,font,text);
         int y = alignY(g2,font);

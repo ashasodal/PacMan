@@ -123,7 +123,6 @@ public class Player extends Entity {
                 //make food invisible
                 food.setSize((byte)0,(byte)0);
                 score++;
-                System.out.println(score);
             }
         }
     }
