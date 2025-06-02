@@ -17,11 +17,14 @@ public class ScoreBoard {
 
     private Player player;
     private BufferedImage healthImage;
+
+    private Font font;
+
+
+    //TIMER
     private long timer = -1;
     private int displayTime = 0;
     private StringBuffer displayTimerString = new StringBuffer("00:00");
-
-    private Font font;
 
 
     public ScoreBoard(Player player) {
@@ -148,6 +151,8 @@ public class ScoreBoard {
 
     public void resetTimer() {
         timer = -1;
+        displayTime = 0;
+        displayTimerString.replace(0,displayTimerString.length(), "00:00");
     }
 
 

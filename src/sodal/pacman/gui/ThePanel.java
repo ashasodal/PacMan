@@ -209,7 +209,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         if (!gameOver) {
             if (startGame) {
-               // playBackgroundSound();
+                playBackgroundSound();
                 scoreBoard.update();
                 updatePlayerAndEnemies();
                 checkCollision();
@@ -357,6 +357,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
 
     private void restart() {
         respawn();
+        scoreBoard.resetTimer();
         player.resetHealth();
         player.setScore(0);
         //make all food
