@@ -50,41 +50,38 @@ public class ScoreBoard {
 
 
     private void renderScore(Graphics2D g2) {
-        g2.setColor(Color.red);
-      //  g2.setFont(new Font(F));
-
+        //font color
         g2.setColor(new Color(100,0,0));
         float fontSize = 20f;
-        int x = this.x + this.width - 5 * ThePanel.getTileSize();
+        Font font = getFont("./res/font/pixel.otf" , fontSize);
+        g2.setFont(font);
+        String text = "SCORE: " + player.getScore();
+
+        //alignment
+        FontMetrics metrics = g2.getFontMetrics(font);
+        int textWidth = metrics.stringWidth(text);
+        int x = (this.width - textWidth) / 2;
         int y = this.y + this.height - (int)fontSize/2; // line UNDER the string
 
+        g2.drawString(text, x, y);
+
+
+    }
+
+
+
+
+    private Font getFont(String path, float fontSize) {
+        Font font;
         try {
-          renderPixelFont(g2,fontSize,x,y);
+           font = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(fontSize);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
         }
-        catch (FontFormatException | IOException e ) {
-          renderRegularFont(g2,(int)fontSize,x,y);
+        catch (IOException | FontFormatException e) {
+           font =  new Font(Font.SERIF, Font.BOLD, (int)fontSize );
         }
-
-
-    }
-
-
-    private void renderPixelFont(Graphics2D g2, float fontSize, int x, int y) throws IOException, FontFormatException{
-        Font pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File("./res/font/pixel.otf")).deriveFont(fontSize);
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        ge.registerFont(pixelFont);
-        // Set color and font
-        g2.setFont(pixelFont);
-        // Draw the string
-        g2.drawString("SCORE: " + player.getScore(), x, y);
-
-    }
-
-    private void renderRegularFont(Graphics2D g2,int fontSize, int x, int y ) {
-        g2.setColor(new Color(100,0,0));
-        Font font = new Font(Font.SERIF, Font.BOLD, fontSize );
-        g2.setFont(font);
-        g2.drawString("SCORE: " + player.getScore(), x, y);
+        return font;
     }
 
 
