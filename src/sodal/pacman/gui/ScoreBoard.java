@@ -59,13 +59,17 @@ public class ScoreBoard {
 
         //alignment
         FontMetrics metrics = g2.getFontMetrics(font);
+        //x align
         int textWidth = metrics.stringWidth(text);
         int x = (this.width - textWidth) / 2;
-        int y = this.y + this.height - (int)fontSize/2; // line UNDER the string
+
+        //y align
+        int textHeight = metrics.getHeight();            // total height of font (ascent + descent)
+        int ascent = metrics.getAscent();                // ascent is how far baseline is from top
+        int y = this.y + (this.height - textHeight) / 2 + ascent;
 
         g2.drawString(text, x, y);
-
-
+        
     }
 
 
