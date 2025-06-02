@@ -356,6 +356,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void restart() {
         respawn();
         player.resetHealth();
+        player.setScore(0);
         //make all food
         resetAllFoodSize();
         drawGameOver = false;
@@ -498,8 +499,9 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
         renderBackground(g2);
-
         renderGrid(g2);
+        //render all food
+        renderFood(g2);
         renderEnemies(g2);
         player.render(g2);
         scoreBoard.render(g2);
@@ -510,8 +512,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
             renderGameOver(g2);
         }
 
-        //render all food
-        renderFood(g2);
+
 
         g2.dispose();
     }
