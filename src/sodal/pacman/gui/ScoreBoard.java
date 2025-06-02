@@ -41,7 +41,7 @@ public class ScoreBoard {
 
 
     public void update() {
-        if (ThePanel.getStartGame()) {
+        if (ThePanel.getStartGame() && !ThePanel.getPlayerEnemyCollisionState()) {
             if (timer == -1) {
                 System.out.println("start TIMER");
                 timer = System.currentTimeMillis();
@@ -143,6 +143,11 @@ public class ScoreBoard {
             g2.drawImage(this.healthImage, x, this.y, ThePanel.getTileSize(), ThePanel.getTileSize(), null);
             x += ThePanel.getTileSize();
         }
+    }
+
+
+    public void resetTimer() {
+        timer = -1;
     }
 
 

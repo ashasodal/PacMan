@@ -36,7 +36,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private boolean gameOver = false;
     private boolean restart = false;
     private volatile boolean drawGameOver = false;
-    private volatile boolean playerEnemyCollision = false;
+    private static volatile boolean playerEnemyCollision = false;
     private static boolean startGame = false;
 
 
@@ -282,6 +282,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         player.decrementHealth();
         stopPlayerEnemiesMovement();
         collisionTimeStamp = System.currentTimeMillis();
+
     }
 
     private void stopBackgroundSound() {
@@ -798,5 +799,13 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
    public static boolean getStartGame() {
         return startGame;
    }
+
+
+   public  static boolean getPlayerEnemyCollisionState() {
+        return playerEnemyCollision;
+   }
+
+
+
 
 }
