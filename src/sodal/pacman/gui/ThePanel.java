@@ -646,7 +646,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 switchDirection(3);
             }
         }
-        startGame = true;
+        if(!startGame && (k == KeyEvent.VK_UP || k == KeyEvent.VK_DOWN || k == KeyEvent.VK_LEFT || k == KeyEvent.VK_RIGHT)) {
+            startGame = true;
+        }
+
     }
 
 

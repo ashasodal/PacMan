@@ -126,13 +126,12 @@ public class Player extends Entity {
                 score++;
                 if(!eatFoodSound) {
                     //play once when pacman hits more than one food at the same time
-                    ThePanel.playSound("./res/sound/eat.wav",0, 0);
+                    ThePanel.playSound("./res/sound/eat.wav",0, -6f);
                     eatFoodSound = true;
                 }
             }
         }
     }
-
 
     private void moveUp(int speed) {
         if (this.rect.y > 0) {
