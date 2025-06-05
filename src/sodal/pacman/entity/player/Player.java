@@ -133,6 +133,21 @@ public class Player extends Entity {
         }
     }
 
+    private void move() {
+        byte[] dir = this.direction;
+        if (dir[0] == 1) {
+            moveUp(speed);
+        } else if (dir[1] == 1) {
+            moveDown(speed);
+        } else if (dir[2] == 1) {
+            moveLeft(speed);
+        } else if (dir[3] == 1) {
+            moveRight(speed);
+        }
+        this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
+       // System.out.println(rect.getLocation());
+    }
+
     private void moveUp(int speed) {
         if (this.rect.y > 0) {
             this.yCenter -= speed;
@@ -141,7 +156,58 @@ public class Player extends Entity {
         if (speed != 1) {
             upAnimation();
         }
+    }
 
+    private void moveDown(int speed) {
+        if (this.rect.y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
+            this.yCenter += speed;
+        }
+        //if player is not backtracking
+        if (speed != 1) {
+            downAnimation();
+        }
+    }
+
+    private void moveLeft(int speed) {
+        if (this.rect.x > 0 && this.rect.y != 10 * ThePanel.getTileSize()) {
+            this.xCenter -= speed;
+        }
+
+        if(this.rect.y == 10 * ThePanel.getTileSize()) {
+            if(this.rect.x <= -ThePanel.getTileSize() /2) {
+              this.xCenter = ThePanel.getWIDTH() - (ThePanel.getTileSize()/2) + radius;
+              //this.speed = 0;
+              //  System.out.println("speed: " + speed);
+            }
+            else {
+                this.xCenter -= speed;
+            }
+        }
+        //if player is not backtracking
+        if (speed != 1) {
+            leftAnimation();
+        }
+    }
+
+    private void moveRight(int speed) {
+        if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()  && this.rect.y != 10 * ThePanel.getTileSize()) {
+            this.xCenter += speed;
+        }
+
+        if(this.rect.y == 10 * ThePanel.getTileSize()) {
+            if(this.rect.x >= ThePanel.getWIDTH() - ThePanel.getTileSize()/2) {
+                this.xCenter = -ThePanel.getTileSize()/2 + radius;
+               // this.speed = 0;
+            }
+            else {
+                this.xCenter += speed;
+            }
+        }
+
+        //if player is not backtracking
+        if (speed != 1) {
+            rightAnimation();
+        }
     }
 
     private void upAnimation() {
@@ -195,27 +261,9 @@ public class Player extends Entity {
 
     }
 
-    private void moveDown(int speed) {
-        if (this.rect.y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
-            this.yCenter += speed;
-        }
-        //if player is not backtracking
-        if (speed != 1) {
-            downAnimation();
-        }
 
-    }
 
-    private void moveLeft(int speed) {
-        if (this.rect.x > 0) {
-            this.xCenter -= speed;
-        }
-        //if player is not backtracking
-        if (speed != 1) {
-            leftAnimation();
-        }
 
-    }
 
     private void leftAnimation() {
 
@@ -242,15 +290,7 @@ public class Player extends Entity {
 
     }
 
-    private void moveRight(int speed) {
-        if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
-            this.xCenter += speed;
-        }
-        //if player is not backtracking
-        if (speed != 1) {
-            rightAnimation();
-        }
-    }
+
 
 
     private void rightAnimation() {
@@ -278,19 +318,7 @@ public class Player extends Entity {
 
     }
 
-    private void move() {
-        byte[] dir = this.direction;
-        if (dir[0] == 1) {
-            moveUp(speed);
-        } else if (dir[1] == 1) {
-            moveDown(speed);
-        } else if (dir[2] == 1) {
-            moveLeft(speed);
-        } else if (dir[3] == 1) {
-            moveRight(speed);
-        }
-        this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
-    }
+
 
 
     public void moveInOppositeDirection() {
@@ -312,6 +340,7 @@ public class Player extends Entity {
         }
         // this.image = temp;
         this.rect.setLocation(this.xCenter - radius, this.yCenter - radius);
+
     }
 
 
