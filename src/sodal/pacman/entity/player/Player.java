@@ -3,18 +3,14 @@ package sodal.pacman.entity.player;
 import sodal.pacman.entity.Entity;
 //import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.food.Food;
-import sodal.pacman.gui.ThePanel;
+import sodal.pacman.gui.GamePanel;
 
 import javax.imageio.ImageIO;
-import javax.print.attribute.standard.OrientationRequested;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.PipedReader;
 import java.util.Arrays;
-import java.util.Iterator;
 
 public class Player extends Entity {
 
@@ -27,7 +23,7 @@ public class Player extends Entity {
     protected int health = 3;
     protected int radius;
     private Rectangle rect;
-    private ThePanel panel;
+    private GamePanel panel;
 
     private byte[] direction;
 
@@ -51,7 +47,7 @@ public class Player extends Entity {
     private boolean isPlayerUpAnimating, isPlayerDownAnimating, isPlayerLeftAnimating, isPlayerRightAnimating;            // Animation state flag
 
 
-    public Player(int xCenter, int yCenter, int radius, int speed, ThePanel panel) {
+    public Player(int xCenter, int yCenter, int radius, int speed, GamePanel panel) {
         super(radius * 2, radius * 2, speed);
         this.xCenter = xCenter;
         this.yCenter = yCenter;
@@ -106,7 +102,7 @@ public class Player extends Entity {
 
     private void worldCollision() {
         //circle - rectangular collision
-        for (Rectangle rect : ThePanel.getWorld()) {
+        for (Rectangle rect : GamePanel.getWorld()) {
             if (this.rect.intersects(rect)) {
                 if (panel.circleRectCollision(rect)) {
                     //backtrack player until it doesn't collide with worldRect.
@@ -118,7 +114,7 @@ public class Player extends Entity {
 
     private void foodCollision() {
         boolean eatFoodSound = false;
-        for(Food food: ThePanel.getAllFood()) {
+        for(Food food: GamePanel.getAllFood()) {
             Rectangle foodRect = new Rectangle(food.getX(), food.getY(), food.getWidth(), food.getHeight());
             if(!food.isEaten() && panel.circleRectCollision(foodRect)) {
                 //make food invisible
@@ -126,7 +122,7 @@ public class Player extends Entity {
                 score++;
                 if(!eatFoodSound) {
                     //play once when pacman hits more than one food at the same time
-                    ThePanel.playSound("./res/sound/eat.wav",0, -6f);
+                    GamePanel.playSound("./res/sound/eat.wav",0, -6f);
                     eatFoodSound = true;
                 }
             }
@@ -159,7 +155,7 @@ public class Player extends Entity {
     }
 
     private void moveDown(int speed) {
-        if (this.rect.y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
+        if (this.rect.y < GamePanel.getHEIGHT() - 2 * GamePanel.getTileSize()) {
             this.yCenter += speed;
         }
         //if player is not backtracking
@@ -169,13 +165,13 @@ public class Player extends Entity {
     }
 
     private void moveLeft(int speed) {
-        if (this.rect.x > 0 && this.rect.y != 10 * ThePanel.getTileSize()) {
+        if (this.rect.x > 0 && this.rect.y != 10 * GamePanel.getTileSize()) {
             this.xCenter -= speed;
         }
 
-        if(this.rect.y == 10 * ThePanel.getTileSize()) {
-            if(this.rect.x <= -ThePanel.getTileSize() /2) {
-              this.xCenter = ThePanel.getWIDTH() - (ThePanel.getTileSize()/2) + radius;
+        if(this.rect.y == 10 * GamePanel.getTileSize()) {
+            if(this.rect.x <= -GamePanel.getTileSize() /2) {
+              this.xCenter = GamePanel.getWIDTH() - (GamePanel.getTileSize()/2) + radius;
               //this.speed = 0;
               //  System.out.println("speed: " + speed);
             }
@@ -190,13 +186,13 @@ public class Player extends Entity {
     }
 
     private void moveRight(int speed) {
-        if (this.rect.x < ThePanel.getWIDTH() - ThePanel.getTileSize()  && this.rect.y != 10 * ThePanel.getTileSize()) {
+        if (this.rect.x < GamePanel.getWIDTH() - GamePanel.getTileSize()  && this.rect.y != 10 * GamePanel.getTileSize()) {
             this.xCenter += speed;
         }
 
-        if(this.rect.y == 10 * ThePanel.getTileSize()) {
-            if(this.rect.x >= ThePanel.getWIDTH() - ThePanel.getTileSize()/2) {
-                this.xCenter = -ThePanel.getTileSize()/2 + radius;
+        if(this.rect.y == 10 * GamePanel.getTileSize()) {
+            if(this.rect.x >= GamePanel.getWIDTH() - GamePanel.getTileSize()/2) {
+                this.xCenter = -GamePanel.getTileSize()/2 + radius;
                // this.speed = 0;
             }
             else {
@@ -457,7 +453,7 @@ public class Player extends Entity {
         this.resetMovementAnimations();
         this.setPacManImage();
         this.setSpeed(3);
-        this.setSize(ThePanel.getTileSize(), ThePanel.getTileSize());
+        this.setSize(GamePanel.getTileSize(), GamePanel.getTileSize());
     }
 
 

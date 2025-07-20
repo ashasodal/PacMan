@@ -7,7 +7,7 @@ public class TheFrame {
     public TheFrame() {
        // ThePanel panel = new ThePanel();
         JFrame frame = new JFrame();
-        Menu menu = new Menu(frame,ThePanel.getWIDTH(), ThePanel.getHEIGHT());
+        Menu menu = new Menu(frame, GamePanel.getWIDTH(), GamePanel.getHEIGHT());
         frame.add(menu);
         frame.pack();
         frame.setResizable(false);

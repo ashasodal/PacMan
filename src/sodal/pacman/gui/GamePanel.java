@@ -16,12 +16,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Arrays;
 
 
-public class ThePanel extends JPanel implements Runnable, KeyListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     // SETTINGS / CONFIGURATION
     private static final int TILE_SIZE = 30;
@@ -88,7 +86,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private static List<Food> allFood = new ArrayList<>();
 
 
-    public ThePanel() {
+    public GamePanel() {
         setupPanel();
         setUpEnemies();
         setUpPlayer();

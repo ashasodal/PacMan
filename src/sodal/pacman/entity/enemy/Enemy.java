@@ -1,7 +1,7 @@
 package sodal.pacman.entity.enemy;
 
 import sodal.pacman.entity.Entity;
-import sodal.pacman.gui.ThePanel;
+import sodal.pacman.gui.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -94,7 +94,7 @@ public class Enemy extends Entity {
     }
 
     private void moveDown(int speed) {
-        if (y < ThePanel.getHEIGHT() - 2 * ThePanel.getTileSize()) {
+        if (y < GamePanel.getHEIGHT() - 2 * GamePanel.getTileSize()) {
             y += speed;
             for (int i = 0; i < rect.length; i++) {
                 this.rect[i].y += speed;
@@ -113,7 +113,7 @@ public class Enemy extends Entity {
     }
 
     private void moveRight(int speed) {
-        if (x < ThePanel.getWIDTH() - ThePanel.getTileSize()) {
+        if (x < GamePanel.getWIDTH() - GamePanel.getTileSize()) {
             x += speed;
             for (int i = 0; i < rect.length; i++) {
                 this.rect[i].x += speed;
@@ -149,7 +149,7 @@ public class Enemy extends Entity {
 
 
     public void worldCollision() {
-        for (Rectangle rect : ThePanel.getWorld()) {
+        for (Rectangle rect : GamePanel.getWorld()) {
             if (enemyRect.intersects(rect)) {
                 Rectangle intersection = enemyRect.intersection(rect);
                 moveInOppositeDirection(intersection.width, intersection.height);
@@ -257,7 +257,7 @@ public class Enemy extends Entity {
 
     public void resetToInitialState() {
         this.setLocation(this.initialX, this.initialY);
-        this.setSize(ThePanel.getTileSize(), ThePanel.getTileSize());
+        this.setSize(GamePanel.getTileSize(), GamePanel.getTileSize());
         this.resetStartTime();
         this.randomDir();
         this.setSpeed(1);

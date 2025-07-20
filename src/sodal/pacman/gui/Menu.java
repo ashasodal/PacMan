@@ -57,14 +57,14 @@ public class Menu extends JPanel implements KeyListener {
             p.setPreferredSize(this.getSize());
             p.setBackground(Color.BLUE);*/
 
-            ThePanel gamePanel = new ThePanel();
+            GamePanel gamePanel = new GamePanel();
             frame.remove(this);
             frame.add(gamePanel);
             gamePanel.addKeyListener(gamePanel);
             gamePanel.setFocusable(true);
             gamePanel.requestFocusInWindow();
             frame.validate();
-           
+
 
             System.out.println("added blue");
         }

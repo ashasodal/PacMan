@@ -1,13 +1,6 @@
 package sodal.pacman.entity;
 
-import sodal.pacman.gui.ThePanel;
-
-import javax.imageio.ImageIO;
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public abstract class Entity {
 

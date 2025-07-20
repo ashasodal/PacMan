@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.PipedReader;
-import java.io.SyncFailedException;
 
 public class ScoreBoard {
 
@@ -29,9 +27,9 @@ public class ScoreBoard {
 
     public ScoreBoard(Player player) {
         this.x = 0;
-        this.y = ThePanel.getHEIGHT() - ThePanel.getTileSize();
-        this.width = ThePanel.getWIDTH();
-        this.height = ThePanel.getTileSize();
+        this.y = GamePanel.getHEIGHT() - GamePanel.getTileSize();
+        this.width = GamePanel.getWIDTH();
+        this.height = GamePanel.getTileSize();
         this.player = player;
         this.healthImage = this.player.getLeftBuffer()[2];
 
@@ -44,7 +42,7 @@ public class ScoreBoard {
 
 
     public void update() {
-        if (ThePanel.getStartGame() && !ThePanel.getPlayerEnemyCollisionState()) {
+        if (GamePanel.getStartGame() && !GamePanel.getPlayerEnemyCollisionState()) {
             if (timer == -1) {
                 System.out.println("start TIMER");
                 timer = System.currentTimeMillis();
@@ -85,7 +83,7 @@ public class ScoreBoard {
         g2.setFont(font);
         g2.setColor(new Color(100, 0, 0));
         String text = String.valueOf(displayTimerString);
-        int x = this.width - 3 * ThePanel.getTileSize();
+        int x = this.width - 3 * GamePanel.getTileSize();
         int y = alignY(g2, font);
         g2.drawString(text, x, y);
     }
@@ -141,8 +139,8 @@ public class ScoreBoard {
     private void renderHealth(Graphics2D g2) {
         int x = this.x;
         for (int i = 0; i < player.getHealth(); i++) {
-            g2.drawImage(this.healthImage, x, this.y, ThePanel.getTileSize(), ThePanel.getTileSize(), null);
-            x += ThePanel.getTileSize();
+            g2.drawImage(this.healthImage, x, this.y, GamePanel.getTileSize(), GamePanel.getTileSize(), null);
+            x += GamePanel.getTileSize();
         }
     }
 
