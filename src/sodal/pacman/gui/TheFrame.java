@@ -5,9 +5,10 @@ import javax.swing.*;
 public class TheFrame {
 
     public TheFrame() {
-        ThePanel panel = new ThePanel();
+       // ThePanel panel = new ThePanel();
         JFrame frame = new JFrame();
-        frame.add(panel);
+        Menu menu = new Menu(frame,ThePanel.getWIDTH(), ThePanel.getHEIGHT());
+        frame.add(menu);
         frame.pack();
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,7 +16,7 @@ public class TheFrame {
         frame.setVisible(true);
 
         //start game
-        panel.getGameLoop().start();
+       // panel.getGameLoop().start();
 
 
     }

@@ -85,7 +85,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     ///FOOD
     private Food food;
 
-    private  static  List<Food> allFood = new ArrayList<>();
+    private static List<Food> allFood = new ArrayList<>();
 
 
     public ThePanel() {
@@ -99,6 +99,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         //FOOD
         loadWorldMap();
         setUpGameLoop();
+
+        System.out.println("THREAD NAME DONE CONSYRUCTOR!!!" + Thread.currentThread().getName());
     }
 
 
@@ -138,7 +140,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                     char c = line.charAt(i);
                     if (c == '0') {
                         //add fruit
-                       addFruit(x,y);
+                        addFruit(x, y);
                     }
                     x += TILE_SIZE;
                 }
@@ -160,11 +162,10 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-
     private void setUpGameLoop() {
         //game loop
         gameLoop = new Thread(this);
-        // gameLoop.start();
+        gameLoop.start();
     }
 
 
@@ -198,10 +199,11 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.setDoubleBuffered(true);
-        //lister
-        this.addKeyListener(this);
+
+
+       /* this.addKeyListener(this);
         this.setFocusable(true);
-        this.requestFocusInWindow();
+        this.requestFocusInWindow();*/
 
     }
 
@@ -370,8 +372,8 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void resetAllFoodSize() {
-        for(Food food : allFood) {
-            food.setSize(Food.getSize(),Food.getSize());
+        for (Food food : allFood) {
+            food.setSize(Food.getSize(), Food.getSize());
         }
     }
 
@@ -391,7 +393,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     private void beginDeathAnimation() {
         if (!startDeadAnimation) {
             startDeadAnimation = true;
-            playSound("./res/sound/dead.wav", 0,0);
+            playSound("./res/sound/dead.wav", 0, 0);
             deathAnimationStartTime = System.currentTimeMillis();
         }
     }
@@ -516,13 +518,12 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
         }
 
 
-
         g2.dispose();
     }
 
     private void renderFood(Graphics2D g2) {
-        for(Food food :  getAllFood()) {
-            if(!food.isEaten()) {
+        for (Food food : getAllFood()) {
+            if (!food.isEaten()) {
                 food.render(g2);
             }
         }
@@ -646,7 +647,7 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
                 switchDirection(3);
             }
         }
-        if(!startGame && (k == KeyEvent.VK_UP || k == KeyEvent.VK_DOWN || k == KeyEvent.VK_LEFT || k == KeyEvent.VK_RIGHT)) {
+        if (!startGame && (k == KeyEvent.VK_UP || k == KeyEvent.VK_DOWN || k == KeyEvent.VK_LEFT || k == KeyEvent.VK_RIGHT)) {
             startGame = true;
         }
 
@@ -797,19 +798,20 @@ public class ThePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public  static List<Food> getAllFood() {
+    public static List<Food> getAllFood() {
         return allFood;
     }
 
 
-   public static boolean getStartGame() {
+    public static boolean getStartGame() {
         return startGame;
-   }
+    }
 
 
-   public  static boolean getPlayerEnemyCollisionState() {
+    public static boolean getPlayerEnemyCollisionState() {
         return playerEnemyCollision;
-   }
+    }
+
 
 
 

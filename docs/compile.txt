@@ -1,0 +1,1 @@
+javac -d bin src/sodal/pacman/main/Main.java src/sodal/pacman/entity/Entity.java src/sodal/pacman/entity/player/Player.java src/sodal/pacman/entity/enemy/Enemy.java src/sodal/pacman/gui/ScoreBoard.java src/sodal/pacman/gui/TheFrame.java src/sodal/pacman/gui/ThePanel.java src/sodal/pacman/entity/food/Food.java 
