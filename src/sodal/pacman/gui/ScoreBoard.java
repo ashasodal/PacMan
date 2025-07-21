@@ -18,7 +18,6 @@ public class ScoreBoard {
 
     private Font font;
 
-
     //TIMER
     private long timer = -1;
     private int displayTime = 0;
@@ -34,10 +33,8 @@ public class ScoreBoard {
         this.healthImage = this.player.getLeftBuffer()[2];
 
         font = getFont("./res/font/pixel.otf", 20f);
-        ;
 
         createBuffer();
-
     }
 
 
@@ -48,7 +45,7 @@ public class ScoreBoard {
                 timer = System.currentTimeMillis();
             }
             long deltaTime = System.currentTimeMillis() - timer;
-            int maxTimeMinutes = 2;
+
             //one second has passed
             if (deltaTime >= 1000) {
                 displayTime++;

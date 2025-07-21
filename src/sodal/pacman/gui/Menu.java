@@ -53,8 +53,8 @@ public class Menu extends JPanel implements KeyListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
+
         g2.drawImage(backgroundBuffer, 0, 0, null);
         g2.drawImage(playBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 11, null);
         g2.drawImage(instructionsBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 13, null);
@@ -76,17 +76,7 @@ public class Menu extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         //startbutton
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (buttonLight.y == GamePanel.getTileSize() * 11) {
-                startGame();
-            }
-            //instruction button
-            else if (buttonLight.y == GamePanel.getTileSize() * 13) {
-                System.out.println("instructions");
-            }
-            //highscore button
-            else {
-                System.out.println("highscore");
-            }
+            pressButton();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -104,6 +94,22 @@ public class Menu extends JPanel implements KeyListener {
             }
         }
 
+    }
+
+
+    private void pressButton() {
+        //start button
+        if (buttonLight.y == GamePanel.getTileSize() * 11) {
+            startGame();
+        }
+        //instruction button
+        else if (buttonLight.y == GamePanel.getTileSize() * 13) {
+            System.out.println("instructions");
+        }
+        //highscore button
+        else {
+            System.out.println("highscore");
+        }
     }
 
     private void startGame() {
