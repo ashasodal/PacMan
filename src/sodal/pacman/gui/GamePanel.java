@@ -199,9 +199,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
 
 
-       /* this.addKeyListener(this);
-        this.setFocusable(true);
-        this.requestFocusInWindow();*/
 
     }
 
@@ -405,7 +402,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    private BufferedImage createBuffer(int width, int height, String path) {
+    public static BufferedImage createBuffer(int width, int height, String path) {
         try {
             // Load the original image
             BufferedImage original = ImageIO.read(new File(path));
