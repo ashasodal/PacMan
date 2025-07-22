@@ -45,7 +45,6 @@ public class ScoreBoard {
                 timer = System.currentTimeMillis();
             }
             long deltaTime = System.currentTimeMillis() - timer;
-
             //one second has passed
             if (deltaTime >= 1000) {
                 updateTime();
@@ -57,18 +56,34 @@ public class ScoreBoard {
 
         //the amount of seconds that has passed
         passedTime++;
+        //stop game when 5 minutes has passed
+        if(passedTime ==  301) {
+            //gameover
+            GamePanel.stopBackgroundSound();
+            GamePanel.handleGameOverState();
+            return;
+        }
 
+        updateSeconds();
+        updateMinutes();
+        timer = System.currentTimeMillis();
+
+
+    }
+
+    private void updateSeconds() {
         int seconds = (60 - (passedTime % 60));
         if (passedTime % 60 == 0) {
             seconds = 0;
         }
-
         if (seconds < 10) {
             displayTimerString.replace(displayTimerString.length() - 2, displayTimerString.length(), "0" + seconds);
         } else {
             displayTimerString.replace(displayTimerString.length() - 2, displayTimerString.length(), String.valueOf(seconds));
         }
+    }
 
+    private void updateMinutes() {
         if (passedTime == 1) {
             displayTimerString.setCharAt(1, '4');
         } else if (passedTime == 61) {
@@ -80,9 +95,6 @@ public class ScoreBoard {
         } else if (passedTime == 241) {
             displayTimerString.setCharAt(1, '0');
         }
-
-        timer = System.currentTimeMillis();
-
     }
 
 

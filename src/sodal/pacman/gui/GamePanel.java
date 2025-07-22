@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     // GAME STATE FLAGS
     private static boolean isRunning = false;
-    private boolean gameOver = false;
+    private static boolean gameOver = false;
     private boolean restart = false;
     private volatile boolean drawGameOver = false;
     private static volatile boolean playerEnemyCollision = false;
@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private ScoreBoard scoreBoard;
 
 
-    private Clip backgroundClip;
+    private static Clip backgroundClip;
     private boolean startBackgroundSound = false;
 
 
@@ -282,7 +282,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     }
 
-    private void stopBackgroundSound() {
+    public static void stopBackgroundSound() {
         backgroundClip.stop();
         backgroundClip.close();
     }
@@ -332,9 +332,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     }
 
-    private void handleGameOverState() {
+    public static void handleGameOverState() {
         //animation done
-        player.setSize(0, 0);
+      //  player.setSize(0, 0);
         //display gameover
         gameOver = true;
         startGame = false;
