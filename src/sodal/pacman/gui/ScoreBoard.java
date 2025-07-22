@@ -20,8 +20,8 @@ public class ScoreBoard {
 
     //TIMER
     private long timer = -1;
-    private int displayTime = 0;
-    private StringBuffer displayTimerString = new StringBuffer("00:00");
+    private int passedTime = 0;
+    private StringBuffer displayTimerString = new StringBuffer("05:00");
 
 
     public ScoreBoard(Player player) {
@@ -48,11 +48,43 @@ public class ScoreBoard {
 
             //one second has passed
             if (deltaTime >= 1000) {
-                displayTime++;
-                int minutes = (int) Math.floor(displayTime / 60.0);
-                int seconds = displayTime % 60;
+                //the amount of seconds that hs passed
+                passedTime++;
+
+              /*  int minutes = (int) Math.floor(displayTime / 60.0);
+
                 String format = String.format("%02d:%02d", minutes, seconds);
-                displayTimerString.replace(0, displayTimerString.length(), format);
+                displayTimerString.replace(0, displayTimerString.length(), format);*/
+
+
+               int seconds =  (60 - (passedTime % 60));
+                if(passedTime % 60 == 0) {
+                    seconds = 0;
+                }
+
+
+                if (seconds < 10) {
+                    //displayTimerString.append("0").append(seconds);
+                    displayTimerString.replace(displayTimerString.length() - 2, displayTimerString.length(), "0" + seconds);
+                } else {
+                    //  displayTimerString.append(seconds);
+                    displayTimerString.replace(displayTimerString.length() - 2, displayTimerString.length(), String.valueOf(seconds));
+                }
+
+
+                if (passedTime == 1) {
+                    displayTimerString.setCharAt(1, '4');
+                } else if (passedTime == 61) {
+                    displayTimerString.setCharAt(1, '3');
+                } else if (passedTime == 121) {
+                    displayTimerString.setCharAt(1, '2');
+                } else if (passedTime == 181) {
+                    displayTimerString.setCharAt(1, '1');
+                } else if (passedTime == 241) {
+                    displayTimerString.setCharAt(1, '0');
+                }
+
+
                 timer = System.currentTimeMillis();
             }
         }
@@ -144,7 +176,7 @@ public class ScoreBoard {
 
     public void resetTimer() {
         timer = -1;
-        displayTime = 0;
+        passedTime = 0;
         displayTimerString.replace(0, displayTimerString.length(), "00:00");
     }
 
