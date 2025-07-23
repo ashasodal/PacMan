@@ -69,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage menuBuffer;
     // private Rectangle buttonRect;
     private BufferedImage[] worldImages = new BufferedImage[6];
-    private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 10);
+    private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 12);
 
 
     // SCORE / UI ELEMENTS
@@ -168,7 +168,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 
     private void setUpBuffer() {
-        this.gameOverBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 3, "./res/image/gameover/gameOver.png");
+        this.gameOverBuffer = createBuffer(TILE_SIZE * 8, TILE_SIZE * 2, "./res/image/gameover/gameOver.png");
         this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
         this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
     }
@@ -538,9 +538,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderGameOver(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
         g2.fillRect(0, 0, WIDTH, HEIGHT);
-        g2.drawImage(gameOverBuffer, TILE_SIZE * 7, TILE_SIZE * 5, null);
-        g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 10, null);
-        g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
+        g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth())/2, TILE_SIZE , null);
+        g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
+        g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 14, null);
         g2.setColor(Color.green);
         g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
     }
@@ -615,13 +615,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void handleGameOverInput(int k) {
         if (k == KeyEvent.VK_UP) {
             System.out.println("up!!!");
-            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 10);
+            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 12);
         } else if (k == KeyEvent.VK_DOWN) {
             System.out.println("down!!!!");
-            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 12);
+            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 14);
         } else if (k == KeyEvent.VK_ENTER) {
             //replay game (hover same pos as playButton).
-            if (gameOverHover.getY() == TILE_SIZE * 10) {
+            if (gameOverHover.getY() == TILE_SIZE * 12) {
                 restart = true;
                 System.out.println("enter");
             }

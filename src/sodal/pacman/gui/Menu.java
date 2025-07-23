@@ -20,7 +20,7 @@ public class Menu extends JPanel implements KeyListener {
 
     //buttons
     private BufferedImage playBuffer;
-    private BufferedImage instructionsBuffer;
+    private BufferedImage quitBuffer;
     private BufferedImage highscoreBuffer;
 
     //highlights the current button
@@ -35,7 +35,7 @@ public class Menu extends JPanel implements KeyListener {
         //bufferimage
         this.backgroundBuffer = GamePanel.createBuffer(width, height, "./res/image/menu/background.png");
         this.playBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/play.png");
-        this.instructionsBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/instructions.png");
+        this.quitBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/quit.png");
         this.highscoreBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/highscore.png");
         this.buttonLight = new Rectangle(GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 11, GamePanel.getTileSize() * 3, GamePanel.getTileSize());
 
@@ -57,8 +57,9 @@ public class Menu extends JPanel implements KeyListener {
 
         g2.drawImage(backgroundBuffer, 0, 0, null);
         g2.drawImage(playBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 11, null);
-        g2.drawImage(instructionsBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 13, null);
-        g2.drawImage(highscoreBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
+        g2.drawImage(highscoreBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 13, null);
+        g2.drawImage(quitBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
+
 
         g2.setColor(Color.green);
         g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
@@ -104,11 +105,11 @@ public class Menu extends JPanel implements KeyListener {
         }
         //instruction button
         else if (buttonLight.y == GamePanel.getTileSize() * 13) {
-            System.out.println("instructions");
+            System.out.println("highscore");
         }
         //highscore button
         else {
-            System.out.println("highscore");
+            System.out.println("quit");
         }
     }
 

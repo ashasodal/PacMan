@@ -53,7 +53,6 @@ public class ScoreBoard {
     }
 
     private void updateTime() {
-
         //the amount of seconds that has passed
         passedTime++;
         //stop game when 5 minutes has passed
@@ -63,12 +62,9 @@ public class ScoreBoard {
             GamePanel.handleGameOverState();
             return;
         }
-
         updateSeconds();
         updateMinutes();
         timer = System.currentTimeMillis();
-
-
     }
 
     private void updateSeconds() {
