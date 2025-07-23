@@ -67,6 +67,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage gameOverBuffer;
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
+
+    private BufferedImage boardBuffer;
     // private Rectangle buttonRect;
     private BufferedImage[] worldImages = new BufferedImage[6];
     private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 12);
@@ -171,6 +173,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.gameOverBuffer = createBuffer(TILE_SIZE * 8, TILE_SIZE * 2, "./res/image/gameover/gameOver.png");
         this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
         this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
+        this.boardBuffer = createBuffer(TILE_SIZE * 7, TILE_SIZE * 7, "./res/image/gameover/board.png");
     }
 
     private void setUpScoreBoard() {
@@ -412,7 +415,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             Graphics2D g2d = resized.createGraphics();
 
             // Apply rendering hints for better quality
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+          //  g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2d.drawImage(original, 0, 0, width, height, null);
             g2d.dispose();
 
@@ -541,6 +544,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth())/2, TILE_SIZE , null);
         g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
         g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 14, null);
+        g2.drawImage(boardBuffer, (WIDTH- boardBuffer.getWidth())/2, TILE_SIZE * 4, null);
         g2.setColor(Color.green);
         g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
     }
@@ -626,8 +630,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 System.out.println("enter");
             }
         }
-
-
     }
 
     private void handleGameInput(int k) {
