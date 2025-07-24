@@ -442,8 +442,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         renderGrid(g2);
         //render all food
         renderFood(g2);
-        renderEnemies(g2);
         player.render(g2);
+        renderEnemies(g2);
         scoreBoard.render(g2);
         renderWorld(g2);
         //wait for GAME_OVER_DELAY_MS until displaying gameover state
@@ -517,14 +517,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
-        // System.out.println("pressed!!");
         if (!gameOver) {
-            //System.out.println("hello");
             handleGameInput(k);
         } else {
             handleGameOverInput(k);
         }
-
     }
 
 
