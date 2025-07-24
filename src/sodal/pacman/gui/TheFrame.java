@@ -8,7 +8,7 @@ public class TheFrame {
 
     public TheFrame() {
        // ThePanel panel = new ThePanel();
-         frame = new JFrame();
+        frame = new JFrame("Pac-Man");
         Menu menu = new Menu(frame, GamePanel.getWIDTH(), GamePanel.getHEIGHT());
         frame.add(menu);
         frame.pack();

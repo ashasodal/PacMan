@@ -120,9 +120,9 @@ public class Player extends Entity {
                 //make food invisible
                 food.setSize((byte)0,(byte)0);
                 score++;
+                //play once when pacman hits more than one food at the same time
                 if(!eatFoodSound) {
-                    //play once when pacman hits more than one food at the same time
-                    GamePanel.playSound("./res/sound/eat.wav",0, -6f);
+                    GamePanel.playSound("./res/sound/eat.wav",0, -10f);
                     eatFoodSound = true;
                 }
             }
