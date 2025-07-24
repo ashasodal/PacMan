@@ -72,6 +72,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     // private Rectangle buttonRect;
     private BufferedImage[] worldImages = new BufferedImage[6];
     private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 12);
+    private JFrame frame;
+    private Menu menu;
 
 
     // SCORE / UI ELEMENTS
@@ -88,7 +90,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private static List<Food> allFood = new ArrayList<>();
 
 
-    public GamePanel() {
+    public GamePanel(JFrame frame, Menu menu) {
+        this.frame = frame;
+        this.menu = menu;
         setupPanel();
         setUpEnemies();
         setUpPlayer();
@@ -194,15 +198,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void setupPanel() {
-
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setOpaque(true);
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.setDoubleBuffered(true);
-
-
-
     }
 
 
@@ -337,7 +337,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public static void handleGameOverState() {
         //animation done
-      //  player.setSize(0, 0);
+        //  player.setSize(0, 0);
         //display gameover
         gameOver = true;
         startGame = false;
@@ -355,7 +355,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    private void restart() {
+    public void restart() {
         respawn();
         scoreBoard.resetTimer();
         player.resetHealth();
@@ -415,7 +415,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             Graphics2D g2d = resized.createGraphics();
 
             // Apply rendering hints for better quality
-          //  g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            //  g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2d.drawImage(original, 0, 0, width, height, null);
             g2d.dispose();
 
@@ -541,10 +541,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderGameOver(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
         g2.fillRect(0, 0, WIDTH, HEIGHT);
-        g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth())/2, TILE_SIZE , null);
+        g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth()) / 2, TILE_SIZE, null);
         g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
         g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 14, null);
-        g2.drawImage(boardBuffer, (WIDTH- boardBuffer.getWidth())/2, TILE_SIZE * 4, null);
+        g2.drawImage(boardBuffer, (WIDTH - boardBuffer.getWidth()) / 2, TILE_SIZE * 4, null);
         g2.setColor(Color.green);
         g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
     }
@@ -629,7 +629,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 restart = true;
                 System.out.println("enter");
             }
+            //menu button
+            if (gameOverHover.getY() == TILE_SIZE * 14) {
+                goToMenu();
+            }
         }
+    }
+
+    private void goToMenu() {
+        this.removeKeyListener(this);
+        System.out.println("MENU BUTTON!!!!");
+        frame.remove(this);
+        frame.add(menu);
+        menu.addKeyListener(menu);
+        menu.setFocusable(true);
+        menu.requestFocusInWindow();
+        frame.validate();
+        frame.repaint();
     }
 
     private void handleGameInput(int k) {
@@ -808,7 +824,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public static boolean getPlayerEnemyCollisionState() {
         return playerEnemyCollision;
     }
-
 
 
 

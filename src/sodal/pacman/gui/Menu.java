@@ -46,7 +46,7 @@ public class Menu extends JPanel implements KeyListener {
         this.requestFocusInWindow();
 
 
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(frame,this);
 
     }
 
@@ -62,7 +62,7 @@ public class Menu extends JPanel implements KeyListener {
         g2.drawImage(quitBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
 
 
-        g2.setColor(Color.green);
+        g2.setColor(Color.magenta);
         g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
 
 
@@ -76,8 +76,10 @@ public class Menu extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+
         //startbutton
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            System.out.println("ENTEREDDDDDDD");
             pressButton();
         }
 
@@ -91,6 +93,7 @@ public class Menu extends JPanel implements KeyListener {
 
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             if (buttonLight.y != GamePanel.getTileSize() * 11) {
+                System.out.println("UPPP!!!");
                 buttonLight.y -= 2 * GamePanel.getTileSize();
                 this.repaint();
             }
@@ -116,12 +119,16 @@ public class Menu extends JPanel implements KeyListener {
     }
 
     private void startGame() {
+        this.removeKeyListener(this);
         frame.remove(this);
         frame.add(gamePanel);
+        gamePanel.restart();
         gamePanel.addKeyListener(gamePanel);
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
+
         frame.validate();
+        frame.repaint();
         System.out.println("added blue");
     }
 
