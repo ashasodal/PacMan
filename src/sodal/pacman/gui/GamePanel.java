@@ -3,6 +3,7 @@ package sodal.pacman.gui;
 import sodal.pacman.entity.enemy.Enemy;
 import sodal.pacman.entity.food.Food;
 import sodal.pacman.entity.player.Player;
+import sodal.pacman.ui.UIManager;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
@@ -632,7 +633,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             //menu button
             if (gameOverHover.getY() == TILE_SIZE * 14) {
-                Menu.switchTo(this,menu);
+                UIManager.switchTo(frame,this,menu);
             }
         }
     }

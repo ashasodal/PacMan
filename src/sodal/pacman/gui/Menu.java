@@ -1,5 +1,7 @@
 package sodal.pacman.gui;
 
+import sodal.pacman.ui.UIManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -120,22 +122,11 @@ public class Menu extends JPanel implements KeyListener {
 
     private void startGame() {
         gamePanel.restart();
-       switchTo(this,gamePanel);
+       UIManager.switchTo(frame,this,gamePanel);
     }
 
 
-    public static void switchTo(JPanel from, JPanel to) {
-        from.removeKeyListener((KeyListener) from);
-        frame.remove(from);
 
-        frame.add(to);
-        to.addKeyListener((KeyListener) to);
-        to.setFocusable(true);
-        to.requestFocusInWindow();
-
-        frame.validate();
-        frame.repaint();
-    }
 
 
     @Override
