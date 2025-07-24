@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 public class Menu extends JPanel implements KeyListener {
@@ -110,6 +111,7 @@ public class Menu extends JPanel implements KeyListener {
         //highscore button
         else {
             System.out.println("quit");
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         }
     }
 
