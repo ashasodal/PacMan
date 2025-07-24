@@ -12,26 +12,19 @@ import java.awt.image.BufferedImage;
 public class Menu extends JPanel implements KeyListener {
 
 
-    private static JFrame frame;
-
 
     private GamePanel gamePanel;
-
-
     private BufferedImage backgroundBuffer;
-
-
     //buttons
     private BufferedImage playBuffer;
     private BufferedImage quitBuffer;
     private BufferedImage highscoreBuffer;
-
     //highlights the current button
     private Rectangle buttonLight;
 
 
     public Menu(JFrame frame, int width, int height) {
-        this.frame = frame;
+
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.YELLOW);
 
@@ -119,13 +112,13 @@ public class Menu extends JPanel implements KeyListener {
         //highscore button
         else {
             System.out.println("quit");
-            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            TheFrame.getFrame().dispatchEvent(new WindowEvent(TheFrame.getFrame(), WindowEvent.WINDOW_CLOSING));
         }
     }
 
     private void startGame() {
         gamePanel.restart();
-        UIManager.switchTo(frame, this, gamePanel);
+        UIManager.switchTo(TheFrame.getFrame(), this, gamePanel);
     }
 
 

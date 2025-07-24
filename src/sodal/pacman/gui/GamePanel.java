@@ -67,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage menuBuffer;
     private BufferedImage boardBuffer;
     private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 12);
-    private JFrame frame;
+
     private Menu menu;
 
 
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 
     public GamePanel(JFrame frame, Menu menu) {
-        this.frame = frame;
+
         this.menu = menu;
         setupPanel();
         setUpEnemies();
@@ -543,7 +543,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             //menu button
             if (gameOverHover.getY() == TILE_SIZE * 14) {
-                UIManager.switchTo(frame,this,menu);
+                UIManager.switchTo(TheFrame.getFrame(),this,menu);
             }
         }
     }
