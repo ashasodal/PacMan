@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class Menu extends JPanel implements KeyListener {
 
 
-    private JFrame frame;
+    private static JFrame frame;
 
 
     private GamePanel gamePanel;
@@ -119,18 +119,24 @@ public class Menu extends JPanel implements KeyListener {
     }
 
     private void startGame() {
-        this.removeKeyListener(this);
-        frame.remove(this);
-        frame.add(gamePanel);
         gamePanel.restart();
-        gamePanel.addKeyListener(gamePanel);
-        gamePanel.setFocusable(true);
-        gamePanel.requestFocusInWindow();
+       switchTo(this,gamePanel);
+    }
+
+
+    public static void switchTo(JPanel from, JPanel to) {
+        from.removeKeyListener((KeyListener) from);
+        frame.remove(from);
+
+        frame.add(to);
+        to.addKeyListener((KeyListener) to);
+        to.setFocusable(true);
+        to.requestFocusInWindow();
 
         frame.validate();
         frame.repaint();
-        System.out.println("added blue");
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {

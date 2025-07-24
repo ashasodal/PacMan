@@ -631,22 +631,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             //menu button
             if (gameOverHover.getY() == TILE_SIZE * 14) {
-                goToMenu();
+                Menu.switchTo(this,menu);
             }
         }
     }
 
-    private void goToMenu() {
-        this.removeKeyListener(this);
-        System.out.println("MENU BUTTON!!!!");
-        frame.remove(this);
-        frame.add(menu);
-        menu.addKeyListener(menu);
-        menu.setFocusable(true);
-        menu.requestFocusInWindow();
-        frame.validate();
-        frame.repaint();
-    }
 
     private void handleGameInput(int k) {
         if (!playerEnemyCollision) {
