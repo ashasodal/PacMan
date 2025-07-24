@@ -36,10 +36,10 @@ public class Menu extends JPanel implements KeyListener {
         this.setBackground(Color.YELLOW);
 
         //bufferimage
-        this.backgroundBuffer = GamePanel.createBuffer(width, height, "./res/image/menu/background.png");
-        this.playBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/play.png");
-        this.quitBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/quit.png");
-        this.highscoreBuffer = GamePanel.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/highscore.png");
+        this.backgroundBuffer = UIManager.createBuffer(width, height, "./res/image/menu/background.png");
+        this.playBuffer = UIManager.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/play.png");
+        this.quitBuffer = UIManager.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/quit.png");
+        this.highscoreBuffer = UIManager.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/highscore.png");
         this.buttonLight = new Rectangle(GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 11, GamePanel.getTileSize() * 3, GamePanel.getTileSize());
 
 
@@ -48,7 +48,7 @@ public class Menu extends JPanel implements KeyListener {
         this.requestFocusInWindow();
 
 
-        gamePanel = new GamePanel(frame,this);
+        gamePanel = new GamePanel(frame, this);
 
     }
 
@@ -57,18 +57,18 @@ public class Menu extends JPanel implements KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        paintAllBuffers(g2);
+        g2.setColor(Color.magenta);
+        g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
+        g2.dispose();
+    }
 
+
+    private void paintAllBuffers(Graphics2D g2) {
         g2.drawImage(backgroundBuffer, 0, 0, null);
         g2.drawImage(playBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 11, null);
         g2.drawImage(highscoreBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 13, null);
         g2.drawImage(quitBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
-
-
-        g2.setColor(Color.magenta);
-        g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
-
-
-        g2.dispose();
     }
 
     @Override
@@ -78,29 +78,32 @@ public class Menu extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
-        //startbutton
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            System.out.println("ENTEREDDDDDDD");
             pressButton();
         }
-
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            //if buttonligt is not at button
+            //if not at last button
             if (buttonLight.y != GamePanel.getTileSize() * 15) {
-                buttonLight.y += 2 * GamePanel.getTileSize();
-                this.repaint();
+                goDown();
             }
         }
-
         if (e.getKeyCode() == KeyEvent.VK_UP) {
+            //if not at first button
             if (buttonLight.y != GamePanel.getTileSize() * 11) {
-                System.out.println("UPPP!!!");
-                buttonLight.y -= 2 * GamePanel.getTileSize();
-                this.repaint();
+                goUp();
             }
         }
+    }
 
+
+    private void goUp() {
+        buttonLight.y -= 2 * GamePanel.getTileSize();
+        this.repaint();
+    }
+
+    private void goDown() {
+        buttonLight.y += 2 * GamePanel.getTileSize();
+        this.repaint();
     }
 
 
@@ -122,11 +125,8 @@ public class Menu extends JPanel implements KeyListener {
 
     private void startGame() {
         gamePanel.restart();
-       UIManager.switchTo(frame,this,gamePanel);
+        UIManager.switchTo(frame, this, gamePanel);
     }
-
-
-
 
 
     @Override

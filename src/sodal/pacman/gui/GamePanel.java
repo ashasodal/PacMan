@@ -51,13 +51,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private long deathAnimationStartTime = 0;
     private boolean startDeadAnimation = false;
 
-
     // CORE ENTITIES
     private static Player player;
     private Enemy[] enemies = new Enemy[4];
     private static Rectangle[] world = new Rectangle[15];
-    private byte[][] worldData = new byte[NUM_TILES_HEIGHT][NUM_TILES_WIDTH];
-
 
     // GAME LOOP
     private int FPS = 60;
@@ -68,10 +65,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage gameOverBuffer;
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
-
     private BufferedImage boardBuffer;
-    // private Rectangle buttonRect;
-    private BufferedImage[] worldImages = new BufferedImage[6];
     private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 12);
     private JFrame frame;
     private Menu menu;
@@ -84,9 +78,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private static Clip backgroundClip;
     private boolean startBackgroundSound = false;
 
-
-    ///FOOD
-    private Food food;
 
     private static List<Food> allFood = new ArrayList<>();
 
@@ -104,25 +95,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         //FOOD
         loadWorldMap();
         setUpGameLoop();
-
-        System.out.println("THREAD NAME DONE CONSYRUCTOR!!!" + Thread.currentThread().getName());
-    }
-
-
-    private void addAllFood() {
-        int foodSize = Food.getSize();
-        food = new Food(0 + TILE_SIZE / 2 - foodSize / 2, 0 + TILE_SIZE / 2 - foodSize / 2);
-    }
-
-    private void createWorldBuffer() {
-        try {
-            for (int i = 0; i < worldImages.length; i++) {
-                worldImages[i] = ImageIO.read(new File("./res/image/world/" + (i + 1) + ".png"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void loadWorldMap() {
@@ -175,10 +147,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 
     private void setUpBuffer() {
-        this.gameOverBuffer = createBuffer(TILE_SIZE * 8, TILE_SIZE * 2, "./res/image/gameover/gameOver.png");
-        this.playBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
-        this.menuBuffer = createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
-        this.boardBuffer = createBuffer(TILE_SIZE * 7, TILE_SIZE * 7, "./res/image/gameover/board.png");
+        this.gameOverBuffer = UIManager.createBuffer(TILE_SIZE * 8, TILE_SIZE * 2, "./res/image/gameover/gameOver.png");
+        this.playBuffer = UIManager.createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/play.png");
+        this.menuBuffer = UIManager.createBuffer(TILE_SIZE * 3, TILE_SIZE * 1, "./res/image/menu/menu.png");
+        this.boardBuffer = UIManager.createBuffer(TILE_SIZE * 7, TILE_SIZE * 7, "./res/image/gameover/board.png");
     }
 
     private void setUpScoreBoard() {
@@ -337,9 +309,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     public static void handleGameOverState() {
-        //animation done
-        //  player.setSize(0, 0);
-        //display gameover
         gameOver = true;
         startGame = false;
     }
@@ -406,30 +375,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-
-    public static BufferedImage createBuffer(int width, int height, String path) {
-        try {
-            // Load the original image
-            BufferedImage original = ImageIO.read(new File(path));
-
-            // Create a new resized image
-            BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = resized.createGraphics();
-
-            // Apply rendering hints for better quality
-            //  g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.drawImage(original, 0, 0, width, height, null);
-            g2d.dispose();
-
-            return resized;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // file could not be found!
-        return null;
-    }
-
-
     public boolean circleRectCollision(Rectangle rect) {
         double distance = getDistance(rect);
         //collision!!!
@@ -439,13 +384,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         return false;
     }
 
-
     public double getDistance(Rectangle rect) {
         double closestRectX = clamp(rect.x, rect.x + rect.width, player.getxCenter());
         double closestRectY = clamp(rect.y, rect.y + rect.height, player.getyCenter());
         return distance(closestRectX, closestRectY);
     }
-
 
     public void backtrack(Rectangle rect) {
         double playerRadius = player.getRadius();
@@ -456,13 +399,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-
     private double distance(double closestRectX, double closestRectY) {
         double deltaX = Math.abs(player.getxCenter() - closestRectX);
         double deltaY = Math.abs(player.getyCenter() - closestRectY);
         return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
     }
-
 
     public double clamp(double min, double max, double value) {
         if (value < min) {
@@ -472,12 +413,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
         return value;
     }
-
-
-    public Thread getGameLoop() {
-        return gameLoop;
-    }
-
 
     private void renderGrid(Graphics2D g2) {
         g2.setColor(Color.gray);
@@ -511,13 +446,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         player.render(g2);
         scoreBoard.render(g2);
         renderWorld(g2);
-        //gameOver = true
         //wait for GAME_OVER_DELAY_MS until displaying gameover state
         if (drawGameOver) {
             renderGameOver(g2);
         }
-
-
         g2.dispose();
     }
 
@@ -557,28 +489,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
-        //cover some part of the world
-        //  renderLines(g2);
-    }
-
-    //cover some part of the world
-    private void renderLines(Graphics2D g2) {
-        //draw over the lines in world
-        g2.setColor(Color.BLACK);
-        //L
-        g2.drawLine(TILE_SIZE, 12 * TILE_SIZE + 1, TILE_SIZE, 13 * TILE_SIZE - 1);
-        //house
-        g2.drawLine(21 * TILE_SIZE + 1, 13 * TILE_SIZE, 22 * TILE_SIZE - 1, 13 * TILE_SIZE);
-        g2.drawLine(23 * TILE_SIZE + 1, 13 * TILE_SIZE, 24 * TILE_SIZE - 1, 13 * TILE_SIZE);
-        //cross
-        //left
-        g2.drawLine(12 * TILE_SIZE, 7 * TILE_SIZE + 1, 12 * TILE_SIZE, 8 * TILE_SIZE - 1);
-        //top
-        g2.drawLine(12 * TILE_SIZE + 1, 7 * TILE_SIZE, 13 * TILE_SIZE - 1, 7 * TILE_SIZE);
-        //right
-        g2.drawLine(13 * TILE_SIZE, 7 * TILE_SIZE + 1, 13 * TILE_SIZE, 8 * TILE_SIZE - 1);
-        //bottom
-        g2.drawLine(12 * TILE_SIZE + 1, 8 * TILE_SIZE, 13 * TILE_SIZE - 1, 8 * TILE_SIZE);
 
     }
 
@@ -723,7 +633,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         world[5] = new Rectangle(WIDTH - 3 * TILE_SIZE, 9 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
         world[6] = new Rectangle(WIDTH - 3 * TILE_SIZE, 11 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
         world[7] = new Rectangle(WIDTH - TILE_SIZE, 12 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
-
         //pacman house
         //left
         world[8] = new Rectangle(7 * TILE_SIZE, HEIGHT - 3 * TILE_SIZE, TILE_SIZE, 2 * TILE_SIZE);
@@ -731,26 +640,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         world[9] = new Rectangle(8 * TILE_SIZE, HEIGHT - 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         //right
         world[10] = new Rectangle(9 * TILE_SIZE, HEIGHT - 3 * TILE_SIZE, TILE_SIZE, 2 * TILE_SIZE);
-
-
         //top "house
         world[11] = new Rectangle(7 * TILE_SIZE, 0, TILE_SIZE, 2 * TILE_SIZE);
         world[12] = new Rectangle(8 * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
         world[13] = new Rectangle(9 * TILE_SIZE, 0, TILE_SIZE, 2 * TILE_SIZE);
-
         //block in middle
         world[14] = new Rectangle(7 * TILE_SIZE, 7 * TILE_SIZE, 3 * TILE_SIZE, 7 * TILE_SIZE);
-
-
-        //ghost house
-        //top
-       /* world[11] = new Rectangle(5*TILE_SIZE + TILE_SIZE/2, 0 ,6* TILE_SIZE ,   TILE_SIZE);
-        //left
-        world[12] = new Rectangle(5*TILE_SIZE + TILE_SIZE/2, TILE_SIZE , TILE_SIZE ,   3*  TILE_SIZE);
-        //right
-        world[13] = new Rectangle(10*TILE_SIZE + TILE_SIZE/2, TILE_SIZE ,  TILE_SIZE ,   3*  TILE_SIZE);*/
-
-
     }
 
 
