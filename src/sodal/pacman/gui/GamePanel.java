@@ -360,6 +360,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         scoreBoard.resetTimer();
         player.resetHealth();
         player.setScore(0);
+        gameOverHover.setLocation(gameOverHover.getX(),TILE_SIZE * 12);
         //make all food
         resetAllFoodSize();
         drawGameOver = false;
@@ -813,8 +814,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public static boolean getPlayerEnemyCollisionState() {
         return playerEnemyCollision;
     }
-
-
 
 
 }
