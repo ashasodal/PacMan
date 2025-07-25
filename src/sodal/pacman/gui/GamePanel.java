@@ -511,7 +511,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderTime(Graphics2D g2) {
         g2.setFont(gameOverFont);
         g2.setColor(ScoreBoard.getTextColor());
-        g2.drawString(scoreBoard.getTime(), 200, 200);
+        String time =   scoreBoard.getTime();
+        g2.drawString(time, scoreBoard.alignX(g2, gameOverFont,time), TILE_SIZE * 8);
     }
 
 

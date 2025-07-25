@@ -138,7 +138,7 @@ public class ScoreBoard {
     }
 
 
-    private int alignX(Graphics2D g2, Font font, String text) {
+    public  int alignX(Graphics2D g2, Font font, String text) {
         //alignment
         FontMetrics metrics = g2.getFontMetrics(font);
         //x align
