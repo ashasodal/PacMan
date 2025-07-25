@@ -40,4 +40,16 @@ public class UIManager {
         // file could not be found!
         return null;
     }
+
+    public static Font getFont(String path, float fontSize) {
+        Font font;
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(fontSize);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
+        } catch (IOException | FontFormatException e) {
+            font = new Font(Font.SERIF, Font.BOLD, (int) fontSize);
+        }
+        return font;
+    }
 }

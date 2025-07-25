@@ -117,7 +117,7 @@ public class Menu extends JPanel implements KeyListener {
     }
 
     private void startGame() {
-        gamePanel.restart();
+        gamePanel.initializeGameState();
         UIManager.switchTo(TheFrame.getFrame(), this, gamePanel);
     }
 

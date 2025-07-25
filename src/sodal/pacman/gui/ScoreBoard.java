@@ -1,6 +1,7 @@
 package sodal.pacman.gui;
 
 import sodal.pacman.entity.player.Player;
+import sodal.pacman.ui.UIManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -33,7 +34,7 @@ public class ScoreBoard {
         this.player = player;
         this.healthImage = this.player.getLeftBuffer()[2];
         textColor = new Color(100, 0, 0);
-        font = getFont("./res/font/pixel.otf", 20f);
+        font = UIManager.getFont("./res/font/pixel.otf", 20f);
 
         createBuffer();
     }
@@ -153,17 +154,7 @@ public class ScoreBoard {
     }
 
 
-    private Font getFont(String path, float fontSize) {
-        Font font;
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(fontSize);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(font);
-        } catch (IOException | FontFormatException e) {
-            font = new Font(Font.SERIF, Font.BOLD, (int) fontSize);
-        }
-        return font;
-    }
+
 
 
     private void renderHealth(Graphics2D g2) {
@@ -185,7 +176,7 @@ public class ScoreBoard {
     public String getTime() {
         int minutes = passedTime / 60;
         int seconds = passedTime % 60;
-        return seconds < 10 ? "0" + minutes + ":" + "0" + seconds : "0" + minutes + ":" + seconds;
+        return seconds < 10 ? "Time Taken: " + "0" + minutes + ":" + "0" + seconds : "Time Taken: " +  "0" + minutes + ":" + seconds;
     }
 
     public static Font getFont() {

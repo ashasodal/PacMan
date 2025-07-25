@@ -66,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage playBuffer;
     private BufferedImage menuBuffer;
     private BufferedImage boardBuffer;
-    private static Point gameOverHover = new Point(TILE_SIZE * 7, TILE_SIZE * 12);
+    private static Point gameOverHover;
 
     private Menu menu;
 
@@ -80,6 +80,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 
     private static List<Food> allFood = new ArrayList<>();
+    private static Font gameOverFont;
+
+    private static Point playButtonPos;
+    private static Point menuButtonPos;
 
 
     public GamePanel(JFrame frame, Menu menu) {
@@ -95,7 +99,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         //FOOD
         loadWorldMap();
         setUpGameLoop();
+        setUpPButtonPos();
     }
+
 
     private void loadWorldMap() {
         String filePath = "./res/worldMap/world.txt"; // Replace with your actual file path
@@ -145,6 +151,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         gameLoop.start();
     }
 
+    private void setUpPButtonPos() {
+        playButtonPos = new Point(TILE_SIZE * 7, TILE_SIZE * 14);
+        menuButtonPos = new Point(TILE_SIZE * 7, TILE_SIZE * 16);
+    }
 
     private void setUpBuffer() {
         this.gameOverBuffer = UIManager.createBuffer(TILE_SIZE * 8, TILE_SIZE * 2, "./res/image/gameover/gameOver.png");
@@ -176,6 +186,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.setDoubleBuffered(true);
+        gameOverFont = UIManager.getFont("./res/font/pixel.otf", 15f);
     }
 
 
@@ -207,7 +218,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void handleRestart() {
         //delay game over time has passed
         if (drawGameOver && restart) {
-            restart();
+            initializeGameState();
         }
     }
 
@@ -325,12 +336,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
-    public void restart() {
+    public void initializeGameState() {
         respawn();
         scoreBoard.resetTimer();
         player.resetHealth();
         player.setScore(0);
-        gameOverHover.setLocation(gameOverHover.getX(), TILE_SIZE * 12);
+        gameOverHover = playButtonPos;
         //make all food
         resetAllFoodSize();
         drawGameOver = false;
@@ -476,7 +487,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         renderGameOverBackground(g2);
         renderGameOverBuffers(g2);
         renderTime(g2);
-        renderHover(g2);
     }
 
     private void renderGameOverBackground(Graphics2D g2) {
@@ -492,13 +502,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void renderGameOverBuffers(Graphics2D g2) {
         g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth()) / 2, TILE_SIZE, null);
-        g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
-        g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 14, null);
-        g2.drawImage(boardBuffer, (WIDTH - boardBuffer.getWidth()) / 2, TILE_SIZE * 4, null);
+        g2.drawImage(playBuffer, playButtonPos.x, playButtonPos.y, null);
+        g2.drawImage(menuBuffer, menuButtonPos.x, menuButtonPos.y, null);
+        g2.drawImage(boardBuffer, (WIDTH - boardBuffer.getWidth()) / 2, TILE_SIZE * 5, null);
+        renderHover(g2);
     }
 
     private void renderTime(Graphics2D g2) {
-        g2.setFont(ScoreBoard.getFont());
+        g2.setFont(gameOverFont);
         g2.setColor(ScoreBoard.getTextColor());
         g2.drawString(scoreBoard.getTime(), 200, 200);
     }
@@ -548,18 +559,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void handleGameOverInput(int k) {
         if (k == KeyEvent.VK_UP) {
             System.out.println("up!!!");
-            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 12);
+            gameOverHover = playButtonPos;
         } else if (k == KeyEvent.VK_DOWN) {
             System.out.println("down!!!!");
-            gameOverHover.setLocation(TILE_SIZE * 7, TILE_SIZE * 14);
+            gameOverHover = menuButtonPos;
         } else if (k == KeyEvent.VK_ENTER) {
             //replay game (hover same pos as playButton).
-            if (gameOverHover.getY() == TILE_SIZE * 12) {
+            System.out.println("hover" + gameOverHover.getLocation());
+            System.out.println("playbutton" + playButtonPos.getLocation());
+            if (gameOverHover.getLocation().equals(playButtonPos.getLocation())) {
                 restart = true;
                 System.out.println("enter");
             }
             //menu button
-            if (gameOverHover.getY() == TILE_SIZE * 14) {
+            if (gameOverHover.getLocation().equals(menuButtonPos.getLocation())) {
                 UIManager.switchTo(TheFrame.getFrame(), this, menu);
             }
         }
