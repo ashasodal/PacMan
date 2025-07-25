@@ -16,7 +16,8 @@ public class ScoreBoard {
     private Player player;
     private BufferedImage healthImage;
 
-    private Font font;
+    private static Font font;
+    private static Color textColor;
 
     //TIMER
     private long timer = -1;
@@ -31,7 +32,7 @@ public class ScoreBoard {
         this.height = GamePanel.getTileSize();
         this.player = player;
         this.healthImage = this.player.getLeftBuffer()[2];
-
+        textColor = new Color(100, 0, 0);
         font = getFont("./res/font/pixel.otf", 20f);
 
         createBuffer();
@@ -56,7 +57,7 @@ public class ScoreBoard {
         //the amount of seconds that has passed
         passedTime++;
         //stop game when 5 minutes has passed
-        if(passedTime ==  301) {
+        if (passedTime == 301) {
             //gameover
             GamePanel.stopBackgroundSound();
             GamePanel.handleGameOverState();
@@ -107,7 +108,6 @@ public class ScoreBoard {
         renderHealth(g2);
         renderScore(g2);
         renderTimer(g2);
-
     }
 
 
@@ -123,15 +123,13 @@ public class ScoreBoard {
     private void renderScoreBoard(Graphics2D g2) {
         g2.setColor(Color.gray);
         g2.fillRect(this.x, this.y, this.width, this.height);
-
-
     }
 
 
     private void renderScore(Graphics2D g2) {
         g2.setFont(font);
         //font color
-        g2.setColor(new Color(100, 0, 0));
+        g2.setColor(textColor);
         String text = "SCORE: " + player.getScore();
         int x = alignX(g2, font, text);
         int y = alignY(g2, font);
@@ -183,5 +181,19 @@ public class ScoreBoard {
         displayTimerString.replace(0, displayTimerString.length(), "05:00");
     }
 
+
+    public String getTime() {
+        int minutes = passedTime / 60;
+        int seconds = passedTime % 60;
+        return seconds < 10 ? "0" + minutes + ":" + "0" + seconds : "0" + minutes + ":" + seconds;
+    }
+
+    public static Font getFont() {
+        return font;
+    }
+
+    public static Color getTextColor() {
+        return textColor;
+    }
 
 }

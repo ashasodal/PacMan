@@ -473,14 +473,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void renderGameOver(Graphics2D g2) {
+
+
         g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
         g2.fillRect(0, 0, WIDTH, HEIGHT);
+
+
         g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth()) / 2, TILE_SIZE, null);
         g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
         g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 14, null);
         g2.drawImage(boardBuffer, (WIDTH - boardBuffer.getWidth()) / 2, TILE_SIZE * 4, null);
+
+        g2.setFont(ScoreBoard.getFont());
+        g2.setColor(ScoreBoard.getTextColor());
+        g2.drawString(scoreBoard.getTime(),200,200);
+
+
         g2.setColor(Color.green);
         g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
+
+
     }
 
 
