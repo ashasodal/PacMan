@@ -486,7 +486,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderGameOver(Graphics2D g2) {
         renderGameOverBackground(g2);
         renderGameOverBuffers(g2);
-        renderTime(g2);
+        renderText(g2, scoreBoard.getTime(), TILE_SIZE * 8);
+        renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 9);
+    }
+
+    private void renderScore(Graphics2D g2) {
+
     }
 
     private void renderGameOverBackground(Graphics2D g2) {
@@ -508,11 +513,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         renderHover(g2);
     }
 
-    private void renderTime(Graphics2D g2) {
+    private void renderText(Graphics2D g2, String text, int yPos) {
         g2.setFont(gameOverFont);
         g2.setColor(ScoreBoard.getTextColor());
-        String time =   scoreBoard.getTime();
-        g2.drawString(time, scoreBoard.alignX(g2, gameOverFont,time), TILE_SIZE * 8);
+       // String time =   scoreBoard.getTime();
+        g2.drawString(text, scoreBoard.alignX(g2, gameOverFont,text), yPos);
     }
 
 
