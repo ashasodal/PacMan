@@ -330,7 +330,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         scoreBoard.resetTimer();
         player.resetHealth();
         player.setScore(0);
-        gameOverHover.setLocation(gameOverHover.getX(),TILE_SIZE * 12);
+        gameOverHover.setLocation(gameOverHover.getX(), TILE_SIZE * 12);
         //make all food
         resetAllFoodSize();
         drawGameOver = false;
@@ -473,26 +473,34 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void renderGameOver(Graphics2D g2) {
+        renderGameOverBackground(g2);
+        renderGameOverBuffers(g2);
+        renderTime(g2);
+        renderHover(g2);
+    }
 
-
+    private void renderGameOverBackground(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
         g2.fillRect(0, 0, WIDTH, HEIGHT);
+    }
 
+    private void renderHover(Graphics2D g2) {
+        g2.setColor(Color.green);
+        g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
 
+    }
+
+    private void renderGameOverBuffers(Graphics2D g2) {
         g2.drawImage(gameOverBuffer, (WIDTH - gameOverBuffer.getWidth()) / 2, TILE_SIZE, null);
         g2.drawImage(playBuffer, TILE_SIZE * 7, TILE_SIZE * 12, null);
         g2.drawImage(menuBuffer, TILE_SIZE * 7, TILE_SIZE * 14, null);
         g2.drawImage(boardBuffer, (WIDTH - boardBuffer.getWidth()) / 2, TILE_SIZE * 4, null);
+    }
 
+    private void renderTime(Graphics2D g2) {
         g2.setFont(ScoreBoard.getFont());
         g2.setColor(ScoreBoard.getTextColor());
-        g2.drawString(scoreBoard.getTime(),200,200);
-
-
-        g2.setColor(Color.green);
-        g2.drawRect(gameOverHover.x, gameOverHover.y, playBuffer.getWidth(), playBuffer.getHeight());
-
-
+        g2.drawString(scoreBoard.getTime(), 200, 200);
     }
 
 
@@ -552,7 +560,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             //menu button
             if (gameOverHover.getY() == TILE_SIZE * 14) {
-                UIManager.switchTo(TheFrame.getFrame(),this,menu);
+                UIManager.switchTo(TheFrame.getFrame(), this, menu);
             }
         }
     }
