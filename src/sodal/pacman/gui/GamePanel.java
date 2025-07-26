@@ -556,7 +556,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         renderGameOverBackground(g2);
         renderGameOverBuffers(g2);
         renderText(g2, scoreBoard.getGameOverTimeMessage(), TILE_SIZE * 9);
-        renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 8);
+        if(player.getScore() == 285) {
+            renderText(g2, " MAX SCORE: " + player.getScore(), TILE_SIZE * 8);
+        }
+        else {
+            renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 8);
+        }
+
     }
 
     private void renderScore(Graphics2D g2) {
