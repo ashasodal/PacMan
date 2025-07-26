@@ -173,10 +173,17 @@ public class ScoreBoard {
     }
 
 
-    public String getTime() {
+    public String getGameOverTimeMessage() {
         int minutes = passedTime / 60;
         int seconds = passedTime % 60;
         return seconds < 10 ? "Time Taken: " + "0" + minutes + ":" + "0" + seconds : "Time Taken: " +  "0" + minutes + ":" + seconds;
+    }
+
+
+    public String getTime() {
+        int minutes = passedTime / 60;
+        int seconds = passedTime % 60;
+        return seconds < 10 ? "0" + minutes + ":" + "0" + seconds : "0" + minutes + ":" + seconds;
     }
 
     public static Font getFont() {

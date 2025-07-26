@@ -12,12 +12,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
@@ -84,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private static Point playButtonPos;
     private static Point menuButtonPos;
+    private static boolean checkHighScore = false;
 
 
     public GamePanel(JFrame frame, Menu menu) {
@@ -201,6 +200,62 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         } else {
             handleGameOverDelay();
             handleRestart();
+            checkHighScore();
+        }
+    }
+
+    /**
+     * check highscore file ONCE when game over.
+     */
+    private void checkHighScore() {
+        if( !checkHighScore) {
+            readHighScoreFile();
+        }
+        checkHighScore = true;
+    }
+
+
+    private void readHighScoreFile() {
+        try {
+            File myObj = new File("src/sodal/pacman/highscore/highscore.txt");
+            Scanner myReader = new Scanner(myObj);
+            int linePos = 0;
+            while (myReader.hasNextLine()) {
+                linePos++;
+                String data = myReader.nextLine();
+               if (data.equals("No high score yet.")) {
+                    updateHighScore();
+                    return;
+                }
+               //second line == score pos
+               if(linePos == 2) {
+                   System.out.println(data);
+                   //check if score is higher than highscore
+                   if(Integer.parseInt(data) < player.getScore()) {
+                       //update highscore
+                       updateHighScore();
+                       return;
+                   }
+               }
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+
+    private void updateHighScore() {
+        try {
+            FileWriter myWriter = new FileWriter("src/sodal/pacman/highscore/highscore.txt");
+            myWriter.write(scoreBoard.getTime() + '\n');
+            myWriter.write(player.getScore() + System.lineSeparator());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 
@@ -322,6 +377,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public static void handleGameOverState() {
         gameOver = true;
         startGame = false;
+        checkHighScore = false;
     }
 
     private void respawn() {
@@ -486,8 +542,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderGameOver(Graphics2D g2) {
         renderGameOverBackground(g2);
         renderGameOverBuffers(g2);
-        renderText(g2, scoreBoard.getTime(), TILE_SIZE * 8);
-        renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 9);
+        renderText(g2, scoreBoard.getGameOverTimeMessage(), TILE_SIZE * 9);
+        renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 8);
     }
 
     private void renderScore(Graphics2D g2) {
@@ -516,8 +572,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderText(Graphics2D g2, String text, int yPos) {
         g2.setFont(gameOverFont);
         g2.setColor(ScoreBoard.getTextColor());
-       // String time =   scoreBoard.getTime();
-        g2.drawString(text, scoreBoard.alignX(g2, gameOverFont,text), yPos);
+        // String time =   scoreBoard.getTime();
+        g2.drawString(text, scoreBoard.alignX(g2, gameOverFont, text), yPos);
     }
 
 
