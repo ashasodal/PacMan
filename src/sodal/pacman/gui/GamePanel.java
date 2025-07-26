@@ -192,7 +192,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         if (!gameOver) {
             if (startGame) {
-                playBackgroundSound();
+               // playBackgroundSound();
                 scoreBoard.update();
                 updatePlayerAndEnemies();
                 checkCollision();
@@ -208,7 +208,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
      * check highscore file ONCE when game over.
      */
     private void checkHighScore() {
-        if( !checkHighScore) {
+        if (!checkHighScore) {
             readHighScoreFile();
         }
         checkHighScore = true;
@@ -219,25 +219,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         try {
             File myObj = new File("src/sodal/pacman/highscore/highscore.txt");
             Scanner myReader = new Scanner(myObj);
-            int linePos = 0;
-            while (myReader.hasNextLine()) {
-                linePos++;
-                String data = myReader.nextLine();
-               if (data.equals("No high score yet.")) {
-                    updateHighScore();
-                    return;
-                }
-               //second line == score pos
-               if(linePos == 2) {
-                   System.out.println(data);
-                   //check if score is higher than highscore
-                   if(Integer.parseInt(data) < player.getScore()) {
-                       //update highscore
-                       updateHighScore();
-                       return;
-                   }
-               }
+            String score = myReader.nextLine();
+            if (score.equals("No high score yet.")) {
+                updateHighScore();
+                return;
             }
+            highScoreCheck(score, myReader);
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -246,11 +233,37 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
 
+    private void highScoreCheck(String score, Scanner myReader) {
+        //check if score is higher than highscore
+        if (Integer.parseInt(score) < player.getScore()) {
+            //update highscore
+            updateHighScore();
+            return;
+        }
+
+        if (Integer.parseInt(score) == player.getScore()) {
+            String highScoreTime = myReader.nextLine();
+            int convertToSec = convertTimeToSeconds(highScoreTime);
+            if (scoreBoard.getPassedTime() < convertToSec) {
+                updateHighScore();
+            }
+        }
+    }
+
+
+    public int convertTimeToSeconds(String data) {
+        String[] parts = data.split(":");
+        int minutes = Integer.parseInt(parts[0]);
+        int seconds = Integer.parseInt(parts[1]);
+        return minutes * 60 + seconds;
+    }
+
+
     private void updateHighScore() {
         try {
             FileWriter myWriter = new FileWriter("src/sodal/pacman/highscore/highscore.txt");
-            myWriter.write(scoreBoard.getTime() + '\n');
-            myWriter.write(player.getScore() + System.lineSeparator());
+            myWriter.write(player.getScore() + System.lineSeparator() );
+            myWriter.write(scoreBoard.getTime());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {

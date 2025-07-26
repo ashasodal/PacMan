@@ -190,6 +190,13 @@ public class ScoreBoard {
         return font;
     }
 
+
+    public int getPassedTime() {
+        return passedTime;
+    }
+
+
+
     public static Color getTextColor() {
         return textColor;
     }
