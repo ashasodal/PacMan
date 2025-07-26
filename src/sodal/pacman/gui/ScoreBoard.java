@@ -58,7 +58,7 @@ public class ScoreBoard {
         //the amount of seconds that has passed
         passedTime++;
         //stop game when 5 minutes has passed
-        if (passedTime == 301) {
+        if (passedTime == 301 ) {
             //gameover
             GamePanel.stopBackgroundSound();
             GamePanel.handleGameOverState();
