@@ -83,6 +83,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private static Point playButtonPos;
     private static Point menuButtonPos;
     private static boolean checkHighScore = false;
+    private static boolean  showHighScoreText = false;
 
 
     public GamePanel(JFrame frame, Menu menu) {
@@ -220,10 +221,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             File myObj = new File("src/sodal/pacman/highscore/highscore.txt");
             Scanner myReader = new Scanner(myObj);
             String score = myReader.nextLine();
-            if (score.equals("No high score yet.")) {
-                updateHighScore();
-                return;
-            }
             highScoreCheck(score, myReader);
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -234,20 +231,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 
     private void highScoreCheck(String score, Scanner myReader) {
+        if (score.equals("No high score yet.")) {
+            updateHighScore();
+            return;
+        }
         //check if score is higher than highscore
         if (Integer.parseInt(score) < player.getScore()) {
             //update highscore
             updateHighScore();
             return;
         }
-
         if (Integer.parseInt(score) == player.getScore()) {
             String highScoreTime = myReader.nextLine();
             int convertToSec = convertTimeToSeconds(highScoreTime);
             if (scoreBoard.getPassedTime() < convertToSec) {
                 updateHighScore();
+                return;
             }
         }
+        showHighScoreText = false;
     }
 
 
@@ -266,6 +268,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             myWriter.write(scoreBoard.getTime());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
+            showHighScoreText = true;
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -555,14 +558,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void renderGameOver(Graphics2D g2) {
         renderGameOverBackground(g2);
         renderGameOverBuffers(g2);
-        renderText(g2, scoreBoard.getGameOverTimeMessage(), TILE_SIZE * 9);
+        if(showHighScoreText) {
+            renderText(g2, "NEW HIGH SCORE", TILE_SIZE * 7, Color.GREEN);
+        }
+        renderText(g2, scoreBoard.getGameOverTimeMessage(), TILE_SIZE * 9, ScoreBoard.getTextColor());
         if(player.getScore() == 285) {
-            renderText(g2, " MAX SCORE: " + player.getScore(), TILE_SIZE * 8);
+            renderText(g2, " MAX SCORE: " + player.getScore(), TILE_SIZE * 8, ScoreBoard.getTextColor());
         }
         else {
-            renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 8);
+            renderText(g2, "SCORE: " + player.getScore(), TILE_SIZE * 8, ScoreBoard.getTextColor());
         }
-
     }
 
     private void renderScore(Graphics2D g2) {
@@ -588,9 +593,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         renderHover(g2);
     }
 
-    private void renderText(Graphics2D g2, String text, int yPos) {
+    private void renderText(Graphics2D g2, String text, int yPos, Color color) {
         g2.setFont(gameOverFont);
-        g2.setColor(ScoreBoard.getTextColor());
+        g2.setColor(color);
         // String time =   scoreBoard.getTime();
         g2.drawString(text, scoreBoard.alignX(g2, gameOverFont, text), yPos);
     }
@@ -601,7 +606,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
-
     }
 
 
