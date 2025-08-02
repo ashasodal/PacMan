@@ -58,27 +58,29 @@ public class Menu extends JPanel implements KeyListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         if (showHighScore) {
-            renderHighScoreBackground(g2);
-            BufferedImage boardBuffer = gamePanel.getBoardBuffer();
-            g2.drawImage(boardBuffer, (GamePanel.getWIDTH() - boardBuffer.getWidth()) / 2, GamePanel.getTileSize() * 5, null);
-            g2.drawImage(backBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
-            g2.setColor(Color.magenta);
-            g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
-            //gamePanel.renderText(g2, "HIGH SCORE", GamePanel.getTileSize() * 6, ScoreBoard.getTextColor());
-            if(score.equals("No high score yet.")) {
-                gamePanel.renderText(g2,  score, GamePanel.getTileSize() * 8, ScoreBoard.getTextColor());
-            }
-            else {
-                gamePanel.renderText(g2, "SCORE: " +  score, GamePanel.getTileSize() * 8, ScoreBoard.getTextColor());
-                gamePanel.renderText(g2, "TIME TAKEN: " + time, GamePanel.getTileSize() * 9, ScoreBoard.getTextColor());
-            }
-           // gamePanel.renderText(g2, "SCORE: " + score, GamePanel.getTileSize() * 6, ScoreBoard.getTextColor());
-            g2.dispose();
+            showHighScore(g2);
             return;
         }
         paintAllBuffers(g2);
-        g2.setColor(Color.magenta);
+        g2.setColor(Color.GREEN);
         g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
+        g2.dispose();
+    }
+
+    private void showHighScore(Graphics2D g2) {
+        renderHighScoreBackground(g2);
+        BufferedImage boardBuffer = gamePanel.getBoardBuffer();
+        g2.drawImage(boardBuffer, (GamePanel.getWIDTH() - boardBuffer.getWidth()) / 2, GamePanel.getTileSize() * 5, null);
+        g2.drawImage(backBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
+        g2.setColor(Color.GREEN);
+        g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
+        //gamePanel.renderText(g2, "HIGH SCORE", GamePanel.getTileSize() * 6, ScoreBoard.getTextColor());
+        if (score.equals("No high score yet.")) {
+            gamePanel.renderText(g2, score, GamePanel.getTileSize() * 8, ScoreBoard.getTextColor());
+        } else {
+            gamePanel.renderText(g2, "SCORE: " + score, GamePanel.getTileSize() * 8, ScoreBoard.getTextColor());
+            gamePanel.renderText(g2, "TIME TAKEN: " + time, GamePanel.getTileSize() * 9, ScoreBoard.getTextColor());
+        }
         g2.dispose();
     }
 

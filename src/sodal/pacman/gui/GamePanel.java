@@ -522,8 +522,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2 = (Graphics2D) g;
         //paint
         renderBackground(g2);
-        renderGrid(g2);
-        //render all food
+       // renderGrid(g2);
         renderFood(g2);
         player.render(g2);
         renderEnemies(g2);
@@ -570,10 +569,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    private void renderScore(Graphics2D g2) {
-
-    }
-
+    
     private void renderGameOverBackground(Graphics2D g2) {
         g2.setColor(new Color(0, 0, 0, 200)); // Black with 50% transparency
         g2.fillRect(0, 0, WIDTH, HEIGHT);
@@ -831,6 +827,5 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public BufferedImage getBoardBuffer() {
         return boardBuffer;
     }
-
 
 }
