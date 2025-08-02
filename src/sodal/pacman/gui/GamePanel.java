@@ -186,7 +186,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.setDoubleBuffered(true);
-        gameOverFont = UIManager.getFont("./res/font/pixel.otf", 15f);
+        gameOverFont = UIManager.getFont("./res/font/pixel.otf", 13f);
     }
 
 
@@ -593,7 +593,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         renderHover(g2);
     }
 
-    private void renderText(Graphics2D g2, String text, int yPos, Color color) {
+    public void renderText(Graphics2D g2, String text, int yPos, Color color) {
         g2.setFont(gameOverFont);
         g2.setColor(color);
         // String time =   scoreBoard.getTime();
@@ -658,6 +658,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             //menu button
             if (gameOverHover.getLocation().equals(menuButtonPos.getLocation())) {
+                menu.readHighScoreFile();
                 UIManager.switchTo(TheFrame.getFrame(), this, menu);
             }
         }

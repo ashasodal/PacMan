@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Menu extends JPanel implements KeyListener {
 
@@ -25,8 +28,13 @@ public class Menu extends JPanel implements KeyListener {
 
     private boolean showHighScore = false;
 
+    private String time;
+    private String score;
+
 
     public Menu(JFrame frame, int width, int height) {
+        gamePanel = new GamePanel(frame, this);
+        readHighScoreFile();
 
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.YELLOW);
@@ -39,14 +47,9 @@ public class Menu extends JPanel implements KeyListener {
         this.buttonLight = new Rectangle(GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 11, GamePanel.getTileSize() * 3, GamePanel.getTileSize());
         this.backBuffer = UIManager.createBuffer(GamePanel.getTileSize() * 3, GamePanel.getTileSize(), "./res/image/menu/back.png");
 
-
         this.setFocusable(true);
         this.addKeyListener(this);
         this.requestFocusInWindow();
-
-
-        gamePanel = new GamePanel(frame, this);
-
     }
 
 
@@ -60,7 +63,16 @@ public class Menu extends JPanel implements KeyListener {
             g2.drawImage(boardBuffer, (GamePanel.getWIDTH() - boardBuffer.getWidth()) / 2, GamePanel.getTileSize() * 5, null);
             g2.drawImage(backBuffer, GamePanel.getTileSize() * 7, GamePanel.getTileSize() * 15, null);
             g2.setColor(Color.magenta);
-            g2.drawRect(buttonLight.x, 15 * 30, buttonLight.width, buttonLight.height);
+            g2.drawRect(buttonLight.x, buttonLight.y, buttonLight.width, buttonLight.height);
+            //gamePanel.renderText(g2, "HIGH SCORE", GamePanel.getTileSize() * 6, ScoreBoard.getTextColor());
+            if(score.equals("No high score yet.")) {
+                gamePanel.renderText(g2,  score, GamePanel.getTileSize() * 8, ScoreBoard.getTextColor());
+            }
+            else {
+                gamePanel.renderText(g2, "SCORE: " +  score, GamePanel.getTileSize() * 8, ScoreBoard.getTextColor());
+                gamePanel.renderText(g2, "TIME TAKEN: " + time, GamePanel.getTileSize() * 9, ScoreBoard.getTextColor());
+            }
+           // gamePanel.renderText(g2, "SCORE: " + score, GamePanel.getTileSize() * 6, ScoreBoard.getTextColor());
             g2.dispose();
             return;
         }
@@ -155,4 +167,37 @@ public class Menu extends JPanel implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
+
+
+    public void readHighScoreFile() {
+        try {
+            File myObj = new File("src/sodal/pacman/highscore/highscore.txt");
+            Scanner myReader = new Scanner(myObj);
+            int line = 1;
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if (data.equals("No high score yet.")) {
+                    //update highscore
+                    score = data;
+                    return;
+                }
+                // score
+                if (line == 1) {
+                    score = data;
+                }
+                //time
+                else if (line == 2) {
+                    time = data;
+                }
+                line++;
+
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
 }
