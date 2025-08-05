@@ -32,8 +32,8 @@ public class Menu extends JPanel implements KeyListener {
     private String score;
 
 
-    public Menu(JFrame frame, int width, int height) {
-        gamePanel = new GamePanel(frame, this);
+    public Menu( int width, int height) {
+        gamePanel = new GamePanel( this);
         readHighScoreFile();
 
         this.setPreferredSize(new Dimension(width, height));

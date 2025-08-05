@@ -56,7 +56,7 @@ public class ScoreBoard {
 
     private void updateTime() {
         //stop game when 5 minutes has passed
-        if (passedTime == 300 ) {
+        if (passedTime == 300) {
             //gameover
             GamePanel.stopBackgroundSound();
             GamePanel.handleGameOverState();
@@ -138,7 +138,7 @@ public class ScoreBoard {
     }
 
 
-    public  int alignX(Graphics2D g2, Font font, String text) {
+    public int alignX(Graphics2D g2, Font font, String text) {
         //alignment
         FontMetrics metrics = g2.getFontMetrics(font);
         //x align
@@ -152,9 +152,6 @@ public class ScoreBoard {
         int ascent = metrics.getAscent();                // ascent is how far baseline is from top
         return this.y + (this.height - textHeight) / 2 + ascent;
     }
-
-
-
 
 
     private void renderHealth(Graphics2D g2) {
@@ -176,7 +173,7 @@ public class ScoreBoard {
     public String getGameOverTimeMessage() {
         int minutes = passedTime / 60;
         int seconds = passedTime % 60;
-        return seconds < 10 ? "Time Taken: " + "0" + minutes + ":" + "0" + seconds : "Time Taken: " +  "0" + minutes + ":" + seconds;
+        return seconds < 10 ? "Time Taken: " + "0" + minutes + ":" + "0" + seconds : "Time Taken: " + "0" + minutes + ":" + seconds;
     }
 
 
@@ -186,15 +183,9 @@ public class ScoreBoard {
         return seconds < 10 ? "0" + minutes + ":" + "0" + seconds : "0" + minutes + ":" + seconds;
     }
 
-    public static Font getFont() {
-        return font;
-    }
-
-
     public int getPassedTime() {
         return passedTime;
     }
-
 
 
     public static Color getTextColor() {

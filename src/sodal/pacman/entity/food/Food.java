@@ -1,6 +1,5 @@
 package sodal.pacman.entity.food;
 
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
 
 public class Food {
@@ -12,7 +11,6 @@ public class Food {
     private int x;
     private int y;
 
-   // private static final Color color = new Color(234, 130, 229);
    private static final Color color = new Color(255, 165, 0);
 
 

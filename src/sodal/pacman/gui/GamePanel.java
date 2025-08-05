@@ -86,7 +86,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private static boolean  showHighScoreText = false;
 
 
-    public GamePanel(JFrame frame, Menu menu) {
+    public GamePanel( Menu menu) {
 
         this.menu = menu;
         setupPanel();
@@ -497,19 +497,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         return value;
     }
 
-    private void renderGrid(Graphics2D g2) {
-        g2.setColor(Color.gray);
-        int x = 0;
-        int y = 0;
-        for (int i = 0; i < NUM_TILES_HEIGHT; i++) {
-            for (int j = 0; j < NUM_TILES_WIDTH; j++) {
-                g2.drawRect(x, y, TILE_SIZE, TILE_SIZE);
-                x += TILE_SIZE;
-            }
-            x = 0;
-            y += TILE_SIZE;
-        }
-    }
 
 
     public static int getTileSize() {
@@ -797,11 +784,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         );
         g2.drawLine(9*TILE_SIZE ,20*TILE_SIZE +1,9*TILE_SIZE ,21*TILE_SIZE-1
         );
-        // g2.drawLine(7*TILE_SIZE ,21*TILE_SIZE ,10*TILE_SIZE ,21*TILE_SIZE
-        // );
-
-
-
     }
 
 
