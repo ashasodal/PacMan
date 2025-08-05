@@ -193,7 +193,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void update() {
         if (!gameOver) {
             if (startGame) {
-              //  playBackgroundSound();
+              playBackgroundSound();
                 scoreBoard.update();
                 updatePlayerAndEnemies();
                 checkCollision();
@@ -383,7 +383,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                     handleGameOverState();
                 } else {
                     respawn();
-                   // replayBackgroundSound();
+                   replayBackgroundSound();
                 }
             }
         }
