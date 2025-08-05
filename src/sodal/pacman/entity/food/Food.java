@@ -13,7 +13,7 @@ public class Food {
     private int y;
 
    // private static final Color color = new Color(234, 130, 229);
-   private static final Color color = Color.GREEN;
+   private static final Color color = new Color(255, 165, 0);
 
 
 
