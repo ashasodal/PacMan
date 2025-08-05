@@ -602,6 +602,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         for (Rectangle r : world) {
             g2.drawRect(r.x, r.y, r.width, r.height);
         }
+        renderLines(g2);
     }
 
 
@@ -758,6 +759,49 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         world[13] = new Rectangle(9 * TILE_SIZE, 0, TILE_SIZE, 2 * TILE_SIZE);
         //block in middle
         world[14] = new Rectangle(7 * TILE_SIZE, 7 * TILE_SIZE, 3 * TILE_SIZE, 7 * TILE_SIZE);
+    }
+
+    private void renderLines(Graphics2D g2) {
+
+        /**
+         *  //left portal
+         *         world[0] = new Rectangle(0, 2 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
+         *         world[1] = new Rectangle(0, 9 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+         *         world[2] = new Rectangle(0, 11 * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE);
+         *         world[3] = new Rectangle(0, 12 * TILE_SIZE, TILE_SIZE, 7 * TILE_SIZE);
+         */
+
+        //left portal
+        //L
+        g2.setColor(Color.BLACK);
+        g2.drawLine(1,9*TILE_SIZE,TILE_SIZE -1,9*TILE_SIZE);
+        g2.drawLine(0,2*TILE_SIZE,0,10*TILE_SIZE);
+        //
+        g2.drawLine(0,11*TILE_SIZE,0,19*TILE_SIZE);
+        g2.drawLine(1,12*TILE_SIZE,TILE_SIZE -1,12*TILE_SIZE);
+
+        //right portal
+        //L
+        g2.drawLine(16*TILE_SIZE +1 ,9*TILE_SIZE,17* TILE_SIZE -1  ,9*TILE_SIZE);
+        g2.drawLine(17*TILE_SIZE  ,2*TILE_SIZE,17* TILE_SIZE  ,10*TILE_SIZE);
+        //
+        g2.drawLine(17*TILE_SIZE ,11*TILE_SIZE,17* TILE_SIZE ,19*TILE_SIZE);
+        g2.drawLine(16*TILE_SIZE +1 ,12*TILE_SIZE,17* TILE_SIZE -1  ,12*TILE_SIZE);
+
+        //pacman house top
+        g2.drawLine(8*TILE_SIZE ,0,8*TILE_SIZE ,TILE_SIZE-1);
+        g2.drawLine(9*TILE_SIZE ,0,9*TILE_SIZE ,TILE_SIZE-1);
+
+        //pacman house button
+        g2.drawLine(8*TILE_SIZE ,20*TILE_SIZE +1,8*TILE_SIZE ,21*TILE_SIZE-1
+        );
+        g2.drawLine(9*TILE_SIZE ,20*TILE_SIZE +1,9*TILE_SIZE ,21*TILE_SIZE-1
+        );
+        // g2.drawLine(7*TILE_SIZE ,21*TILE_SIZE ,10*TILE_SIZE ,21*TILE_SIZE
+        // );
+
+
+
     }
 
 
