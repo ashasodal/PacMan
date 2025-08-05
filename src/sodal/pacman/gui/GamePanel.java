@@ -174,10 +174,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void setUpEnemies() {
         //enemies
-        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/blinky.png", 1000);
-        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/clyde.png", 2000);
-        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/inky.png", 3000);
-        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./src/sodal/pacman/entity/enemy/image/pinky.png", 4000);
+        enemies[0] = new Enemy(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./res/image/enemies/blinky.png", 1000);
+        enemies[1] = new Enemy(TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./res/image/enemies/clyde.png", 2000);
+        enemies[2] = new Enemy(WIDTH - 2 * TILE_SIZE, HEIGHT - 4 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./res/image/enemies/inky.png", 3000);
+        enemies[3] = new Enemy(WIDTH - 2 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, "./res/image/enemies/pinky.png", 4000);
     }
 
     private void setupPanel() {
@@ -218,7 +218,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void readHighScoreFile() {
         try {
-            File myObj = new File("src/sodal/pacman/highscore/highscore.txt");
+            File myObj = new File("./res/highscore/highscore.txt");
             Scanner myReader = new Scanner(myObj);
             String score = myReader.nextLine();
             highScoreCheck(score, myReader);
@@ -263,7 +263,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     private void updateHighScore() {
         try {
-            FileWriter myWriter = new FileWriter("src/sodal/pacman/highscore/highscore.txt");
+            FileWriter myWriter = new FileWriter("./res/highscore/highscore.txt");
             myWriter.write(player.getScore() + System.lineSeparator() );
             myWriter.write(scoreBoard.getTime());
             myWriter.close();

@@ -173,7 +173,7 @@ public class Menu extends JPanel implements KeyListener {
 
     public void readHighScoreFile() {
         try {
-            File myObj = new File("src/sodal/pacman/highscore/highscore.txt");
+            File myObj = new File("./res/highscore/highscore.txt");
             Scanner myReader = new Scanner(myObj);
             int line = 1;
             while (myReader.hasNextLine()) {

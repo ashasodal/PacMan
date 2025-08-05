@@ -73,13 +73,13 @@ public class Player extends Entity {
     private void createBuffer() {
         try {
 
-            this.pacman = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/pacman.png"));
+            this.pacman = ImageIO.read(new File("./res/image/player/pacman.png"));
 
             for (int i = 0; i < 3; i++) {
-                up[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/up/up" + (i + 1) + ".png"));
-                down[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/down/down" + (i + 1) + ".png"));
-                left[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/left/left" + (i + 1) + ".png"));
-                right[i] = ImageIO.read(new File("./src/sodal/pacman/entity/player/image/right/right" + (i + 1) + ".png"));
+                up[i] = ImageIO.read(new File("./res/image/player/up/up" + (i + 1) + ".png"));
+                down[i] = ImageIO.read(new File("./res/image/player/down/down" + (i + 1) + ".png"));
+                left[i] = ImageIO.read(new File("./res/image/player/left/left" + (i + 1) + ".png"));
+                right[i] = ImageIO.read(new File("./res/image/player/right/right" + (i + 1) + ".png"));
             }
 
             for (int i = 0; i < dead.length; i++) {
