@@ -10,7 +10,7 @@ This is a basic Pac-Man clone where you control Pac-Man using the arrow keys. Th
 
 ## Installation 🔧
 
-# Option 1: Clone the repository
+### Option 1: Clone the repository
 
 * Java 8+ required.
 
@@ -20,7 +20,7 @@ This is a basic Pac-Man clone where you control Pac-Man using the arrow keys. Th
 
 Type the following command: java -cp ./bin sodal.pacman.main.Main
 
-# Option 2: Download and run the JAR
+### Option 2: Download and run the JAR
 
 * Go to the Releases page.
 
